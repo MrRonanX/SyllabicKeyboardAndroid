@@ -75,7 +75,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="12dp"
-                android:text="TextView"
+                android:text="ᐃᓄᒃᑎᑐᑦ"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -97,7 +97,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="24dp"
                 android:layout_marginBottom="12dp"
-                android:text="TextView"
+                android:text="Français"
                 android:textColor="@android:color/white" />
         </LinearLayout>
 
@@ -328,4 +328,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_setting" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

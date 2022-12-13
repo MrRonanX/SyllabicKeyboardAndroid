@@ -14,6 +14,7 @@ class DetailActivity : AppCompatActivity() {
         tvBack.setOnClickListener {
             finish()
         }
+
     }
 
 }
