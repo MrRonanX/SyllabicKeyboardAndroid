@@ -28,7 +28,7 @@
         </service>
 
         <activity
-            android:name=".ImePreferences"
+            android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:exported="true">
             <intent-filter>
