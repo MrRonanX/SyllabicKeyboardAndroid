@@ -17,21 +17,27 @@
 package com.syllabic.syllabickeyboard;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
+import android.os.Handler;
 import android.text.InputType;
 import android.text.method.MetaKeyKeyListener;
 import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -50,7 +56,7 @@ import java.util.List;
  * be fleshed out as appropriate.
  */
 public class SoftKeyboard extends InputMethodService
-        implements KeyboardView.OnKeyboardActionListener {
+        implements KeyboardView.OnKeyboardActionListener, View.OnClickListener {
     static final boolean DEBUG = false;
 
     /**
@@ -95,7 +101,7 @@ public class SoftKeyboard extends InputMethodService
     private LatinKeyboard mCurKeyboard;
 
     private String mWordSeparators;
-    //    private String textEditText = "";
+    private String textEditText = "";
     private View myKeyboardView;
     private ConstraintLayout layoutSuggest;
     private TextView textSuggestOne, textSuggestTwo, textSuggestThree;
@@ -109,7 +115,6 @@ public class SoftKeyboard extends InputMethodService
         super.onCreate();
         mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         mWordSeparators = getResources().getString(R.string.word_separators);
-
     }
 
     /**
@@ -157,10 +162,13 @@ public class SoftKeyboard extends InputMethodService
         textSuggestOne = myKeyboardView.findViewById(R.id.textSuggestOne);
         textSuggestTwo = myKeyboardView.findViewById(R.id.textSuggestTwo);
         textSuggestThree = myKeyboardView.findViewById(R.id.textSuggestThree);
-//        mInputView = (LatinKeyboardView) getLayoutInflater().inflate(
-//                R.layout.input, null);
         mInputView.setOnKeyboardActionListener(this);
         mInputView.setKeyboard(mQwertyKeyboard);
+//        ViewGroup originalParent = (ViewGroup) mInputView.getParent();
+//        if (originalParent != null) {
+//            originalParent.setPadding(0,10, 0, 0);
+//            mInputView.setPopupParent(originalParent);
+//        }
         return myKeyboardView;
 
     }
@@ -304,7 +312,8 @@ public class SoftKeyboard extends InputMethodService
 
         final InputMethodSubtype subtype = mInputMethodManager.getCurrentInputMethodSubtype();
         mInputView.setSubtypeOnSpaceKey(subtype);
-//        textEditText = "";
+        textEditText = "";
+        textSuggestOne.setOnClickListener(this);
     }
 
     @Override
@@ -415,6 +424,7 @@ public class SoftKeyboard extends InputMethodService
      */
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        mInputView.dismissPopup();
         switch (keyCode) {
             case KeyEvent.KEYCODE_BACK:
                 // The InputMethodService already takes care of the back
@@ -447,8 +457,7 @@ public class SoftKeyboard extends InputMethodService
                 // text being entered with a hard keyboard, we need to process
                 // it and do the appropriate action.
                 if (PROCESS_HARD_KEYS) {
-                    if (keyCode == KeyEvent.KEYCODE_SPACE
-                            && (event.getMetaState() & KeyEvent.META_ALT_ON) != 0) {
+                    if (keyCode == KeyEvent.KEYCODE_SPACE && (event.getMetaState() & KeyEvent.META_ALT_ON) != 0) {
                         // A silly example: in our input method, Alt+Space
                         // is a shortcut for 'android' in lower case.
                         InputConnection ic = getCurrentInputConnection();
@@ -472,7 +481,6 @@ public class SoftKeyboard extends InputMethodService
                     }
                 }
         }
-
         return super.onKeyDown(keyCode, event);
     }
 
@@ -538,10 +546,8 @@ public class SoftKeyboard extends InputMethodService
      * Helper to send a key down / key up pair to the current editor.
      */
     private void keyDownUp(int keyEventCode) {
-        getCurrentInputConnection().sendKeyEvent(
-                new KeyEvent(KeyEvent.ACTION_DOWN, keyEventCode));
-        getCurrentInputConnection().sendKeyEvent(
-                new KeyEvent(KeyEvent.ACTION_UP, keyEventCode));
+        getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, keyEventCode));
+        getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, keyEventCode));
     }
 
     /**
@@ -557,20 +563,28 @@ public class SoftKeyboard extends InputMethodService
                     keyDownUp(keyCode - '0' + KeyEvent.KEYCODE_0);
                 } else {
                     getCurrentInputConnection().commitText(String.valueOf((char) keyCode), 1);
+                    textEditText = "";
                 }
                 break;
         }
     }
 
-    // Implementation of KeyboardViewListener
-
     public void onKey(int primaryCode, int[] keyCodes) {
+
+//        View focusCurrent = mHostActivity.getWindow().getCurrentFocus();
+//        if (focusCurrent == null
+//                || focusCurrent.getClass() != EditText.class)
+//            return;
+//        EditText edittext = (EditText) focusCurrent;
+//        Editable editable = edittext.getText();
+//        int start = edittext.getSelectionStart();
         if (isWordSeparator(primaryCode)) {
             // Handle separator
             if (mComposing.length() > 0) {
                 commitTyped(getCurrentInputConnection());
             }
-            sendKey(primaryCode);
+            if (primaryCode == Keyboard.EDGE_LEFT)
+                sendKey(primaryCode);
             updateShiftKeyState(getCurrentInputEditorInfo());
         } else if (primaryCode == Keyboard.KEYCODE_DELETE) {
             handleBackspace();
@@ -605,11 +619,17 @@ public class SoftKeyboard extends InputMethodService
 //                current.setShifted(false);
 //            }
         } else if (primaryCode == 97) {
+//            getCurrentInputConnection().commitText(String.valueOf((char) keyCode), 1);
+//            getCurrentInputConnection().setComposingText("t", 1);
             Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
             current = mQwertyTwo;
-//            }
             mInputView.setKeyboard(current);
+        } else if (primaryCode == 106) {
+            getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT));
+            getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_LEFT));
+        } else if (primaryCode == 107) {
+            getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT));
+            getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT));
         } else if (primaryCode == 113 || primaryCode == 2000 || primaryCode == 3000 ||
                 primaryCode == 5000 || primaryCode == 4000 || primaryCode == 1000 ||
                 primaryCode == 5020 || primaryCode == 5030 || primaryCode == 2050 ||
@@ -762,23 +782,24 @@ public class SoftKeyboard extends InputMethodService
             commitTyped(ic);
         }
         ic.commitText(text, 0);
-        ic.getSelectedText(2);
+//        ic.getSelectedText(2);
         ic.endBatchEdit();
         updateShiftKeyState(getCurrentInputEditorInfo());
         textSuggestOne.setText("");
         textSuggestThree.setText("");
         textSuggestTwo.setText("");
+        textEditText = textEditText + text;
         for (int l = 0; l < Utils.list.length; l++) {
-            if (textSuggestOne.getText().toString().equals("")){
-                if (!text.toString().contains(Utils.list[l])) {
+            if (textSuggestOne.getText().toString().equals("")) {
+                if (Utils.list[l].contains(textEditText)) {
                     textSuggestOne.setText(Utils.list[l]);
                 }
-            }else if (textSuggestTwo.getText().toString().equals("")){
-                if (!text.toString().contains(Utils.list[l])) {
+            } else if (textSuggestTwo.getText().toString().equals("")) {
+                if (Utils.list[l].contains(textEditText)) {
                     textSuggestTwo.setText(Utils.list[l]);
                 }
-            }else if (textSuggestThree.getText().toString().equals("")){
-                if (!text.toString().contains(Utils.list[l])) {
+            } else if (textSuggestThree.getText().toString().equals("")) {
+                if (Utils.list[l].contains(textEditText)) {
                     textSuggestThree.setText(Utils.list[l]);
                 }
             }
@@ -934,5 +955,31 @@ public class SoftKeyboard extends InputMethodService
 
     public void onRelease(int primaryCode) {
         Log.d("TAG", "onRelease: ");
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.textSuggestOne:
+//                final Handler handler = new Handler();
+//                handler.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        keyDownUp(KeyEvent.KEYCODE_DEL);
+//                        keyDownUp(KeyEvent.KEYCODE_DEL);
+////                        keyDownUp(KeyEvent.KEYCODE_DEL);
+////                        keyDownUp(KeyEvent.KEYCODE_DEL);
+//                        getCurrentInputConnection().commitText(textSuggestOne.getText().toString(), 1);
+//                    }
+//                }, 200);
+                break;
+            case R.id.textSuggestTwo:
+                getCurrentInputConnection().commitText(textSuggestOne.getText().toString(), 1);
+                break;
+            case R.id.textSuggestThree:
+                getCurrentInputConnection().commitText(textSuggestOne.getText().toString(), 1);
+                break;
+
+        }
     }
 }

@@ -11,6 +11,9 @@ import android.inputmethodservice.Keyboard;
 import com.syllabic.syllabickeyboard.R;
 
 import android.inputmethodservice.Keyboard.Key;
+import android.view.View;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 public class Utils {
 
@@ -49,7 +52,7 @@ public class Utils {
     }
 
     public static void setBackGroundEmoji(Key key, Canvas canvas, Paint paint, Context context) {
-        if (key.codes[0] == 1000 || key.codes[0] == -15 ) {
+        if (key.codes[0] == 1000 || key.codes[0] == -15) {
             setColorButtonBlack(key, canvas, context);
             setColorTextWhiteIcon(key, canvas, paint);
         } else if (key.codes[0] == 97) {
@@ -68,17 +71,17 @@ public class Utils {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
-        }else if (key.codes[0] == -16) {
+        } else if (key.codes[0] == -16) {
             setColorButtonBlack(key, canvas, context);
             setColorTextWhite(key, canvas, paint);
-        }else {
+        } else {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
         }
     }
 
     public static void setBackGroundSelectTwoDot(Key key, Canvas canvas, Paint paint, Context context) {
-        if ( key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
+        if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
                 || key.codes[0] == 116 || key.codes[0] == 121 || key.codes[0] == 117 || key.codes[0] == 111
                 || key.codes[0] == 105 || key.codes[0] == 115 || key.codes[0] == 100 || key.codes[0] == 102
                 || key.codes[0] == 103 || key.codes[0] == 104 || key.codes[0] == 106 || key.codes[0] == 107
@@ -97,14 +100,14 @@ public class Utils {
         } else if (key.codes[0] == -2) {
             setColorButtonYellow(key, canvas, context);
             setColorTextWhite(key, canvas, paint);
-        }else if (key.codes[0] == -5) {
+        } else if (key.codes[0] == -5) {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
         } else if (key.codes[0] == 1050) {
             setColorButtonBlack(key, canvas, context);
             setColorTextWhiteIcon(key, canvas, paint);
-        }else {
+        } else {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
         }
@@ -114,14 +117,14 @@ public class Utils {
         if (key.codes[0] == 2000) {
             setColorButtonBlack(key, canvas, context);
             setColorTextWhiteIcon(key, canvas, paint);
-        } else if ( key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
+        } else if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
                 || key.codes[0] == 116 || key.codes[0] == 121 || key.codes[0] == 117 || key.codes[0] == 111
                 || key.codes[0] == 105 || key.codes[0] == 115 || key.codes[0] == 100 || key.codes[0] == 102
                 || key.codes[0] == 103 || key.codes[0] == 104 || key.codes[0] == 106 || key.codes[0] == 107
                 || key.codes[0] == -20 || key.codes[0] == -21) {
             setColorButtonBlue(key, canvas, context);
             setColorTextWhite(key, canvas, paint);
-        }else if ( key.codes[0] == 97) {
+        } else if (key.codes[0] == 97) {
             setColorButtonBlue(key, canvas, context);
             setColorTextWhiteIcon(key, canvas, paint);
         } else if (key.codes[0] == -1) {
@@ -133,7 +136,7 @@ public class Utils {
         } else if (key.codes[0] == -2) {
             setColorButtonYellow(key, canvas, context);
             setColorTextWhite(key, canvas, paint);
-        }else if (key.codes[0] == -5) {
+        } else if (key.codes[0] == -5) {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
@@ -147,7 +150,7 @@ public class Utils {
         if (key.codes[0] == 2050) {
             setColorButtonBlack(key, canvas, context);
             setColorTextWhiteIcon(key, canvas, paint);
-        } else if ( key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
+        } else if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
                 || key.codes[0] == 116 || key.codes[0] == 121 || key.codes[0] == 117 || key.codes[0] == 111
                 || key.codes[0] == 105 || key.codes[0] == 115 || key.codes[0] == 100 || key.codes[0] == 102
                 || key.codes[0] == 103 || key.codes[0] == 104 || key.codes[0] == 106 || key.codes[0] == 107
@@ -157,7 +160,7 @@ public class Utils {
         } else if (key.codes[0] == 97 || key.codes[0] == -25) {
             setColorButtonBlue(key, canvas, context);
             setColorTextWhiteIcon(key, canvas, paint);
-        }else if (key.codes[0] == -1) {
+        } else if (key.codes[0] == -1) {
             setColorButtonOrange(key, canvas, context);
             drawIconDropRight(key, canvas, context);
         } else if (key.codes[0] == -3) {
@@ -170,7 +173,7 @@ public class Utils {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
-        }else {
+        } else {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
         }
@@ -190,7 +193,7 @@ public class Utils {
                 || key.codes[0] == -30 || key.codes[0] == -31) {
             setColorButtonOrange(key, canvas, context);
             setColorTextWhite(key, canvas, paint);
-        }else if (key.codes[0] == -1) {
+        } else if (key.codes[0] == -1) {
             setColorButtonOrange(key, canvas, context);
             drawIconDropRight(key, canvas, context);
         } else if (key.codes[0] == -3) {
@@ -203,7 +206,7 @@ public class Utils {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
-        }else {
+        } else {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
         }
@@ -216,7 +219,7 @@ public class Utils {
         } else if (key.codes[0] == 97) {
             setColorButtonBlue(key, canvas, context);
             setColorTextWhiteIcon(key, canvas, paint);
-        } else if ( key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
+        } else if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
                 || key.codes[0] == 116 || key.codes[0] == 121 || key.codes[0] == 117 || key.codes[0] == 111
                 || key.codes[0] == 105 || key.codes[0] == 115 || key.codes[0] == 100 || key.codes[0] == 102
                 || key.codes[0] == 103 || key.codes[0] == 104 || key.codes[0] == 106 || key.codes[0] == 107
@@ -226,7 +229,7 @@ public class Utils {
         } else if (key.codes[0] == -1) {
             setColorButtonOrange(key, canvas, context);
             drawIconDropRight(key, canvas, context);
-        }else if (key.codes[0] == -3) {
+        } else if (key.codes[0] == -3) {
             setColorButtonGreen(key, canvas, context);
             drawIconDropLeft(key, canvas, context);
         } else if (key.codes[0] == -2) {
@@ -236,7 +239,7 @@ public class Utils {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
-        }else {
+        } else {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
         }
@@ -252,7 +255,7 @@ public class Utils {
         } else if (key.codes[0] == -1) {
             setColorButtonOrange(key, canvas, context);
             drawIconDropRight(key, canvas, context);
-        } else if ( key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
+        } else if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
                 || key.codes[0] == 116 || key.codes[0] == 121 || key.codes[0] == 117 || key.codes[0] == 111
                 || key.codes[0] == 105 || key.codes[0] == 115 || key.codes[0] == 100 || key.codes[0] == 102
                 || key.codes[0] == 103 || key.codes[0] == 104 || key.codes[0] == 106 || key.codes[0] == 107
@@ -263,10 +266,10 @@ public class Utils {
         } else if (key.codes[0] == -2) {
             setColorButtonYellow(key, canvas, context);
             setColorTextWhite(key, canvas, paint);
-        }else if (key.codes[0] == -3) {
+        } else if (key.codes[0] == -3) {
             setColorButtonGreen(key, canvas, context);
             drawIconDropLeft(key, canvas, context);
-        }else if (key.codes[0] == -5) {
+        } else if (key.codes[0] == -5) {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
@@ -302,7 +305,7 @@ public class Utils {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
-        }else {
+        } else {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
         }
@@ -331,14 +334,13 @@ public class Utils {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
-        }
-        else if (key.codes[0] == 106) {
+        } else if (key.codes[0] == 106) {
             setColorButtonYellow(key, canvas, context);
             drawIconBack(key, canvas, context);
-        }else if (key.codes[0] == 107) {
+        } else if (key.codes[0] == 107) {
             setColorButtonYellow(key, canvas, context);
             drawIconNext(key, canvas, context);
-        }else {
+        } else {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
         }
@@ -369,7 +371,7 @@ public class Utils {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
-        }else {
+        } else {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
         }
@@ -396,7 +398,7 @@ public class Utils {
                 || key.codes[0] == 98 || key.codes[0] == 110 || key.codes[0] == -54 || key.codes[0] == -55) {
             setColorButtonYellow(key, canvas, context);
             setColorTextWhite(key, canvas, paint);
-        }else if (key.codes[0] == -5) {
+        } else if (key.codes[0] == -5) {
             setColorButtonWhite(key, canvas, context);
             setColorTextBlack(key, canvas, paint);
             drawIconDelete(key, canvas, context);
@@ -499,10 +501,10 @@ public class Utils {
 //        float top = (float) (key.y * (1.12));
 //        float right = (float) (key.x * (1.24));
 //        float bottom = (float) (key.y * (1.36));
-        float left = (float) (key.x+40);
-        float top = (float) (key.y+45);
-        float right = (float) (key.x  + key.width)-30;
-        float bottom = (float) (key.y + (key.height / 2)+25);
+        float left = (float) (key.x + 40);
+        float top = (float) (key.y + 45);
+        float right = (float) (key.x + key.width) - 30;
+        float bottom = (float) (key.y + (key.height / 2) + 25);
         dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
         dr.draw(canvas);
     }
@@ -513,10 +515,10 @@ public class Utils {
 //        float top = (float) (key.y * (1.12));
 //        float right = (float) (key.x * (1.24));
 //        float bottom = (float) (key.y * (1.36));
-        float left = (float) (key.x+30);
-        float top = (float) (key.y+35);
-        float right = (float) (key.x  + key.width)-34;
-        float bottom = (float) (key.y + (key.height / 2)+30);
+        float left = (float) (key.x + 30);
+        float top = (float) (key.y + 35);
+        float right = (float) (key.x + key.width) - 34;
+        float bottom = (float) (key.y + (key.height / 2) + 30);
         dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
         dr.draw(canvas);
     }
@@ -527,10 +529,10 @@ public class Utils {
 //        float top = (float) (key.y * (1.12));
 //        float right = (float) (key.x * (1.24));
 //        float bottom = (float) (key.y * (1.36));
-        float left = (float) (key.x)+10;
-        float top = (float) (key.y)+30;
-        float right = (float) (key.x  + key.width)-10;
-        float bottom = (float) (key.y + (key.height / 2)+40);
+        float left = (float) (key.x) + 10;
+        float top = (float) (key.y) + 30;
+        float right = (float) (key.x + key.width) - 10;
+        float bottom = (float) (key.y + (key.height / 2) + 40);
         dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
         dr.draw(canvas);
     }
@@ -541,13 +543,172 @@ public class Utils {
 //        float top = (float) (key.y * (1.12));
 //        float right = (float) (key.x * (1.24));
 //        float bottom = (float) (key.y * (1.36));
-        float left = (float) (key.x)+10;
-        float top = (float) (key.y)+30;
-        float right = (float) (key.x  + key.width)-10;
-        float bottom = (float) (key.y + (key.height / 2)+40);
+        float left = (float) (key.x) + 10;
+        float top = (float) (key.y) + 30;
+        float right = (float) (key.x + key.width) - 10;
+        float bottom = (float) (key.y + (key.height / 2) + 40);
         dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
         dr.draw(canvas);
     }
+
+    public static void showPopupLongClick(PopupWindow popupWindow, Context context, Key key, TextView tvOne, TextView tvTwo, TextView tvThree) {
+        // keyboard 1
+        if (key.text.equals("ᐁ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᐯ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᑌ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᑫ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᒉ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᒣ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᓀ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᓭ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᓓ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᔦ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᕓ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᕂ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᙯ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals("ᙰ")) {
+            tvThree.setText(key.text);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlack(popupWindow, context);
+        } else if (key.text.equals(".")) {
+            tvThree.setText(key.text);
+            tvThree.setTextColor(Color.BLACK);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowWhite(popupWindow, context);
+        } else if (key.text.equals(",")) {
+            tvThree.setText(key.text);
+            tvThree.setTextColor(Color.BLACK);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowWhite(popupWindow, context);
+        } else if (key.text.equals("?")) {
+            tvThree.setText(key.text);
+            tvThree.setTextColor(Color.BLACK);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowWhite(popupWindow, context);
+        } else if (key.text.equals("!")) {
+            tvThree.setText(key.text);
+            tvThree.setTextColor(Color.BLACK);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowWhite(popupWindow, context);
+        } else if (key.text.equals(";")) {
+            tvThree.setText(key.text);
+            tvThree.setTextColor(Color.BLACK);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowWhite(popupWindow, context);
+        } else if (key.text.equals(":")) {
+            tvThree.setText(key.text);
+            tvThree.setTextColor(Color.BLACK);
+            visibleTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowWhite(popupWindow, context);
+        }
+            // keyboard 2 blue
+        else if (key.text.equals("ᐃ") || key.text.equals("ᐄ")) {
+            tvOne.setText("ᐃ");
+            tvTwo.setText("ᐄ");
+            goneTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowBlue(popupWindow, context);
+            //key board 3 orange
+        } else if (key.text.equals("ᐅ") || key.text.equals("ᐆ")) {
+            tvOne.setText("ᐅ");
+            tvTwo.setText("ᐆ");
+            goneTextViewThree(tvOne, tvTwo, tvThree);
+            setBackGroundPopupWindowOrange(popupWindow, context);
+        }
+    }
+
+    public static void visibleTextViewThree(TextView tvOne, TextView tvTwo, TextView tvThree) {
+        tvOne.setVisibility(View.GONE);
+        tvTwo.setVisibility(View.GONE);
+        tvThree.setVisibility(View.VISIBLE);
+    }
+
+    public static void goneTextViewThree(TextView tvOne, TextView tvTwo, TextView tvThree) {
+        tvOne.setVisibility(View.VISIBLE);
+        tvTwo.setVisibility(View.VISIBLE);
+        tvThree.setVisibility(View.GONE);
+    }
+
+    public static void setBackGroundPopupWindowBlue(PopupWindow popupWindow, Context context) {
+        if (popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
+        popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.background_popup_blue));
+    }
+
+    public static void setBackGroundPopupWindowBlack(PopupWindow popupWindow, Context context) {
+        if (popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
+        popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.background_popup_black));
+    }
+
+    public static void setBackGroundPopupWindowYellow(PopupWindow popupWindow, Context context) {
+        if (popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
+        popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.background_popup_yellow));
+    }
+
+    public static void setBackGroundPopupWindowGreen(PopupWindow popupWindow, Context context) {
+        if (popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
+        popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.background_popup_green));
+    }
+
+    public static void setBackGroundPopupWindowOrange(PopupWindow popupWindow, Context context) {
+        if (popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
+        popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.background_popup_orange));
+    }
+
+    public static void setBackGroundPopupWindowWhite(PopupWindow popupWindow, Context context) {
+        if (popupWindow.isShowing()){
+            popupWindow.dismiss();
+        }
+        popupWindow.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.background_popup_white));
+    }
+
 
     public static String[] list = {
             "ᐁᑉᐸᖓᓐᓂ", "ᐁᑉᐸ", "ᐁᑦᑑᑎ", "ᐁᑦᑕ", "ᐁᑦᑕᐅᑐ", "ᐁᑦᓯ", "ᐁᑦᓯᕋᐅᑎᒃ", "ᐁᑯᓗ", "ᐁᒎᖅ", "ᐁᓚᖓ",

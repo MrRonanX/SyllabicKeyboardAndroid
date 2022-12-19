@@ -27,8 +27,10 @@
         <Key android:codes="113" android:keyLabel="▼"
             android:keyEdgeFlags="left"   />
 
-        <Key android:codes="119" android:keyLabel="ᐁ" android:keyOutputText = "ᐁ"  />
-        <Key android:codes="101" android:keyLabel="ᐯ" android:keyOutputText = "ᐯ" />
+        <Key android:codes="119" android:keyLabel="ᐁ" android:keyOutputText = "ᐁ"
+            android:popupCharacters="ᐁᐄ" android:popupKeyboard="@layout/key_preview" />
+        <Key android:codes="101" android:keyLabel="ᐯ" android:keyOutputText = "ᐯ"
+            android:popupCharacters="ᐁᐄ" android:popupKeyboard="@layout/key_preview" />
         <Key android:codes="114" android:keyLabel="ᑌ" android:keyOutputText = "ᑌ" />
         <Key android:codes="116" android:keyLabel="ᑫ" android:keyOutputText = "ᑫ" />
         <Key android:codes="121" android:keyLabel="ᒉ" android:keyOutputText = "ᒉ"/>
@@ -40,7 +42,9 @@
     <Row>
 
         <Key android:codes="97"  android:keyLabel="▲"   android:keyEdgeFlags="left"/>
-        <Key android:codes="115" android:keyLabel="ᓭ" android:keyOutputText = "ᓭ"/>
+        <Key android:codes="115" android:keyLabel="ᓭ"  android:popupCharacters="ᐁᐄ"
+            android:popupKeyboard="@layout/key_preview"
+            android:keyOutputText = "ᓭ"/>
         <Key android:codes="100" android:keyLabel="ᓓ" android:keyOutputText = "ᓓ"/>
         <Key android:codes="102" android:keyLabel="ᔦ" android:keyOutputText = "ᔦ"/>
         <Key android:codes="103" android:keyLabel="ᕓ" android:keyOutputText = "ᕓ"/>
@@ -52,7 +56,8 @@
 
     <Row>
         <Key android:codes="-1" android:keyEdgeFlags="left"/>
-        <Key android:codes="122" android:keyLabel="." android:keyOutputText = "."/>
+        <Key android:codes="122" android:keyLabel="."  android:popupCharacters="ᐁᐄ" android:popupKeyboard="@layout/key_preview"
+            android:keyOutputText = "."/>
         <Key android:codes="120" android:keyLabel="," android:keyOutputText = ","/>
         <Key android:codes="99" android:keyLabel="\?" android:keyOutputText = "\?"/>
         <Key android:codes="118" android:keyLabel="!" android:keyOutputText = "!"/>

@@ -37,7 +37,6 @@
             android:layout_height="70dp">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layoutSuggest"
-
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
