@@ -34,7 +34,7 @@
     </Row>
 
     <Row>
-        <Key android:codes="-1" android:keyLabel="►"
+        <Key android:codes="-1"
             android:isModifier="true"
             android:isSticky="true" android:keyEdgeFlags="left"/>
         <Key android:codes="122" android:keyLabel="." android:keyOutputText = "."/>
@@ -49,7 +49,7 @@
     </Row>
 
     <Row android:rowEdgeFlags="bottom">
-        <Key android:codes="-3" android:keyLabel="◄"
+        <Key android:codes="-3"
             android:keyEdgeFlags="left"/>
         <Key android:codes="-2" android:keyLabel="1" />
         <Key android:codes="32" android:keyLabel="ᐅᖓᓯᓪᓕᑎᖅ"

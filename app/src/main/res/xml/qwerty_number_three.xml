@@ -26,14 +26,14 @@
         <Key android:codes="5030" android:keyLabel="▼"
             android:keyEdgeFlags="left"   />
 
-        <Key android:codes="119" android:keyLabel="[" android:keyOutputText = "+"
+        <Key android:codes="119" android:keyLabel="[" android:keyOutputText = "["
 
             />
-        <Key android:codes="101" android:keyLabel="]" android:keyOutputText = "-" />
-        <Key android:codes="114" android:keyLabel="(" android:keyOutputText = "*" />
-        <Key android:codes="116" android:keyLabel=")" android:keyOutputText = "/" />
-        <Key android:codes="121" android:keyLabel="«" android:keyOutputText = "="/>
-        <Key android:codes="117" android:keyLabel="»" android:keyOutputText = "%"/>
+        <Key android:codes="101" android:keyLabel="]" android:keyOutputText = "]" />
+        <Key android:codes="114" android:keyLabel="(" android:keyOutputText = "(" />
+        <Key android:codes="116" android:keyLabel=")" android:keyOutputText = ")" />
+        <Key android:codes="121" android:keyLabel="«" android:keyOutputText = "«"/>
+        <Key android:codes="117" android:keyLabel="»" android:keyOutputText = "»"/>
         <Key android:codes="111" android:keyLabel="&amp;" android:keyOutputText = "&amp;"/>
         <Key android:codes="-54" android:keyLabel="•"  android:keyEdgeFlags="right"/>
     </Row>
@@ -66,7 +66,7 @@
     </Row>
 
     <Row android:rowEdgeFlags="bottom">
-        <Key android:codes="-3" android:keyLabel="◄"
+        <Key android:codes="-3"
             android:keyEdgeFlags="left"/>
         <Key android:codes="-2" android:keyLabel="1" />
         <Key android:codes="32" android:keyLabel="ᐅᖓᓯᓪᓕᑎᖅ"

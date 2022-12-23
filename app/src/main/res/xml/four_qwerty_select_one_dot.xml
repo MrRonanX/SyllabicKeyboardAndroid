@@ -16,7 +16,7 @@
         <Key android:codes="121" android:keyLabel="ᒑ" android:keyOutputText = "ᒑ"/>
         <Key android:codes="117" android:keyLabel="ᒫ" android:keyOutputText = "ᒫ"/>
         <Key android:codes="111" android:keyLabel="ᓈ" android:keyOutputText = "ᓈ"/>
-        <Key android:codes="-45" android:keyLabel="◄"
+        <Key android:codes="-45"
             android:keyEdgeFlags="right"/>
     </Row>
 
@@ -34,7 +34,7 @@
     </Row>
 
     <Row>
-        <Key android:codes="-1" android:keyLabel="►"
+        <Key android:codes="-1"
             android:isModifier="true"
             android:isSticky="true" android:keyEdgeFlags="left"/>
         <Key android:codes="122" android:keyLabel="." android:keyOutputText = "."/>
@@ -49,8 +49,7 @@
     </Row>
 
     <Row android:rowEdgeFlags="bottom">
-        <Key android:codes="-3" android:keyLabel="◄"
-            android:keyEdgeFlags="left"/>
+        <Key android:codes="-3" android:keyEdgeFlags="left"/>
         <Key android:codes="-2" android:keyLabel="1" />
         <Key android:codes="32" android:keyLabel="ᐅᖓᓯᓪᓕᑎᖅ"
             android:keyWidth="55.5%p" android:isRepeatable="true"/>

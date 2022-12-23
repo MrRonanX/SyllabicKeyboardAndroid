@@ -17,6 +17,7 @@
 package com.syllabic.syllabickeyboard;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -37,6 +38,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodSubtype;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -47,7 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LatinKeyboardView extends KeyboardView {
+public class LatinKeyboardView extends KeyboardView implements View.OnClickListener{
 
     static final int KEYCODE_OPTIONS = -100;
     Context context;
@@ -61,6 +63,13 @@ public class LatinKeyboardView extends KeyboardView {
     private PopupWindow mPopupKeyboard;
     private boolean mMiniKeyboardOnScreen;
     private TextView tvPressOne,tvPressTwo,tvPressThree;
+
+
+    private View mTopKey;
+    private PopupWindow mPopupWindow;
+    private View mPopupView;
+    private LatinKeyboardView latinKeyboardView;
+    private PassDataLongPress passDataLongPress;
 
     @SuppressLint("MissingInflatedId")
     public LatinKeyboardView(Context context, AttributeSet attrs) {
@@ -77,15 +86,34 @@ public class LatinKeyboardView extends KeyboardView {
         this.context = context;
     }
 
+    public void passDataLongPress(PassDataLongPress passDataLongPress){
+        this.passDataLongPress = passDataLongPress;
+    }
+
     @Override
     protected boolean onLongPress(Key key) {
         if (key.codes[0] == Keyboard.KEYCODE_CANCEL) {
             getOnKeyboardActionListener().onKey(KEYCODE_OPTIONS, null);
             return true;
-        } else {
+        }
+        else if (key.codes[0] == 113 || key.codes[0] == 1000 ||key.codes[0] == 1050 ||key.codes[0] == 2000 ||
+                key.codes[0] == 2050 ||key.codes[0] == 3000 ||key.codes[0] == 3050 ||key.codes[0] == 4000 ||
+                key.codes[0] == 4050 ||key.codes[0] == 5000 ||key.codes[0] == 5020 ||key.codes[0] == 5030 ||
+                key.codes[0] == 97 ||key.codes[0] == -1  ||key.codes[0] == 10 ||
+                key.codes[0] == -2 ||key.codes[0] == -10 ||key.codes[0] == -11 ||key.codes[0] == -40 ||
+                key.codes[0] == -41 ||key.codes[0] == -45 ||key.codes[0] == -46 ||key.codes[0] == -15 ||
+                key.codes[0] == -16 ||key.codes[0] == -50 ||key.codes[0] == -51 ||key.codes[0] == -54 ||
+                key.codes[0] == -55 ||key.codes[0] == -5 ||key.codes[0] == -52 ||key.codes[0] == -53 ||
+                key.codes[0] == -18 ||key.codes[0] == -19 ||key.codes[0] == -30 ||key.codes[0] == -31 ||
+                key.codes[0] == -35 ||key.codes[0] == -36 ||key.codes[0] == -20 ||key.codes[0] == -21 ||
+                key.codes[0] == -25 || key.codes[0] == -26|| key.codes[0] == 32) {
+            return true;
+        }
+        else {
 //            return super.onLongPress(key);
 //            return setUpPopup(key);
             return customPopup(key);
+//            return customPopupTrue();
         }
     }
 
@@ -95,13 +123,37 @@ public class LatinKeyboardView extends KeyboardView {
                 mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo),
                 mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressThree));
         if (mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).getVisibility()== View.VISIBLE){
-            mPopupX = popupKey.x - 25;
+            mPopupX = popupKey.x ;
         }else {
-            mPopupX = popupKey.x + 5 ;
+            mPopupX = popupKey.x  ;
         }
-        mPopupY = popupKey.y + 74;
-        mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, mPopupX, mPopupY);
+        mPopupY = popupKey.y ;
+
+        mPopupKeyboard.setClippingEnabled(false);
+        mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, (popupKey.x) +10, popupKey.y + (popupKey.height / 2)+10);
+        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setOnClickListener(this);
+        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressThree).setOnClickListener(this);
+        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setOnClickListener(this);
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.tvLongPressOne:
+                passDataLongPress.passDataLongPress(((TextView) mPopupKeyboard.getContentView()
+                        .findViewById(R.id.tvLongPressOne)).getText().toString());
+                break;
+            case R.id.tvLongPressTwo:
+                passDataLongPress.passDataLongPress(((TextView) mPopupKeyboard.getContentView()
+                        .findViewById(R.id.tvLongPressTwo)).getText().toString());
+                break;
+            case R.id.tvLongPressThree:
+                passDataLongPress.passDataLongPress(((TextView) mPopupKeyboard.getContentView()
+                        .findViewById(R.id.tvLongPressThree)).getText().toString());
+                break;
+        }
+
     }
 
     public boolean setUpPopup(Key popupKey) {
@@ -113,7 +165,7 @@ public class LatinKeyboardView extends KeyboardView {
                 LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
                 mMiniKeyboardContainer = inflater.inflate(mPopupLayout, null);
-                mMiniKeyboard = mMiniKeyboardContainer.findViewById(R.id.keyboard);
+                mMiniKeyboard = mMiniKeyboardContainer.findViewById(R.id.keyboard2);
 //                View closeButton = mMiniKeyboardContainer.findViewById(
 //                        com.android.internal.R.id.closeButton);
 //                if (closeButton != null) closeButton.setOnClickListener(this);
@@ -152,7 +204,6 @@ public class LatinKeyboardView extends KeyboardView {
 //                        mKeyboardActionListener.onRelease(primaryCode);
                     }
                 });
-                //mInputView.setSuggest(mSuggest);
                 Keyboard keyboard;
                 if (popupKey.popupCharacters != null) {
                     keyboard = new Keyboard(getContext(), popupKeyboardId,
@@ -165,31 +216,36 @@ public class LatinKeyboardView extends KeyboardView {
                 mMiniKeyboardContainer.measure(
                         MeasureSpec.makeMeasureSpec(getWidth(), MeasureSpec.AT_MOST),
                         MeasureSpec.makeMeasureSpec(getHeight(), MeasureSpec.AT_MOST));
-
                 mMiniKeyboardCache.put(popupKey, mMiniKeyboardContainer);
             } else {
-                mMiniKeyboard = mMiniKeyboardContainer.findViewById(R.id.keyboard);
+                mMiniKeyboard = mMiniKeyboardContainer.findViewById(R.id.keyboard2);
             }
-            getLocationInWindow(mCoordinates);
-            mPopupX = popupKey.x + 30;
-            mPopupY = popupKey.y + 10;
-            mPopupX = mPopupX + popupKey.width - mMiniKeyboardContainer.getMeasuredWidth() + 20;
-            mPopupY = mPopupY - mMiniKeyboardContainer.getMeasuredHeight();
-            final int x = mPopupX + mMiniKeyboardContainer.getPaddingRight() + mCoordinates[0];
-            final int y = mPopupY + mMiniKeyboardContainer.getPaddingBottom() + mCoordinates[1];
-            mMiniKeyboard.setPopupOffset(Math.max(x, 0), y);
-            mMiniKeyboard.setShifted(isShifted());
-            mPopupKeyboard.setContentView(mMiniKeyboardContainer);
-            mPopupKeyboard.setWidth((mMiniKeyboardContainer.getMeasuredWidth()));
-            mPopupKeyboard.setHeight((mMiniKeyboardContainer.getMeasuredHeight()));
-            mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, x, y);
+
+                mPopupX = popupKey.x +30;
+                mPopupY = popupKey.y;
+                mPopupX = mPopupX + popupKey.width - mMiniKeyboardContainer.getMeasuredWidth() + 20;
+                mPopupY = mPopupY - mMiniKeyboardContainer.getMeasuredHeight();
+                final int x = mPopupX + mMiniKeyboardContainer.getPaddingRight();
+                final int y = (int) ((mPopupY + mMiniKeyboardContainer.getPaddingBottom()) * (-0.78));
+//            mMiniKeyboard.setPopupOffset(Math.max(x, 0), y);
+//            mMiniKeyboard.setShifted(isShifted());
+                LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
+              mPopupKeyboard = new PopupWindow(context);
+//            mPopupKeyboard.setContentView(inflater.inflate(R.layout.layout_custom, null));
+                mPopupKeyboard.setWidth((mMiniKeyboardContainer.getMeasuredWidth()));
+                mPopupKeyboard.setHeight((mMiniKeyboardContainer.getMeasuredHeight()));
+                mPopupKeyboard.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.background_popup_black));
+                mPopupKeyboard.setContentView(inflater.inflate(R.layout.layout_custom, null));
+
+                mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, x, y);
 //            mMiniKeyboard.setBackgroundDrawable(getResources().getDrawable(R.drawable.background_blue));
 //            mMiniKeyboardOnScreen = true;
-            //mMiniKeyboard.onTouchEvent(getTranslatedEvent(me));
+                //mMiniKeyboard.onTouchEvent(getTranslatedEvent(me));
 //            invalidateAllKeys();
-            return true;
-        }
-        return false;
+                return true;
+            }
+            return false;
 
     }
 
@@ -229,8 +285,9 @@ public class LatinKeyboardView extends KeyboardView {
                 Utils.setBackGroundQwertyNumberThree(key, canvas, paint, context);
             }
         }
-
     }
+
+
 
     void setSubtypeOnSpaceKey(final InputMethodSubtype subtype) {
         final com.syllabic.syllabickeyboard.LatinKeyboard keyboard = (com.syllabic.syllabickeyboard.LatinKeyboard) getKeyboard();
@@ -243,5 +300,7 @@ public class LatinKeyboardView extends KeyboardView {
             mPopupKeyboard.dismiss();
         }
     }
-
+    interface PassDataLongPress{
+        void passDataLongPress(String text);
+    }
 }
