@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -33,6 +32,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:textSize="22dp"
+        android:fontFamily="@font/llisarniq_demi"
+
         android:textColor="@color/background_text_change"
         android:textStyle="bold"
         android:text="ᐁ\nᐯ\nᑌ\nᑫ\nᒉ\nᒣ\nᓀ\nᓭ\nᓓ\nᔦ\nᕓ\nᕂ\nᙯ\nᙰ"
@@ -46,6 +47,8 @@
         android:layout_height="wrap_content"
         android:text="ᐃ\nᐱ\nᑎ\nᑭ\nᒋ\nᒥ\nᓂ\nᓯ\nᓕ\nᔨ\nᕕ\nᕆ\nᕿ\nᖏ\nᖠ"
         android:textColor="@color/background_blue"
+        android:fontFamily="@font/llisarniq_demi"
+
         android:textSize="22dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
@@ -58,6 +61,8 @@
         android:layout_height="wrap_content"
         android:text="ᐅ\nᐳ\nᑐ\nᑯ\nᒍ\nᒧ\nᓄ\nᓱ\nᓗ\nᔪ\nᕗ\nᕈ\nᖁ\nᖑ\nᖢ"
         android:textColor="@color/background_orange"
+        android:fontFamily="@font/llisarniq_demi"
+
         android:textSize="22dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
@@ -70,6 +75,7 @@
         android:layout_height="wrap_content"
         android:text="ᐊ\nᐸ\nᑕ\nᑲ\nᒐ\nᒪ\nᓇ\nᓴ\nᓚ\nᔭ\nᕙ\nᕋ\nᖃ\nᖓ\nᖤ"
         android:textColor="@color/background_green"
+        android:fontFamily="@font/llisarniq_demi"
         android:textSize="22dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,6 +93,7 @@
 
     <TextView
         android:id="@+id/tvBack"
+        android:fontFamily="@font/llisarniq_demi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

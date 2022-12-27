@@ -49,7 +49,7 @@
     </Row>
 
     <Row>
-        <Key android:codes="-1" android:keyLabel="►" android:keyEdgeFlags="left"/>
+        <Key android:codes="-1" android:keyIcon="@drawable/right_triangle" android:keyEdgeFlags="left"/>
         <Key android:codes="122" android:keyLabel="_" android:keyOutputText = "_"/>
         <Key android:codes="120" android:keyLabel="^" android:keyOutputText = "^"/>
         <Key android:codes="99" android:keyLabel="\\" android:keyOutputText = "\\"/>

@@ -15,6 +15,8 @@ public class BaseConfig {
     public static String CONFIG_SharedPreferences = "CONFIG_SharedPreferences";
     public static String CONFIG_SharedPreferences_check_enable = "CONFIG_SharedPreferences_check_enable";
     public static String CONFIG_SharedPreferences_suggest = "CONFIG_SharedPreferences_check_enable";
+    public static String CONFIG_SharedPreferences_check_device = "CONFIG_SharedPreferences_check_device";
+    public static String CONFIG_SharedPreferences_HorizontalOrVertical = "CONFIG_SharedPreferences_HorizontalOrVertical";
 
     public static void saveListInLocal(ArrayList<String> list,Context context) {
         SharedPreferences prefs = context.getSharedPreferences("AppNameOne", Context.MODE_PRIVATE);
@@ -62,6 +64,30 @@ public class BaseConfig {
     public static boolean readLastButtonPressed(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences("AppNameThree", Context.MODE_PRIVATE);
         return sharedPref.getBoolean(CONFIG_SharedPreferences_check_enable, false);
+    }
+
+    public static void saveNameDevice(String device,Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("AppNameFour", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(CONFIG_SharedPreferences_check_device, device);
+        editor.apply();
+    }
+
+    public static String readNameDevice(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("AppNameFour", Context.MODE_PRIVATE);
+        return sharedPref.getString(CONFIG_SharedPreferences_check_device, "");
+    }
+
+    public static void saveHorizontalOrVertical(String device,Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("AppNameFive", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(CONFIG_SharedPreferences_HorizontalOrVertical, device);
+        editor.apply();
+    }
+
+    public static String readHorizontalOrVertical(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("AppNameFive", Context.MODE_PRIVATE);
+        return sharedPref.getString(CONFIG_SharedPreferences_HorizontalOrVertical, "");
     }
 
 }

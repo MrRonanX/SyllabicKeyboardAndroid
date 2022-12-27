@@ -37,7 +37,6 @@ class DetailTwoActivity : AppCompatActivity() {
 
             }
         })
-        wedView.loadUrl("https://en.wikipedia.org/wiki/Inuktitut")
 
         if (checkLanguage == "" || checkLanguage == "two" ){
             tvBack.text = "Back"
@@ -46,6 +45,7 @@ class DetailTwoActivity : AppCompatActivity() {
             textView7.text = "Designed by Thomassie Mangiok"
             textView8.text = "Programmed by Roman Kavinskyi"
             textView9.text = "Ilisarniq typeface created by Coppers and Brasses"
+            wedView.loadUrl("https://en.wikipedia.org/wiki/Inuktitut")
         }else if (checkLanguage == "one"){
             tvBack.text = "ᐅᑎᒧ"
             textView5.text = "ᓄᐃᑎᓯᒪᔪᑦ"
@@ -53,6 +53,7 @@ class DetailTwoActivity : AppCompatActivity() {
             textView7.text = "ᐆᒪ ᐱᒍᓐᓇᓯᑎᑕᕕᓂᖓ: ᑑᒪᓯ ᒪᖏᐅᖅ"
             textView8.text = "ᐆᒪ ᓴᓇᔭᕕᓂᖓ: ᕉᒪᓐ ᑲᕕᓐᔅᑭ"
             textView9.text = "ᐃᓕᓴᕐᓂᖅ ᖃᓂᐅᔮᕐᐯ Coppers and Brassesᑯᓐᓄ"
+            wedView.loadUrl("https://iu.wikipedia.org/wiki/ᐃᓄᒃᑎᑐᑦ")
         }else{
             tvBack.text = "Retour"
             textView5.text = "Crédit"
@@ -60,6 +61,7 @@ class DetailTwoActivity : AppCompatActivity() {
             textView7.text = "Conçu par Thomassie Mangiok"
             textView8.text = "Programmé par Roman Kavinskyi"
             textView9.text = "Police de caractères Ilisarniq par Coppers and Brasses"
+            wedView.loadUrl("https://fr.wikipedia.org/wiki/Inuktitut")
         }
 
 

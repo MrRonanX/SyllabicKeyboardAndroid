@@ -17,8 +17,13 @@
 package com.syllabic.syllabickeyboard;
 
 
+import static android.view.WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY;
+
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -37,6 +42,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -54,6 +60,8 @@ import com.syllabic.syllabickeyboard.utils.Utils;
 
 import java.io.FileDescriptor;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +73,7 @@ import java.util.List;
  * be fleshed out as appropriate.
  */
 public class SoftKeyboard extends InputMethodService
-        implements KeyboardView.OnKeyboardActionListener, View.OnClickListener,LatinKeyboardView.PassDataLongPress {
+        implements KeyboardView.OnKeyboardActionListener, View.OnClickListener, LatinKeyboardView.PassDataLongPress {
     static final boolean DEBUG = false;
 
     /**
@@ -193,6 +201,12 @@ public class SoftKeyboard extends InputMethodService
 
     }
 
+    @Override
+    public void onComputeInsets(Insets outInsets) {
+        super.onComputeInsets(outInsets);
+        outInsets.contentTopInsets = outInsets.visibleTopInsets;
+    }
+
     /**
      * Called by the framework when your view for showing candidates needs to
      * be generated, like {@link #onCreateInputView}.
@@ -298,6 +312,9 @@ public class SoftKeyboard extends InputMethodService
         // Update the label on the enter key, depending on what the application
         // says it will do.
         mCurKeyboard.setImeOptions(getResources(), attribute.imeOptions);
+        textEditText = "";
+        count = 0;
+
     }
 
     /**
@@ -338,6 +355,9 @@ public class SoftKeyboard extends InputMethodService
         layoutSuggestOne.setOnClickListener(this);
         layoutSuggestTwo.setOnClickListener(this);
         layoutSuggestThree.setOnClickListener(this);
+        getWindow().getWindow().setNavigationBarColor(getResources().getColor(R.color.background_keyboard));
+        getWindow().getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+
     }
 
     @Override
@@ -365,13 +385,7 @@ public class SoftKeyboard extends InputMethodService
             if (ic != null) {
                 ic.finishComposingText();
             }
-
         }
-//        InputConnection ic = getCurrentInputConnection();
-//        getCurrentInputConnection().setSelection(0, 1);
-//        getCurrentInputConnection().getTextBeforeCursor(1, 0);
-//        getCurrentInputConnection().getSelectedText(2);
-//        getCurrentInputConnection().getTextAfterCursor(2, 0);
     }
 
     @Override
@@ -586,37 +600,41 @@ public class SoftKeyboard extends InputMethodService
                 if (keyCode >= '0' && keyCode <= '9') {
                     keyDownUp(keyCode - '0' + KeyEvent.KEYCODE_0);
                 } else {
-                    getCurrentInputConnection().commitText(String.valueOf((char) keyCode), 1);
-                    if (BaseConfig.readLastButtonPressed(getApplicationContext())) {
-                        int count = 0;
-                        ArrayList<String> arrayList = new ArrayList<>();
-                        if (BaseConfig.getListFromLocal(getApplicationContext()) != null) {
-                            for (String key : BaseConfig.getListFromLocal(getApplicationContext())) {
-                                if (key.equals(textEditText)) {
-                                    count++;
+                    if (keyCode >= '0' && keyCode <= '9') {
+                        keyDownUp(keyCode - '0' + KeyEvent.KEYCODE_0);
+                    } else {
+                        getCurrentInputConnection().commitText(String.valueOf((char) keyCode), 1);
+                        if (BaseConfig.readLastButtonPressed(getApplicationContext())) {
+                            int count = 0;
+                            ArrayList<String> arrayList = new ArrayList<>();
+                            if (BaseConfig.getListFromLocal(getApplicationContext()) != null) {
+                                for (String key : BaseConfig.getListFromLocal(getApplicationContext())) {
+                                    if (key.equals(textEditText)) {
+                                        count++;
+                                    }
                                 }
-                            }
-                            if (count < 2) {
-                                if (BaseConfig.getListFromLocal(getApplicationContext()) != null) {
-                                    arrayList = BaseConfig.getListFromLocal(getApplicationContext());
+                                if (count < 2) {
+                                    if (BaseConfig.getListFromLocal(getApplicationContext()) != null) {
+                                        arrayList = BaseConfig.getListFromLocal(getApplicationContext());
+                                    }
+                                    arrayList.add(textEditText);
+                                    BaseConfig.saveListInLocal(arrayList, getApplicationContext());
+                                } else if (count == 2) {
+                                    if (BaseConfig.getListSuggestion(getApplicationContext()) != null) {
+                                        arrayList = BaseConfig.getListSuggestion(getApplicationContext());
+                                    }
+                                    arrayList.add(0, textEditText);
+                                    BaseConfig.saveListSuggestion(arrayList, getApplicationContext());
                                 }
+                            } else {
                                 arrayList.add(textEditText);
                                 BaseConfig.saveListInLocal(arrayList, getApplicationContext());
-                            } else if (count == 2) {
-                                if (BaseConfig.getListSuggestion(getApplicationContext()) != null) {
-                                    arrayList = BaseConfig.getListSuggestion(getApplicationContext());
-                                }
-                                arrayList.add(0, textEditText);
-                                BaseConfig.saveListSuggestion(arrayList, getApplicationContext());
                             }
-                        } else {
-                            arrayList.add(textEditText);
-                            BaseConfig.saveListInLocal(arrayList, getApplicationContext());
-                        }
 
+                        }
+                        count = 0;
+                        textEditText = "";
                     }
-                    count = 0;
-                    textEditText = "";
                 }
                 break;
         }
@@ -630,7 +648,7 @@ public class SoftKeyboard extends InputMethodService
 //            }
 //            commitTyped(getCurrentInputConnection());
             sendKey(primaryCode);
-            updateShiftKeyState(getCurrentInputEditorInfo());
+//            updateShiftKeyState(getCurrentInputEditorInfo());
         } else if (primaryCode == Keyboard.KEYCODE_DELETE) {
             handleBackspace();
         } else if (primaryCode == Keyboard.KEYCODE_SHIFT) {
@@ -931,18 +949,20 @@ public class SoftKeyboard extends InputMethodService
     }
 
     private void handleBackspace() {
-        final int length = mComposing.length();
-        if (length > 1) {
-            mComposing.delete(length - 1, length);
-            getCurrentInputConnection().setComposingText(mComposing, 1);
-            updateCandidates();
-        } else if (length > 0) {
-            mComposing.setLength(0);
-            getCurrentInputConnection().commitText("", 0);
-            updateCandidates();
-        } else {
-            keyDownUp(KeyEvent.KEYCODE_DEL);
-        }
+        Log.d("sonth", "handleBackspace:" + "delete");
+//        final int length = mComposing.length();
+//        if (length > 1) {
+//            mComposing.delete(length - 1, length);
+//            getCurrentInputConnection().setComposingText(mComposing, 1);
+//            updateCandidates();
+//        } else if (length > 0) {
+//            mComposing.setLength(0);
+//            getCurrentInputConnection().commitText("", 0);
+//            updateCandidates();
+//        } else {
+//            keyDownUp(KeyEvent.KEYCODE_DEL);
+//        }
+        keyDownUp(KeyEvent.KEYCODE_DEL);
         if (count > 0) {
             count--;
         }
@@ -1130,7 +1150,7 @@ public class SoftKeyboard extends InputMethodService
             checkType = keys.get(0).codes[0];
             if (checkType == 113) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickDefault(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickDefault(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1142,7 +1162,7 @@ public class SoftKeyboard extends InputMethodService
                 }
             } else if (checkType == 1000) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickEmoji(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickEmoji(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1152,20 +1172,21 @@ public class SoftKeyboard extends InputMethodService
                     }, 200);
                     break;
                 }
-            } else if (checkType == 1050) {if (key.codes[0] == primaryCode) {
-                Utils.showPopupClickTwoDot(mInputView,mPopupKeyboard, getApplicationContext(), key,
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                handler = new Handler(Looper.getMainLooper());
-                handler.postDelayed(() -> {
-                    if (mPopupKeyboard.isShowing()) {
-                        mPopupKeyboard.dismiss();
-                    }
-                }, 200);
-                break;
-            }
+            } else if (checkType == 1050) {
+                if (key.codes[0] == primaryCode) {
+                    Utils.showPopupClickTwoDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
+                    handler = new Handler(Looper.getMainLooper());
+                    handler.postDelayed(() -> {
+                        if (mPopupKeyboard.isShowing()) {
+                            mPopupKeyboard.dismiss();
+                        }
+                    }, 200);
+                    break;
+                }
             } else if (checkType == 2000) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickTwoQwerty(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickTwoQwerty(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1177,7 +1198,7 @@ public class SoftKeyboard extends InputMethodService
                 }
             } else if (checkType == 2050) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickTwoSelectOneDot(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickTwoSelectOneDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1189,7 +1210,7 @@ public class SoftKeyboard extends InputMethodService
                 }
             } else if (checkType == 3000) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickThreeQwerty(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickThreeQwerty(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1201,7 +1222,7 @@ public class SoftKeyboard extends InputMethodService
                 }
             } else if (checkType == 3050) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickThreeSelectOneDot(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickThreeSelectOneDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1213,7 +1234,7 @@ public class SoftKeyboard extends InputMethodService
                 }
             } else if (checkType == 4000) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickFourQwerty(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickFourQwerty(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1225,7 +1246,7 @@ public class SoftKeyboard extends InputMethodService
                 }
             } else if (checkType == 4050) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickFourSelectOneDot(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickFourSelectOneDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1237,7 +1258,7 @@ public class SoftKeyboard extends InputMethodService
                 }
             } else if (checkType == 5000) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickQwertyNumber(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickQwertyNumber(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1249,7 +1270,7 @@ public class SoftKeyboard extends InputMethodService
                 }
             } else if (checkType == 5020) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickQwertyNumberTwo(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickQwertyNumberTwo(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1261,7 +1282,7 @@ public class SoftKeyboard extends InputMethodService
                 }
             } else if (checkType == 5030) {
                 if (key.codes[0] == primaryCode) {
-                    Utils.showPopupClickQwertyNumberThree(mInputView,mPopupKeyboard, getApplicationContext(), key,
+                    Utils.showPopupClickQwertyNumberThree(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     handler = new Handler(Looper.getMainLooper());
                     handler.postDelayed(() -> {
@@ -1272,10 +1293,7 @@ public class SoftKeyboard extends InputMethodService
                     break;
                 }
             }
-
         }
-
-
     }
 
     public void onRelease(int primaryCode) {
@@ -1304,15 +1322,28 @@ public class SoftKeyboard extends InputMethodService
                 textEditText = "";
                 count = 0;
                 break;
-
         }
     }
 
+
     @Override
     public void passDataLongPress(String text) {
-        textEditText = textEditText + text;
-        count++;
+//        textEditText = textEditText + text;
+//        count++;
         getCurrentInputConnection().commitText(text, 1);
         mInputView.dismissPopup();
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            BaseConfig.saveHorizontalOrVertical("LANDSCAPE", getApplicationContext());
+            Log.e("On Config Change", "LANDSCAPE");
+        } else {
+            BaseConfig.saveHorizontalOrVertical("PORTRAIT", getApplicationContext());
+            Log.e("On Config Change", "PORTRAIT");
+        }
+    }
+
 }

@@ -4,13 +4,17 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard;
 
 import com.syllabic.syllabickeyboard.R;
+import com.syllabic.syllabickeyboard.config.BaseConfig;
 
 import android.inputmethodservice.Keyboard.Key;
+import android.os.Build;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
@@ -34,7 +38,7 @@ public class Utils {
             setColorTextWhiteIconTwo(key, canvas, paint, context);
         } else if (key.codes[0] == -1) {
             setColorButtonOrange(key, canvas, context);
-            setColorTextWhiteIcon(key, canvas, paint, context);
+//            setColorTextWhiteDemo(key, canvas, paint, context);
             drawIconDropRight(key, canvas, context);
         } else if (key.codes[0] == -3) {
             setColorButtonGreen(key, canvas, context);
@@ -235,7 +239,6 @@ public class Utils {
             drawIconDropRight(key, canvas, context);
         }else if (key.codes[0] == -35) {
             setColorButtonOrange(key, canvas, context);
-            setColorTextWhite(key, canvas, paint,context);
             drawIconDropRightFinal(key, canvas, context);
         } else if (key.codes[0] == -3) {
             setColorButtonGreen(key, canvas, context);
@@ -462,7 +465,7 @@ public class Utils {
 
     private static void setColorTextWhite(Keyboard.Key key, Canvas canvas, Paint paint,Context context) {
         int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard);
-        paint.setTypeface(Typeface.create("Ilisarniq", Typeface.BOLD));
+        paint.setTypeface(Typeface.create("llisarniq_demi", Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(textSize);
         paint.setColor(Color.WHITE);
@@ -473,32 +476,31 @@ public class Utils {
     }
 
     private static void setColorTextWhiteIcon(Keyboard.Key key, Canvas canvas, Paint paint,Context context) {
-        int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
-        paint.setTypeface(Typeface.create("Ilisarniq", Typeface.BOLD));
+//        int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
+        paint.setTypeface(Typeface.create("llisarniq_demi", Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(textSize);
+        paint.setTextSize(65);
         paint.setColor(Color.WHITE);
         if (key.label != null) {
-            canvas.drawText(key.label.toString(),  (key.x + (key.width / 2)), (float)((key.y + (key.height / 2)) * 1.2941176471), paint);
+            canvas.drawText(key.label.toString(),  (key.x + (key.width / 2)), (float)((key.y + (key.height / 2)) +25), paint);
         }
     }
 
     private static void setColorTextWhiteIconTwo(Keyboard.Key key, Canvas canvas, Paint paint,Context context) {
-        int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
-        paint.setTypeface(Typeface.create("Ilisarniq", Typeface.BOLD));
+        paint.setTypeface(Typeface.create("llisarniq_demi", Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(textSize);
+        paint.setTextSize(65);
         paint.setColor(Color.WHITE);
         if (key.label != null) {
-            canvas.drawText(key.label.toString(),  (key.x + (key.width / 2)), (float)((key.y + (key.height / 2)) * 1.0975609756), paint);
+            canvas.drawText(key.label.toString(),  (key.x + (key.width / 2)), (float)((key.y + (key.height / 2))+20), paint);
         }
     }
 
     private static void setColorTextWhiteIconTwoDot(Keyboard.Key key, Canvas canvas, Paint paint,Context context) {
-        int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
-        paint.setTypeface(Typeface.create("Ilisarniq", Typeface.BOLD));
+//        int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
+        paint.setTypeface(Typeface.create("llisarniq_demi", Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(textSize);
+        paint.setTextSize(65);
         paint.setColor(Color.WHITE);
         if (key.label != null) {
             canvas.drawText(key.label.toString(),  (key.x + (key.width / 2)), (float)((key.y + (key.height / 2)) * 1.3), paint);
@@ -507,7 +509,7 @@ public class Utils {
 
     private static void setColorTextBlack(Keyboard.Key key, Canvas canvas, Paint paint,Context context) {
         int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard);
-        paint.setTypeface(Typeface.create("Ilisarniq", Typeface.BOLD));
+        paint.setTypeface(Typeface.create("llisarniq_demi", Typeface.BOLD));
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTextSize(textSize);
         paint.setColor(Color.BLACK);
@@ -526,62 +528,258 @@ public class Utils {
     }
 
     private static void drawIconDelete(Keyboard.Key key, Canvas canvas, Context context) {
-        Drawable dr = (Drawable) context.getResources().getDrawable(R.drawable.ic_keyboard_backspace);
-        float left = (float) (key.x * (1.15));
-        float top = (float) (key.y * (1.12));
-        float right = (float) (key.x * (1.24));
-        float bottom = (float) (key.y * (1.36));
-        dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
-        dr.draw(canvas);
+        if (BaseConfig.readNameDevice(context).equals("mobile")) {
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
+                int textLeft = (int) context.getResources().getDimensionPixelSize(R.dimen.icon_delete_left);
+                int textTop = (int) context.getResources().getDimensionPixelSize(R.dimen.icon_delete_top);
+                int textRight = (int) context.getResources().getDimensionPixelSize(R.dimen.icon_delete_right);
+                int textBottom = (int) context.getResources().getDimensionPixelSize(R.dimen.icon_delete_bottom);
+                int left =((key.x ) +textLeft);
+                int top =  (key.y + textTop);
+                int right =  (key.x +textRight);
+                int bottom =  (key.y + textBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }else {
+                int textLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_left_vertical);
+                int textTop = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_top_vertical);
+                int textRight = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_right_vertical);
+                int textBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_bottom_vertical);
+                float left = (float) (key.x + textLeft);
+                float top = (float) (key.y + textTop);
+                float right = (float) (key.x +textRight);
+                float bottom = (float) (key.y + textBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }
+        }else {
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
+                int textLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_left_vertical);
+                int textTop = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_top_vertical);
+                int textRight = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_right_vertical);
+                int textBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_bottom_vertical);
+                float left = (float) (key.x + textLeft);
+                float top = (float) (key.y + textTop);
+                float right = (float) (key.x +textRight);
+                float bottom = (float) (key.y + textBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }else {
+                int textLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_left_vertical);
+                int textTop = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_top_vertical);
+                int textRight = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_right_vertical);
+                int textBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_bottom_vertical);
+                float left = (float) (key.x + textLeft);
+                float top = (float) (key.y + textTop);
+                float right = (float) (key.x +textRight);
+                float bottom = (float) (key.y + textBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }
+        }
+
     }
 
     private static void drawIconDropRight(Keyboard.Key key, Canvas canvas, Context context) {
-        Drawable dr = (Drawable) context.getResources().getDrawable(R.drawable.right_triangle);
-        float left = (float) (key.x + 40);
-        float top = (float) ((key.y) * (1.1642335766));
-        float right = (float) ((key.x + key.width)* (0.75));
-        float bottom = (float) ((key.y + (key.height / 2)) * (1.0730994152));
-//        float top = (float) (key.y + 45);
-//        float right = (float) (key.x + key.width) - 30;
-//        float bottom = (float) (key.y + (key.height / 2) + 25);
-        dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
-        dr.draw(canvas);
+        if (BaseConfig.readNameDevice(context).equals("mobile")){
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")){
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_bottom_vertical);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }else {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_bottom_vertical);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }
+        }else {
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")){
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_bottom_vertical);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }else {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_bottom_vertical);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }
+
+        }
+
     }
 
     private static void drawIconDropRightFinal(Keyboard.Key key, Canvas canvas, Context context) {
-        Drawable dr = (Drawable) context.getResources().getDrawable(R.drawable.right_triangle);
-        float left = (float) (key.x * 1.041666667);
-        float top = (float) ((key.y) + (45));
-        float right = (float) ((key.x + key.width)* (0.9722222222));
-        float bottom = (float) ((key.y + (key.height / 2)) * (1.3676470588));
-//        float top = (float) (key.y + 45);
-//        float right = (float) (key.x + key.width) - 30;
-//        float bottom = (float) (key.y + (key.height / 2) + 25);
-        dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
-        dr.draw(canvas);
+        if (BaseConfig.readNameDevice(context).equals("mobile")) {
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_bottom_vertical);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }else {
+
+            }
+        }else {
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_left_horizontal);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_top_horizontal);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_right_horizontal);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_bottom_horizontal);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }else {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_final_left_horizontal);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_final_top_horizontal);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_final_right_horizontal);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_final_bottom_horizontal);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }
+        }
     }
 
     private static void drawIconDropLeft(Keyboard.Key key, Canvas canvas, Context context) {
         Drawable dr = context.getResources().getDrawable(R.drawable.left_triangle);
-        float left = (float) (key.x + 30);
-        float top = (float) (key.y * (1.0851581509));
-        float right = (float) ((key.x + key.width) * (0.7166666667));
-        float bottom = (float) ((key.y + (key.height / 2)) * (1.0626304802));
-//        float top = (float) (key.y + 35);
-//        float right = (float) (key.x + key.width) - 34;
-//        float bottom = (float) (key.y + (key.height / 2) + 30);
-        dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
-        dr.draw(canvas);
+        if (BaseConfig.readNameDevice(context).equals("mobile")) {
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_bottom_vertical);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                dr.draw(canvas);
+            }else {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_left_horizontal);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_top_horizontal);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_right_horizontal);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_bottom_horizontal);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                dr.draw(canvas);
+            }
+        }else {
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_left_horizontal);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_top_horizontal);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_right_horizontal);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_bottom_horizontal);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                dr.draw(canvas);
+            }else {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_left_horizontal);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_top_horizontal);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_right_horizontal);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_bottom_horizontal);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                dr.draw(canvas);
+            }
+        }
     }
 
     private static void drawIconDropLeftFinal(Keyboard.Key key, Canvas canvas, Context context) {
-        Drawable dr = context.getResources().getDrawable(R.drawable.left_triangle);
-        float left = (float) (key.x * 1.03125);
-        float top = (float) (key.y + 35);
-        float right = (float) ((key.x + key.width) * (0.9685185185));
-        float bottom = (float) ((key.y + (key.height / 2)) * (1.4411764706));
-        dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
-        dr.draw(canvas);
+        if (BaseConfig.readNameDevice(context).equals("mobile")) {
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_bottom_vertical);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }else {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_left_horizontal);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_top_horizontal);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_right_horizontal);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_bottom_horizontal);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }
+        }else {
+            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_left_horizontal);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_top_horizontal);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_right_horizontal);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_bottom_horizontal);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }else {
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_final_left_horizontal);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_final_top_horizontal);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_final_right_horizontal);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_final_bottom_horizontal);
+                float left = (float) (key.x + iconLeft);
+                float top = (float) (key.y + iconTop);
+                float right = (float) (key.x + key.width) - iconRight;
+                float bottom = (float) (key.y + (key.height / 2) + iconBottom);
+                key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+                key.icon.draw(canvas);
+            }
+        }
     }
 
     private static void drawIconBack(Keyboard.Key key, Canvas canvas, Context context) {
@@ -612,290 +810,524 @@ public class Utils {
         dr.draw(canvas);
     }
 
-    public static void showPopupLongClick(PopupWindow popupWindow, Context context, Key key, TextView tvOne, TextView tvTwo, TextView tvThree) {
-        // keyboard 1
-        if (key.text.equals("ᐁ") || key.text.equals("ᐯ") || key.text.equals("ᑌ") ||
-                key.text.equals("ᑫ") || key.text.equals("ᒉ") || key.text.equals("ᒣ") ||
-                key.text.equals("ᓀ") || key.text.equals("ᓭ") || key.text.equals("ᓓ") ||
-                key.text.equals("ᔦ") || key.text.equals("ᕓ") || key.text.equals("ᕂ") ||
-                key.text.equals("ᙯ") || key.text.equals("ᙰ") || key.text.equals("ᖖ") ||
-                key.text.equals("ᑉ") || key.text.equals("ᑦ") ||
-                key.text.equals("ᒃ") || key.text.equals("ᒡ") || key.text.equals("ᒻ") ||
-                key.text.equals("ᓐ") || key.text.equals("ᕻ") || key.text.equals("ᔅ") ||
-                key.text.equals("ᓪ") || key.text.equals("ᔾ") || key.text.equals("ᕝ") ||
-                key.text.equals("ᕐ") || key.text.equals("ᖅ") || key.text.equals("ᖕ") ||
-                key.text.equals("ᖦ")) {
-            tvThree.setText(key.text);
-            visibleTextViewThree(tvOne, tvTwo, tvThree);
-            setBackGroundPopupWindowBlack(popupWindow, context);
-        } else if (key.text.equals(".") || key.text.equals(",") || key.text.equals("?") ||
-                key.text.equals("!") || key.text.equals(";") || key.text.equals(":")) {
-            tvThree.setText(key.text);
-            tvThree.setTextColor(Color.BLACK);
-            visibleTextViewThree(tvOne, tvTwo, tvThree);
-            setBackGroundPopupWindowWhite(popupWindow, context);
-            // keyboard emoji
-
-        } else if (key.text.equals("\uD83C\uDF1A") || key.text.equals("\uD83C\uDF1D") || key.text.equals("\uD83C\uDF1E") ||
-                key.text.equals("\uD83C\uDF1F") || key.text.equals("\uD83C\uDF25") || key.text.equals("\uD83C\uDF27") ||
-                key.text.equals("\uD83C\uDF28") || key.text.equals("\uD83C\uDF2C") || key.text.equals("\uD83C\uDF89") ||
-                key.text.equals("\uD83C\uDF7D") || key.text.equals("\uD83D\uDC15") || key.text.equals("\uD83D\uDC4B") ||
-                key.text.equals("\uD83D\uDC4D") || key.text.equals("\uD83E\uDDE1") || key.text.equals("\uD83D\uDE42") ||
-                key.text.equals("\uD83D\uDE41") || key.text.equals("\uD83D\uDE22") || key.text.equals("\uD83D\uDE0D") ||
-                key.text.equals("\uD83D\uDE18") || key.text.equals("\uD83E\uDD23")) {
-            tvThree.setText(key.text);
-            visibleTextViewThree(tvOne, tvTwo, tvThree);
-            setBackGroundPopupWindowWhite(popupWindow, context);
-        }
+    public static void showPopupLongClick(PopupWindow popupWindow, Context context, Key key, TextView tvOne, TextView tvTwo) {
         // keyboard 2 blue
-        else if (key.text.equals("ᐃ") || key.text.equals("ᐄ")) {
+         if (key.text.equals("ᐃ") || key.text.equals("ᐄ")) {
+             if (key.text.equals("ᐃ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᐃ");
             tvTwo.setText("ᐄ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᐱ") || key.text.equals("ᐲ")) {
+             if (key.text.equals("ᐱ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᐱ");
             tvTwo.setText("ᐲ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᑎ") || key.text.equals("ᑏ")) {
+             if (key.text.equals("ᑎ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᑎ");
             tvTwo.setText("ᑏ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᑭ") || key.text.equals("ᑮ")) {
+             if (key.text.equals("ᑭ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᑭ");
             tvTwo.setText("ᑮ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᒋ") || key.text.equals("ᒌ")) {
+             if (key.text.equals("ᒋ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᒋ");
             tvTwo.setText("ᒌ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᒥ") || key.text.equals("ᒦ")) {
+             if (key.text.equals("ᒥ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᒥ");
             tvTwo.setText("ᒦ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᓂ") || key.text.equals("ᓃ")) {
+             if (key.text.equals("ᓂ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᓂ");
             tvTwo.setText("ᓃ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᓯ") || key.text.equals("ᓰ")) {
+             if (key.text.equals("ᓯ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᓯ");
             tvTwo.setText("ᓰ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᓕ") || key.text.equals("ᓖ")) {
+             if (key.text.equals("ᓕ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᓕ");
             tvTwo.setText("ᒌ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᔨ") || key.text.equals("ᔩ")) {
+             if (key.text.equals("ᔨ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᔨ");
             tvTwo.setText("ᔩ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᕕ") || key.text.equals("ᕖ")) {
+             if (key.text.equals("ᕕ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᕕ");
             tvTwo.setText("ᕖ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᕆ") || key.text.equals("ᕇ")) {
+             if (key.text.equals("ᕆ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᕆ");
             tvTwo.setText("ᕇ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᕿ") || key.text.equals("ᖀ")) {
+             if (key.text.equals("ᕿ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᕿ");
             tvTwo.setText("ᖀ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowBlue(popupWindow, context);
         } else if (key.text.equals("ᖏ")) {
+             if (key.text.equals("ᖏ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_blue);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_blue);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᖏ");
-            tvTwo.setText("");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
+            tvTwo.setText("ᖏ");
             setBackGroundPopupWindowBlue(popupWindow, context);
             //key board 3 orange
         } else if (key.text.equals("ᐅ") || key.text.equals("ᐆ")) {
+             if (key.text.equals("ᐅ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᐅ");
             tvTwo.setText("ᐆ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᐳ") || key.text.equals("ᐴ")) {
+             if (key.text.equals("ᐳ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᐳ");
             tvTwo.setText("ᐴ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᑐ") || key.text.equals("ᑑ")) {
+             if (key.text.equals("ᑐ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᑐ");
             tvTwo.setText("ᑑ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᑯ") || key.text.equals("ᑰ")) {
+             if (key.text.equals("ᑯ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᑯ");
             tvTwo.setText("ᑰ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᒍ") || key.text.equals("ᒎ")) {
+             if (key.text.equals("ᒍ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᒍ");
             tvTwo.setText("ᒎ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᒧ") || key.text.equals("ᒨ")) {
+             if (key.text.equals("ᒧ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᒧ");
             tvTwo.setText("ᒨ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᓄ") || key.text.equals("ᓅ")) {
+             if (key.text.equals("ᓄ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᓄ");
             tvTwo.setText("ᓅ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᓱ") || key.text.equals("ᓲ")) {
+             if (key.text.equals("ᓱ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᓱ");
             tvTwo.setText("ᓲ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᓗ") || key.text.equals("ᓘ")) {
+             if (key.text.equals("ᓗ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᓗ");
             tvTwo.setText("ᓘ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᔪ") || key.text.equals("ᔫ")) {
+             if (key.text.equals("ᔪ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᔪ");
             tvTwo.setText("ᔫ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᕗ") || key.text.equals("ᕘ")) {
+             if (key.text.equals("ᕗ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᕗ");
             tvTwo.setText("ᕘ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᕈ") || key.text.equals("ᕉ")) {
+             if (key.text.equals("ᕈ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᕈ");
             tvTwo.setText("ᕉ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᖁ") || key.text.equals("ᖂ")) {
+             if (key.text.equals("ᖁ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᖁ");
             tvTwo.setText("ᖂ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         } else if (key.text.equals("ᖑ") || key.text.equals("ᖒ")) {
+             if (key.text.equals("ᖑ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_orange);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_orange);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᖑ");
             tvTwo.setText("ᖒ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowOrange(popupWindow, context);
         }
         // key board 4 green
         else if (key.text.equals("ᐊ") || key.text.equals("ᐋ")) {
+             if (key.text.equals("ᐊ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᐊ");
             tvTwo.setText("ᐋ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
 
         } else if (key.text.equals("ᑕ") || key.text.equals("ᑖ")) {
+             if (key.text.equals("ᑕ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᑕ");
             tvTwo.setText("ᑖ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᐸ") || key.text.equals("ᐹ")) {
+             if (key.text.equals("ᐸ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᐸ");
             tvTwo.setText("ᐹ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᑲ") || key.text.equals("ᑳ")) {
+             if (key.text.equals("ᑲ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᑲ");
             tvTwo.setText("ᑳ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᒐ") || key.text.equals("ᒑ")) {
+             if (key.text.equals("ᒐ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᒐ");
             tvTwo.setText("ᒑ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᒪ") || key.text.equals("ᒫ")) {
+             if (key.text.equals("ᒪ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᒪ");
             tvTwo.setText("ᒫ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᓇ") || key.text.equals("ᓈ")) {
+             if (key.text.equals("ᓇ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᓇ");
             tvTwo.setText("ᓈ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᓴ") || key.text.equals("ᓵ")) {
+             if (key.text.equals("ᓴ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᓴ");
             tvTwo.setText("ᓵ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᓚ") || key.text.equals("ᓛ")) {
+             if (key.text.equals("ᓚ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᓚ");
             tvTwo.setText("ᓛ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᔭ") || key.text.equals("ᔮ")) {
+             if (key.text.equals("ᔭ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᔭ");
             tvTwo.setText("ᔮ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᕙ") || key.text.equals("ᕚ")) {
+             if (key.text.equals("ᕙ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᕙ");
             tvTwo.setText("ᕚ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᕋ") || key.text.equals("ᕌ")) {
+             if (key.text.equals("ᕋ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᕋ");
             tvTwo.setText("ᕌ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᖃ") || key.text.equals("ᖄ")) {
+             if (key.text.equals("ᖃ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᖃ");
             tvTwo.setText("ᖄ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᖓ") || key.text.equals("ᖔ")) {
+             if (key.text.equals("ᖓ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᖓ");
             tvTwo.setText("ᖔ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᖠ") || key.text.equals("ᖡ")) {
+             if (key.text.equals("ᖠ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᖠ");
             tvTwo.setText("ᖡ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᖢ") || key.text.equals("ᖣ")) {
+             if (key.text.equals("ᖢ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᖢ");
             tvTwo.setText("ᖣ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         } else if (key.text.equals("ᖤ") || key.text.equals("ᖥ")) {
+             if (key.text.equals("ᖤ")){
+                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
+                 tvTwo.setBackgroundResource(R.color.background_green);
+             }else  {
+                 tvOne.setBackgroundResource(R.color.background_green);
+                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
+             }
             tvOne.setText("ᖤ");
             tvTwo.setText("ᖥ");
-            goneTextViewThree(tvOne, tvTwo, tvThree);
             setBackGroundPopupWindowGreen(popupWindow, context);
         }
         // keyboard 5 yellow
-        else if (key.text.equals("0") || key.text.equals("1") || key.text.equals("2") || key.text.equals("3")
-                || key.text.equals("4") || key.text.equals("5") || key.text.equals("6") || key.text.equals("7")
-                || key.text.equals("8") || key.text.equals("9") || key.text.equals("+") || key.text.equals("-")
-                || key.text.equals("*") || key.text.equals("/") || key.text.equals("=") || key.text.equals("%")
-                || key.text.equals("|") || key.text.equals("≠") || key.text.equals("≈") || key.text.equals("≤")
-                || key.text.equals("≥") || key.text.equals("<") || key.text.equals(">") || key.text.equals("°")
-                || key.text.equals("_") || key.text.equals("^") || key.text.equals("\\") || key.text.equals("√")
-                || key.text.equals("π") || key.text.equals("@") || key.text.equals("[") || key.text.equals("]")
-                || key.text.equals("(") || key.text.equals(")") || key.text.equals("«") || key.text.equals("»")
-                || key.text.equals("&") || key.text.equals("{") || key.text.equals("}") || key.text.equals("#")
-                || key.text.equals("cm") || key.text.equals("km") || key.text.equals("'") || key.text.equals("\"")
-                || key.text.equals("m") || key.text.equals("g") || key.text.equals("x") || key.text.equals("y")
-                || key.text.equals("z") || key.text.equals("•") || key.text.equals("$") || key.text.equals("¢")) {
-            tvThree.setText(key.text);
-            visibleTextViewThree(tvOne, tvTwo, tvThree);
-            setBackGroundPopupWindowYellow(popupWindow, context);
-        }
+//        else if (key.text.equals("0") || key.text.equals("1") || key.text.equals("2") || key.text.equals("3")
+//                || key.text.equals("4") || key.text.equals("5") || key.text.equals("6") || key.text.equals("7")
+//                || key.text.equals("8") || key.text.equals("9") || key.text.equals("+") || key.text.equals("-")
+//                || key.text.equals("*") || key.text.equals("/") || key.text.equals("=") || key.text.equals("%")
+//                || key.text.equals("|") || key.text.equals("≠") || key.text.equals("≈") || key.text.equals("≤")
+//                || key.text.equals("≥") || key.text.equals("<") || key.text.equals(">") || key.text.equals("°")
+//                || key.text.equals("_") || key.text.equals("^") || key.text.equals("\\") || key.text.equals("√")
+//                || key.text.equals("π") || key.text.equals("@") || key.text.equals("[") || key.text.equals("]")
+//                || key.text.equals("(") || key.text.equals(")") || key.text.equals("«") || key.text.equals("»")
+//                || key.text.equals("&") || key.text.equals("{") || key.text.equals("}") || key.text.equals("#")
+//                || key.text.equals("cm") || key.text.equals("km") || key.text.equals("'") || key.text.equals("\"")
+//                || key.text.equals("m") || key.text.equals("g") || key.text.equals("x") || key.text.equals("y")
+//                || key.text.equals("z") || key.text.equals("•") || key.text.equals("$") || key.text.equals("¢")) {
+//        }
+
 
 
     }
@@ -1107,8 +1539,6 @@ public class Utils {
             popupWindow.setWidth(width);
             popupWindow.setHeight(width);
             popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x)-x), (int) (key.y + (key.height / 2)*0.18));
-
-
         } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                 key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
             tvClick.setText(key.text);

@@ -27,7 +27,7 @@
         <Key android:codes="113" android:keyLabel="▼"
             android:keyEdgeFlags="left"   />
 
-        <Key android:codes="119" android:keyLabel="ᐁ" android:keyOutputText = "ᐁ"
+        <Key android:codes="119" android:keyLabel="ᐁ" android:iconPreview="@drawable/down_arrow" android:keyOutputText = "ᐁ"
             android:popupCharacters="ᐁᐯ" android:popupKeyboard="@layout/key_preview" />
         <Key android:codes="101" android:keyLabel="ᐯ" android:keyOutputText = "ᐯ"
             android:popupCharacters="ᐯᐯ" android:popupKeyboard="@layout/key_preview" />
@@ -36,7 +36,7 @@
         <Key android:codes="121" android:keyLabel="ᒉ" android:keyOutputText = "ᒉ"/>
         <Key android:codes="117" android:keyLabel="ᒣ" android:keyOutputText = "ᒣ"/>
         <Key android:codes="111" android:keyLabel="ᓀ" android:keyOutputText = "ᓀ"/>
-        <Key android:codes="-10"  android:keyLabel="•"  android:keyEdgeFlags="right"/>
+        <Key android:codes="-10" android:keyLabel="•"  android:keyEdgeFlags="right"/>
     </Row>
 
     <Row>
@@ -55,7 +55,7 @@
     </Row>
 
     <Row>
-        <Key android:codes="-1" android:keyEdgeFlags="left"/>
+        <Key android:codes="-1"  android:keyIcon="@drawable/right_triangle" android:keyEdgeFlags="left"/>
         <Key android:codes="122" android:keyLabel="."  android:popupCharacters="ᐁᐄ" android:popupKeyboard="@layout/key_preview"
             android:keyOutputText = "."/>
         <Key android:codes="120" android:keyLabel="," android:keyOutputText = ","/>
@@ -64,13 +64,12 @@
         <Key android:codes="98" android:keyLabel=";" android:keyOutputText = ";"/>
         <Key android:codes="110" android:keyLabel=":" android:keyOutputText = ":"/>
         <Key android:codes="-5" android:keyIcon="@drawable/ic_keyboard_backspace"
-            android:keyWidth="22.2%p" android:keyEdgeFlags="right"
+            android:keyWidth="22.2%p"  android:keyEdgeFlags="right"
             android:isRepeatable="true"/>
     </Row>
 
     <Row android:rowEdgeFlags="bottom">
-        <Key android:codes="-3"
-            android:keyEdgeFlags="left"/>
+        <Key android:codes="-3" android:keyEdgeFlags="left"/>
         <Key android:codes="-2" android:keyLabel="1" />
         <Key android:codes="32" android:keyLabel="ᐅᖓᓯᓪᓕᑎᖅ"
             android:keyWidth="55.5%p" android:isRepeatable="true"/>
