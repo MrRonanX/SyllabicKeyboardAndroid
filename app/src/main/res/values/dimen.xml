@@ -7,6 +7,9 @@
     <dimen name="popup_click_height">70dp</dimen>
     <dimen name="popup_click_width">70dp</dimen>
     <dimen name="text_size_keyboard">20dp</dimen>
+    <dimen name="text_size_keyboard_tablet">25dp</dimen>
+    <dimen name="text_height_keyboard">12dp</dimen>
+    <dimen name="text_height_keyboard_latin">8dp</dimen>
     <dimen name="text_size_icon_left">40dp</dimen>
 
     <dimen name="icon_delete_left">50dp</dimen>
@@ -14,9 +17,9 @@
     <dimen name="icon_delete_right">75dp</dimen>
     <dimen name="icon_delete_bottom">35dp</dimen>
 
-    <dimen name="icon_delete_left_vertical">140dp</dimen>
+    <dimen name="icon_delete_left_vertical">130dp</dimen>
     <dimen name="icon_delete_top_vertical">15dp</dimen>
-    <dimen name="icon_delete_right_vertical">165dp</dimen>
+    <dimen name="icon_delete_right_vertical">155dp</dimen>
     <dimen name="icon_delete_bottom_vertical">35dp</dimen>
 
     //icon delete ipad horizontal
@@ -104,5 +107,6 @@
     <dimen name="text_size_keyboard_orange">40dp</dimen>
     <dimen name="text_size_icon_keyboard">16dp</dimen>
     <dimen name="popup_x">15dp</dimen>
+    <dimen name="popup_x_horizontal">10dp</dimen>
     <dimen name="popup_y">15dp</dimen>
 </resources>

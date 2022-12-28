@@ -40,6 +40,7 @@ import android.view.HapticFeedbackConstants;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -51,6 +52,8 @@ import android.view.inputmethod.InputMethodSubtype;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.inputmethodservice.Keyboard.Key;
+
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -73,7 +76,9 @@ import java.util.List;
  * be fleshed out as appropriate.
  */
 public class SoftKeyboard extends InputMethodService
-        implements KeyboardView.OnKeyboardActionListener, View.OnClickListener, LatinKeyboardView.PassDataLongPress {
+        implements KeyboardView.OnKeyboardActionListener, View.OnClickListener,
+        LatinKeyboardView.PassDataLongPress, PassEventKeyboard, LatinKeyboardView.CheckDataLongPress,
+        LatinKeyboardView.PassDataLongPressOneCharator {
     static final boolean DEBUG = false;
 
     /**
@@ -123,9 +128,9 @@ public class SoftKeyboard extends InputMethodService
     private LinearLayout layoutSuggest, layoutSuggestOne, layoutSuggestTwo, layoutSuggestThree;
     private TextView textSuggestOne, textSuggestTwo, textSuggestThree;
     private int count = 0;
-    private Handler handler;
+    private Key keyPress;
     private PopupWindow mPopupKeyboard;
-    private int mPopupX = 0, mPopupY = 0;
+    private Handler handler;
 
     /**
      * Main initialization of the input method component.  Be sure to call
@@ -196,7 +201,9 @@ public class SoftKeyboard extends InputMethodService
         mPopupKeyboard = new PopupWindow(getApplicationContext());
         mPopupKeyboard.setContentView(inflater.inflate(R.layout.popup_click, null));
         mInputView.passDataLongPress(this::passDataLongPress);
-
+        mInputView.setPassEventKeyboard(this::passEventKeyboard);
+        mInputView.setCheckDataLongPress(this);
+        mInputView.setPassDataLongPressOneCharator(this);
         return myKeyboardView;
 
     }
@@ -364,6 +371,7 @@ public class SoftKeyboard extends InputMethodService
     public void onCurrentInputMethodSubtypeChanged(InputMethodSubtype subtype) {
         mInputView.setSubtypeOnSpaceKey(subtype);
     }
+
 
     /**
      * Deal with the editor reporting movement of its cursor.
@@ -1152,144 +1160,85 @@ public class SoftKeyboard extends InputMethodService
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickDefault(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 1000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickEmoji(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 1050) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickTwoDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 2000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickTwoQwerty(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 2050) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickTwoSelectOneDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 3000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickThreeQwerty(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 3050) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickThreeSelectOneDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 4000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickFourQwerty(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 4050) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickFourSelectOneDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 5000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickQwertyNumber(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
+
                     break;
                 }
             } else if (checkType == 5020) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickQwertyNumberTwo(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             } else if (checkType == 5030) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickQwertyNumberThree(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    handler = new Handler(Looper.getMainLooper());
-                    handler.postDelayed(() -> {
-                        if (mPopupKeyboard.isShowing()) {
-                            mPopupKeyboard.dismiss();
-                        }
-                    }, 200);
+                    keyPress = key;
                     break;
                 }
             }
@@ -1325,15 +1274,6 @@ public class SoftKeyboard extends InputMethodService
         }
     }
 
-
-    @Override
-    public void passDataLongPress(String text) {
-//        textEditText = textEditText + text;
-//        count++;
-        getCurrentInputConnection().commitText(text, 1);
-        mInputView.dismissPopup();
-    }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -1346,4 +1286,49 @@ public class SoftKeyboard extends InputMethodService
         }
     }
 
+    @Override
+    public void passDataLongPress(String text) {
+//        textEditText = textEditText + text;
+//        count++;
+        getCurrentInputConnection().commitText(text, 1);
+        mInputView.dismissPopup();
+    }
+
+    @Override
+    public void passEventKeyboard(MotionEvent me) {
+        if (me.getAction() == MotionEvent.ACTION_DOWN) {
+
+        } else if (me.getAction() == MotionEvent.ACTION_MOVE) {
+
+        } else if (me.getAction() == MotionEvent.ACTION_UP) {
+//            if (mPopupKeyboard.isShowing()) {
+//                mPopupKeyboard.dismiss();
+//            }
+//            if (keyPress.label != null){
+//                getCurrentInputConnection().commitText(keyPress.label, 1);
+                handler = new Handler(Looper.getMainLooper());
+                handler.postDelayed(() -> {
+                    if (mPopupKeyboard.isShowing()) {
+                        mPopupKeyboard.dismiss();
+                    }
+                }, 100);
+//            }
+        }
+    }
+
+    @Override
+    public void passDataLongPressOneCharator(String text) {
+        if (mPopupKeyboard.isShowing()) {
+            mPopupKeyboard.dismiss();
+        }
+        getCurrentInputConnection().commitText(text, 1);
+    }
+
+
+    @Override
+    public void checkDataLongPress() {
+        if (mPopupKeyboard.isShowing()) {
+            mPopupKeyboard.dismiss();
+        }
+    }
 }

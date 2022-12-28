@@ -23,7 +23,6 @@
         android:text="Back"
         android:textStyle="bold"
         android:fontFamily="@font/llisarniq_demi"
-
         android:textColor="@color/background_blue"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/imgBack"

@@ -46,6 +46,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.annotation.LongDef;
+
 import com.syllabic.syllabickeyboard.config.BaseConfig;
 import com.syllabic.syllabickeyboard.utils.Utils;
 
@@ -59,25 +61,14 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
 
     static final int KEYCODE_OPTIONS = -100;
     Context context;
-    private View mMiniKeyboardContainer;
-    private Map<Key, View> mMiniKeyboardCache;
-    private int mPopupLayout;
-    private LatinKeyboardView mMiniKeyboard;
-    private final int[] mCoordinates = new int[2];
-    private int mPopupX;
-    private int mPopupY;
     private PopupWindow mPopupKeyboard;
-    private boolean mMiniKeyboardOnScreen;
-    private TextView tvPressOne, tvPressTwo, tvPressThree;
     private Key keys;
-
-    private View mTopKey;
-    private PopupWindow mPopupWindow;
-    private View mPopupView;
-    private LatinKeyboardView latinKeyboardView;
     private PassDataLongPress passDataLongPress;
-    private int mOldPointerCount = 1;
-    boolean checkAction = false;
+    private PassEventKeyboard passEventKeyboard;
+    private CheckDataLongPress checkDataLongPress;
+    private PassDataLongPressOneCharator passDataLongPressOneCharator;
+    boolean checkAction = false, checkLongPressOneCharactor = false, checkLongPressNotActionMove = false;
+
     @SuppressLint("MissingInflatedId")
     public LatinKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -97,6 +88,18 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
         this.passDataLongPress = passDataLongPress;
     }
 
+    public void setPassEventKeyboard(PassEventKeyboard passEventKeyboard) {
+        this.passEventKeyboard = passEventKeyboard;
+    }
+
+    public void setCheckDataLongPress(CheckDataLongPress checkDataLongPress) {
+        this.checkDataLongPress = checkDataLongPress;
+    }
+
+    public void setPassDataLongPressOneCharator(PassDataLongPressOneCharator passDataLongPressOneCharator) {
+        this.passDataLongPressOneCharator = passDataLongPressOneCharator;
+    }
+
     @Override
     protected void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -110,21 +113,20 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
     @Override
     protected boolean onLongPress(Key key) {
         keys = key;
+        checkLongPressOneCharactor = false;
         if (key.codes[0] == Keyboard.KEYCODE_CANCEL) {
             getOnKeyboardActionListener().onKey(KEYCODE_OPTIONS, null);
             return super.onLongPress(key);
-        }
-        else if (key.codes[0] == 32 || key.codes[0] == -5){
+        } else if (key.label == null || key.codes[0] == 32 || key.codes[0] == -5 || key.label.equals("ᖏ")) {
             return super.onLongPress(key);
-        }
-        else if (key.codes[0] == 113 || key.codes[0] == 1000 || key.codes[0] == 1050 || key.codes[0] == 2000 ||
+        } else if (key.codes[0] == 113 || key.codes[0] == 1000 || key.codes[0] == 1050 || key.codes[0] == 2000 ||
                 key.codes[0] == 2050 || key.codes[0] == 3000 || key.codes[0] == 3050 || key.codes[0] == 4000 ||
                 key.codes[0] == 4050 || key.codes[0] == 5000 || key.codes[0] == 5020 || key.codes[0] == 5030 ||
                 key.codes[0] == 97 || key.codes[0] == -1 || key.codes[0] == 10 ||
                 key.codes[0] == -2 || key.codes[0] == -10 || key.codes[0] == -11 || key.codes[0] == -40 ||
                 key.codes[0] == -41 || key.codes[0] == -45 || key.codes[0] == -46 || key.codes[0] == -15 ||
                 key.codes[0] == -16 || key.codes[0] == -50 || key.codes[0] == -51 || key.codes[0] == -54 ||
-                key.codes[0] == -55  || key.codes[0] == -52 || key.codes[0] == -53 ||
+                key.codes[0] == -55 || key.codes[0] == -52 || key.codes[0] == -53 ||
                 key.codes[0] == -18 || key.codes[0] == -19 || key.codes[0] == -30 || key.codes[0] == -31 ||
                 key.codes[0] == -35 || key.codes[0] == -36 || key.codes[0] == -20 || key.codes[0] == -21 ||
                 key.codes[0] == -25 || key.codes[0] == -26 || key.text.equals("ᐁ") ||
@@ -160,13 +162,20 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
                 || key.text.equals("cm") || key.text.equals("km") || key.text.equals("'") || key.text.equals("\"")
                 || key.text.equals("m") || key.text.equals("g") || key.text.equals("x") || key.text.equals("y")
                 || key.text.equals("z") || key.text.equals("•") || key.text.equals("$") || key.text.equals("¢")) {
+            if (keys.label != null && !keys.label.toString().equals("▼") &&
+                    !keys.label.toString().equals("▲") && !keys.label.toString().equals("1")
+                    && !keys.label.toString().equals("•")&& !keys.label.toString().equals("••")) {
+                checkLongPressOneCharactor = true;
+            }
             return true;
         } else {
+            checkDataLongPress.checkDataLongPress();
             return customPopup(key);
         }
     }
 
     public boolean customPopup(Key popupKey) {
+        checkLongPressNotActionMove = true;
         if (BaseConfig.readNameDevice(context).equals("mobile")) {
             if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
                 Utils.showPopupLongClick(mPopupKeyboard, context, popupKey,
@@ -176,7 +185,7 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
                 mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, (popupKey.x), popupKey.y);
                 mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setOnClickListener(this);
                 mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setOnClickListener(this);
-            }else {
+            } else {
                 Utils.showPopupLongClick(mPopupKeyboard, context, popupKey,
                         mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne),
                         mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo));
@@ -187,7 +196,6 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
                 mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setOnClickListener(this);
             }
         }
-
         return true;
     }
 
@@ -208,123 +216,81 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
 
     @Override
     public boolean onTouchEvent(MotionEvent me) {
-        if (me.getAction() == MotionEvent.ACTION_DOWN){
+        if (me.getAction() == MotionEvent.ACTION_DOWN) {
             checkAction = false;
-        } else if (me.getAction() == MotionEvent.ACTION_MOVE){
+        } else if (me.getAction() == MotionEvent.ACTION_MOVE) {
             checkAction = true;
-            Log.d("sonth", "one"+checkAction);
+            Log.d("sonth", "one" + checkAction);
             int iconRight = context.getResources().getDimensionPixelSize(R.dimen.action_move_left);
-            if (keys != null ){
-                if ((keys.x+iconRight) > me.getX()) {
-                    if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_blue).getConstantState())) {
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_selected_text);
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.color.background_blue);
-                    } else if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_orange).getConstantState())) {
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_selected_text);
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.color.background_orange);
+            if (keys != null) {
+                if (checkLongPressNotActionMove) {
+                    if ((keys.x + iconRight) > me.getX()) {
+                        if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_blue).getConstantState())) {
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_selected_text);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.color.background_blue);
+                        } else if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_orange).getConstantState())) {
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_selected_text);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.color.background_orange);
+                        } else {
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_selected_text);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.color.background_green);
+                        }
                     } else {
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_selected_text);
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.color.background_green);
-                    }
-                }else {
-                    if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_blue).getConstantState())) {
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.color.background_blue);
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_selected_text);
-                    } else if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_orange).getConstantState())) {
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.color.background_orange);
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_selected_text);
-                    } else {
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.color.background_green);
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_selected_text);
+                        if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_blue).getConstantState())) {
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.color.background_blue);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_selected_text);
+                        } else if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_orange).getConstantState())) {
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.color.background_orange);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_selected_text);
+                        } else {
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.color.background_green);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_selected_text);
+                        }
                     }
                 }
             }
-        }else if (me.getAction() == MotionEvent.ACTION_UP) {
-            Log.d("sonth", "two"+checkAction);
-            if (checkAction){
-                if (mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).getBackground() != null){
-                    if (mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).getBackground()
-                            .getConstantState().equals(getResources().getDrawable(R.drawable.background_selected_text).getConstantState())){
-                        passDataLongPress.passDataLongPress(((TextView)mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne)).getText().toString());
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackground(null);
-                    }else {
-                        passDataLongPress.passDataLongPress(((TextView)mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo)).getText().toString());
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackground(null);
+        } else if (me.getAction() == MotionEvent.ACTION_UP) {
+            Log.d("sonth", "two" + checkAction);
+            if (checkLongPressOneCharactor) {
+                if (keys.label != null && !keys.label.toString().equals("▼") &&
+                        !keys.label.toString().equals("▲") && !keys.label.toString().equals("1")
+                        && !keys.label.toString().equals("•")&& !keys.label.toString().equals("••")) {
+                    passDataLongPressOneCharator.passDataLongPressOneCharator(keys.label.toString());
+                }
+            } else {
+                if (checkAction) {
+                    if (mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).getBackground() != null) {
+                        if (mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).getBackground()
+                                .getConstantState().equals(getResources().getDrawable(R.drawable.background_selected_text).getConstantState())) {
+                            passDataLongPress.passDataLongPress(((TextView) mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne)).getText().toString());
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackground(null);
+                        } else {
+                            passDataLongPress.passDataLongPress(((TextView) mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo)).getText().toString());
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackground(null);
+                        }
+                    }
+                } else {
+                    if (checkLongPressNotActionMove) {
+                        if (mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).getBackground() != null) {
+                            if (mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).getBackground()
+                                    .getConstantState().equals(getResources().getDrawable(R.drawable.background_selected_text).getConstantState())) {
+                                passDataLongPress.passDataLongPress(((TextView) mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne)).getText().toString());
+                                mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackground(null);
+                            } else {
+                                passDataLongPress.passDataLongPress(((TextView) mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo)).getText().toString());
+                                mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackground(null);
+                            }
+                        }
+                        checkLongPressNotActionMove = false;
                     }
                 }
             }
+            keys = null;
+            passEventKeyboard.passEventKeyboard(me);
             dismissPopup();
         }
         return super.onTouchEvent(me);
     }
-
-//        if (me.getAction() == MotionEvent.ACTION_DOWN) {
-//            List<Key> keys = getKeyboard().getKeys();
-//            for (Key key : keys) {
-//                if (key.label != null) {
-//                    if (key.codes[0] == 113 || key.codes[0] == 1000 || key.codes[0] == 1050 || key.codes[0] == 2000 ||
-//                            key.codes[0] == 2050 || key.codes[0] == 3000 || key.codes[0] == 3050 || key.codes[0] == 4000 ||
-//                            key.codes[0] == 4050 || key.codes[0] == 5000 || key.codes[0] == 5020 || key.codes[0] == 5030 ||
-//                            key.codes[0] == 97 || key.codes[0] == -1 || key.codes[0] == 10 ||
-//                            key.codes[0] == -2 || key.codes[0] == -10 || key.codes[0] == -11 || key.codes[0] == -40 ||
-//                            key.codes[0] == -41 || key.codes[0] == -45 || key.codes[0] == -46 || key.codes[0] == -15 ||
-//                            key.codes[0] == -16 || key.codes[0] == -50 || key.codes[0] == -51 || key.codes[0] == -54 ||
-//                            key.codes[0] == -55 || key.codes[0] == -5 || key.codes[0] == -52 || key.codes[0] == -53 ||
-//                            key.codes[0] == -18 || key.codes[0] == -19 || key.codes[0] == -30 || key.codes[0] == -31 ||
-//                            key.codes[0] == -35 || key.codes[0] == -36 || key.codes[0] == -20 || key.codes[0] == -21 ||
-//                            key.codes[0] == -25 || key.codes[0] == -26 || key.codes[0] == 32 ||
-//                            key.label.equals("ᐁ") ||
-//                            key.label.equals("ᐯ") || key.label.equals("ᑌ") ||
-//                            key.label.equals("ᑫ") || key.label.equals("ᒉ") || key.label.equals("ᒣ") ||
-//                            key.label.equals("ᓀ") || key.label.equals("ᓭ") || key.label.equals("ᓓ") ||
-//                            key.label.equals("ᔦ") || key.label.equals("ᕓ") || key.label.equals("ᕂ") ||
-//                            key.label.equals("ᙯ") || key.label.equals("ᙰ") || key.label.equals("ᖖ") ||
-//                            key.label.equals("ᑉ") || key.label.equals("ᑦ") ||
-//                            key.label.equals("ᒃ") || key.label.equals("ᒡ") || key.label.equals("ᒻ") ||
-//                            key.label.equals("ᓐ") || key.label.equals("ᕻ") || key.label.equals("ᔅ") ||
-//                            key.label.equals("ᓪ") || key.label.equals("ᔾ") || key.label.equals("ᕝ") ||
-//                            key.label.equals("ᕐ") || key.label.equals("ᖅ") || key.label.equals("ᖕ") ||
-//                            key.label.equals("ᖦ") || key.label.equals(".") || key.label.equals(",") || key.label.equals("?") ||
-//                            key.label.equals("!") || key.label.equals(";") || key.label.equals(":") ||
-//                            key.label.equals("\uD83C\uDF1A") || key.label.equals("\uD83C\uDF1D") || key.label.equals("\uD83C\uDF1E") ||
-//                            key.label.equals("\uD83C\uDF1F") || key.label.equals("\uD83C\uDF25") || key.label.equals("\uD83C\uDF27") ||
-//                            key.label.equals("\uD83C\uDF28") || key.label.equals("\uD83C\uDF2C") || key.label.equals("\uD83C\uDF89") ||
-//                            key.label.equals("\uD83C\uDF7D") || key.label.equals("\uD83D\uDC15") || key.label.equals("\uD83D\uDC4B") ||
-//                            key.label.equals("\uD83D\uDC4D") || key.label.equals("\uD83E\uDDE1") || key.label.equals("\uD83D\uDE42") ||
-//                            key.label.equals("\uD83D\uDE41") || key.label.equals("\uD83D\uDE22") || key.label.equals("\uD83D\uDE0D") ||
-//                            key.label.equals("\uD83D\uDE18") || key.label.equals("\uD83E\uDD23") || key.label.equals("0") ||
-//                            key.label.equals("1") || key.label.equals("2") || key.label.equals("3")
-//                            || key.label.equals("4") || key.label.equals("5") || key.label.equals("6") || key.label.equals("7")
-//                            || key.label.equals("8") || key.label.equals("9") || key.label.equals("+") || key.label.equals("-")
-//                            || key.label.equals("*") || key.label.equals("/") || key.label.equals("=") || key.label.equals("%")
-//                            || key.label.equals("|") || key.label.equals("≠") || key.label.equals("≈") || key.label.equals("≤")
-//                            || key.label.equals("≥") || key.label.equals("<") || key.label.equals(">") || key.label.equals("°")
-//                            || key.label.equals("_") || key.label.equals("^") || key.label.equals("\\") || key.label.equals("√")
-//                            || key.label.equals("π") || key.label.equals("@") || key.label.equals("[") || key.label.equals("]")
-//                            || key.label.equals("(") || key.label.equals(")") || key.label.equals("«") || key.label.equals("»")
-//                            || key.label.equals("&") || key.label.equals("{") || key.label.equals("}") || key.label.equals("#")
-//                            || key.label.equals("cm") || key.label.equals("km") || key.label.equals("'") || key.label.equals("\"")
-//                            || key.label.equals("m") || key.label.equals("g") || key.label.equals("x") || key.label.equals("y")
-//                            || key.label.equals("z") || key.label.equals("•") || key.label.equals("$") || key.label.equals("¢")) {
-//                    } else {
-//                        customPopup(key);
-//                        Log.d("sonth", "onTouchEvent: "+"two");
-//                    }
-//                }
-//            }
-//        } else if (me.getAction() == MotionEvent.ACTION_UP) {
-//            Log.d("sonth", "onTouchEvent: "+"three");
-//            dismissPopup();
-//        } else if (me.getAction() == MotionEvent.ACTION_MOVE) {
-//            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setOnTouchListener(new OnTouchListener() {
-//                @Override
-//                public boolean onTouch(View v, MotionEvent event) {
-//                    Log.d("sonth2", "onTouch: " + event);
-//                    return false;
-//                }
-//            });
-//        }
-//    }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     @Override
@@ -379,7 +345,17 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
         }
     }
 
+
     interface PassDataLongPress {
         void passDataLongPress(String text);
+    }
+
+    interface PassDataLongPressOneCharator {
+        void passDataLongPressOneCharator(String text);
+    }
+
+
+    interface CheckDataLongPress {
+        void checkDataLongPress();
     }
 }

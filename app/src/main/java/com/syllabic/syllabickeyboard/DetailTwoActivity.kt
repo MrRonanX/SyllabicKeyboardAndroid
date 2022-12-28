@@ -7,10 +7,12 @@ import android.view.Window
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import kotlinx.android.synthetic.main.activity_detail.*
 import kotlinx.android.synthetic.main.activity_detail_two.*
 import kotlinx.android.synthetic.main.activity_detail_two.imgBack
 import kotlinx.android.synthetic.main.activity_detail_two.tvBack
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class DetailTwoActivity : AppCompatActivity() {
@@ -38,30 +40,48 @@ class DetailTwoActivity : AppCompatActivity() {
             }
         })
 
-        if (checkLanguage == "" || checkLanguage == "two" ){
-            tvBack.text = "Back"
-            textView5.text = "Credit"
-            textView6.text = "Funded by Avataq Cultural Institute"
-            textView7.text = "Designed by Thomassie Mangiok"
-            textView8.text = "Programmed by Roman Kavinskyi"
-            textView9.text = "Ilisarniq typeface created by Coppers and Brasses"
-            wedView.loadUrl("https://en.wikipedia.org/wiki/Inuktitut")
-        }else if (checkLanguage == "one"){
-            tvBack.text = "ᐅᑎᒧ"
-            textView5.text = "ᓄᐃᑎᓯᒪᔪᑦ"
-            textView6.text = "ᐆᒪ ᑮᓇᐅᔭᖃᑦᑎᓂᑯᖓ: ᐊᕙᑕᖅ ᐱᐅᓯᑐᖃᓕᕆᕕᒃ"
-            textView7.text = "ᐆᒪ ᐱᒍᓐᓇᓯᑎᑕᕕᓂᖓ: ᑑᒪᓯ ᒪᖏᐅᖅ"
-            textView8.text = "ᐆᒪ ᓴᓇᔭᕕᓂᖓ: ᕉᒪᓐ ᑲᕕᓐᔅᑭ"
-            textView9.text = "ᐃᓕᓴᕐᓂᖅ ᖃᓂᐅᔮᕐᐯ Coppers and Brassesᑯᓐᓄ"
-            wedView.loadUrl("https://iu.wikipedia.org/wiki/ᐃᓄᒃᑎᑐᑦ")
-        }else{
-            tvBack.text = "Retour"
-            textView5.text = "Crédit"
-            textView6.text = "Financé par L’Institut Culturel Avataq"
-            textView7.text = "Conçu par Thomassie Mangiok"
-            textView8.text = "Programmé par Roman Kavinskyi"
-            textView9.text = "Police de caractères Ilisarniq par Coppers and Brasses"
-            wedView.loadUrl("https://fr.wikipedia.org/wiki/Inuktitut")
+        when (checkLanguage) {
+            "", "two" -> {
+                val face = ResourcesCompat.getFont(this, R.font.roboto_regular);
+                tvBack.typeface = face
+                textView5.typeface = face
+                textView6.typeface = face
+                textView7.typeface = face
+                textView8.typeface = face
+                textView9.typeface = face
+                tvBack.text = "Back"
+                textView5.text = "Credit"
+                textView6.text = "Funded by Avataq Cultural Institute"
+                textView7.text = "Designed by Thomassie Mangiok"
+                textView8.text = "Programmed by Roman Kavinskyi"
+                textView9.text = "Ilisarniq typeface created by Coppers and Brasses"
+                wedView.loadUrl("https://en.wikipedia.org/wiki/Inuktitut")
+            }
+            "one" -> {
+                tvBack.text = "ᐅᑎᒧ"
+                textView5.text = "ᓄᐃᑎᓯᒪᔪᑦ"
+                textView6.text = "ᐆᒪ ᑮᓇᐅᔭᖃᑦᑎᓂᑯᖓ: ᐊᕙᑕᖅ ᐱᐅᓯᑐᖃᓕᕆᕕᒃ"
+                textView7.text = "ᐆᒪ ᐱᒍᓐᓇᓯᑎᑕᕕᓂᖓ: ᑑᒪᓯ ᒪᖏᐅᖅ"
+                textView8.text = "ᐆᒪ ᓴᓇᔭᕕᓂᖓ: ᕉᒪᓐ ᑲᕕᓐᔅᑭ"
+                textView9.text = "ᐃᓕᓴᕐᓂᖅ ᖃᓂᐅᔮᕐᐯ Coppers and Brassesᑯᓐᓄ"
+                wedView.loadUrl("https://iu.wikipedia.org/wiki/ᐃᓄᒃᑎᑐᑦ")
+            }
+            else -> {
+                val face = ResourcesCompat.getFont(this, R.font.roboto_regular);
+                tvBack.typeface = face
+                textView5.typeface = face
+                textView6.typeface = face
+                textView7.typeface = face
+                textView8.typeface = face
+                textView9.typeface = face
+                tvBack.text = "Retour"
+                textView5.text = "Crédit"
+                textView6.text = "Financé par L’Institut Culturel Avataq"
+                textView7.text = "Conçu par Thomassie Mangiok"
+                textView8.text = "Programmé par Roman Kavinskyi"
+                textView9.text = "Police de caractères Ilisarniq par Coppers and Brasses"
+                wedView.loadUrl("https://fr.wikipedia.org/wiki/Inuktitut")
+            }
         }
 
 

@@ -3,12 +3,14 @@ package com.syllabic.syllabickeyboard
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Typeface
 import android.os.Bundle
 import android.provider.UserDictionary
 import android.util.DisplayMetrics
 import android.util.Log
-import android.view.View
+import android.view.Gravity
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
 import com.syllabic.syllabickeyboard.config.BaseConfig
 import com.syllabic.syllabickeyboard.utils.Utils
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,10 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setOnClick()
-        UserDictionary.Words.addWord(
-            this,
-            "MadeUpWord",
-            10,
+        UserDictionary.Words.addWord(this, "MadeUpWord", 10,
             UserDictionary.Words.LOCALE_TYPE_CURRENT
         )
         val metrics = DisplayMetrics()
@@ -40,6 +39,15 @@ class MainActivity : AppCompatActivity() {
             BaseConfig.saveNameDevice("tablet", this);
         } else {
             BaseConfig.saveNameDevice("mobile", this);
+        }
+        if (BaseConfig.readNameDevice(this).equals("tablet")){
+            layoutEnableSuggest.gravity = Gravity.CENTER
+            tvHomeThree.gravity = Gravity.CENTER
+            tvHomeFour.gravity = Gravity.CENTER
+            tvHomeEight.gravity = Gravity.CENTER
+            tvHomeNight.gravity = Gravity.CENTER
+            tvHomeThree.gravity = Gravity.CENTER
+            tvHomeThree.gravity = Gravity.CENTER
         }
     }
 
@@ -99,6 +107,18 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setTextOne() {
+        val face = ResourcesCompat.getFont(this, R.font.llisarniq_demi);
+        tvHomeTitle.typeface = face
+        tvHomeTitleTwo.typeface = face
+        tvHomeThree.typeface = face
+        tvHomeFour.typeface = face
+        tvHomeFive.typeface = face
+        tvHomeSix.typeface = face
+        tvHomeSeven.typeface = face
+        tvHomeEight.typeface = face
+        tvHomeNight.typeface = face
+        tvHomeTen.typeface = face
+        tvHomeElevent.typeface = face
         tvHomeTitle.text = "ᐃᓄᐃᑦ ᓇᕿᑕᕋᖓ"
         tvHomeTitleTwo.text = "ᒪᓕᒐᖅ ᓄᐃᑦᓯᕈᑎᒃ"
         tvHomeThree.text = "• ᐊᒻᒪᓗᒍ                           "
@@ -118,6 +138,18 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setTextTwo() {
+        val face = ResourcesCompat.getFont(this, R.font.roboto_regular);
+        tvHomeTitle.typeface = face
+        tvHomeTitleTwo.typeface = face
+        tvHomeThree.typeface = face
+        tvHomeFour.typeface = face
+        tvHomeFive.typeface = face
+        tvHomeSix.typeface = face
+        tvHomeSeven.typeface = face
+        tvHomeEight.typeface = face
+        tvHomeNight.typeface = face
+        tvHomeTen.typeface = face
+        tvHomeElevent.typeface = face
         tvHomeTitle.text = "Inuktitut Keyboard"
         tvHomeTitleTwo.text = "Installation instruction"
         tvHomeThree.text = "• Open settings              "
@@ -137,6 +169,18 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun setTextThree() {
+        val face = ResourcesCompat.getFont(this, R.font.roboto_regular);
+        tvHomeTitle.typeface = face
+        tvHomeTitleTwo.typeface = face
+        tvHomeThree.typeface = face
+        tvHomeFour.typeface = face
+        tvHomeFive.typeface = face
+        tvHomeSix.typeface = face
+        tvHomeSeven.typeface = face
+        tvHomeEight.typeface = face
+        tvHomeNight.typeface = face
+        tvHomeTen.typeface = face
+        tvHomeElevent.typeface = face
         tvHomeTitle.text = "Clavier en Inuktitut"
         tvHomeTitleTwo.text = "Instructions d'installation"
         tvHomeThree.text = "• Ouvrir les paramètres        "
