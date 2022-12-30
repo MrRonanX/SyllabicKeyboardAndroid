@@ -2,14 +2,12 @@ package com.syllabic.syllabickeyboard.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
 
 public class BaseConfig {
     public static String CONFIG_SharedPreferences = "CONFIG_SharedPreferences";
@@ -17,6 +15,7 @@ public class BaseConfig {
     public static String CONFIG_SharedPreferences_suggest = "CONFIG_SharedPreferences_check_enable";
     public static String CONFIG_SharedPreferences_check_device = "CONFIG_SharedPreferences_check_device";
     public static String CONFIG_SharedPreferences_HorizontalOrVertical = "CONFIG_SharedPreferences_HorizontalOrVertical";
+    public static String CONFIG_SharedPreferences_Object_Key = "CONFIG_SharedPreferences_Object_Key";
 
     public static void saveListInLocal(ArrayList<String> list,Context context) {
         SharedPreferences prefs = context.getSharedPreferences("AppNameOne", Context.MODE_PRIVATE);
@@ -88,6 +87,18 @@ public class BaseConfig {
     public static String readHorizontalOrVertical(Context context) {
         SharedPreferences sharedPref = context.getSharedPreferences("AppNameFive", Context.MODE_PRIVATE);
         return sharedPref.getString(CONFIG_SharedPreferences_HorizontalOrVertical, "");
+    }
+
+    public static void setObjectKey(int key ,Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("AppNameSix", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(CONFIG_SharedPreferences_Object_Key, key);
+        editor.apply();
+    }
+
+    public static int getObjectKey(Context context) {
+        SharedPreferences sharedPref = context.getSharedPreferences("AppNameSix", Context.MODE_PRIVATE);
+        return sharedPref.getInt(CONFIG_SharedPreferences_Object_Key, 0);
     }
 
 }

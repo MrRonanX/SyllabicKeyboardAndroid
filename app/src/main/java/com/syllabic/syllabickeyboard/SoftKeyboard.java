@@ -57,7 +57,9 @@ import android.inputmethodservice.Keyboard.Key;
 import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.MutableLiveData;
 
+import com.google.gson.Gson;
 import com.syllabic.syllabickeyboard.config.BaseConfig;
 import com.syllabic.syllabickeyboard.utils.Utils;
 
@@ -66,6 +68,7 @@ import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.EventListener;
 import java.util.List;
 
 /**
@@ -79,8 +82,6 @@ public class SoftKeyboard extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener, View.OnClickListener,
         LatinKeyboardView.PassDataLongPress, PassEventKeyboard, LatinKeyboardView.CheckDataLongPress,
         LatinKeyboardView.PassDataLongPressOneCharator {
-    static final boolean DEBUG = false;
-
     /**
      * This boolean indicates the optional example code for performing
      * processing of hard keys in addition to regular text generation
@@ -131,6 +132,7 @@ public class SoftKeyboard extends InputMethodService
     private Key keyPress;
     private PopupWindow mPopupKeyboard;
     private Handler handler;
+//    private PassData passData;
 
     /**
      * Main initialization of the input method component.  Be sure to call
@@ -142,7 +144,9 @@ public class SoftKeyboard extends InputMethodService
         mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         mWordSeparators = getResources().getString(R.string.word_separators);
     }
-
+//    public void setData(PassData passData){
+//        this.passData = passData;
+//    }
     /**
      * This is the point where you can do all of your UI initialization.  It
      * is called after creation and any configuration change.
@@ -157,21 +161,38 @@ public class SoftKeyboard extends InputMethodService
             if (displayWidth == mLastDisplayWidth) return;
             mLastDisplayWidth = displayWidth;
         }
-        mQwertyKeyboard = new LatinKeyboard(this, R.xml.qwerty);
-        mSymbolsKeyboard = new LatinKeyboard(this, R.xml.symbols);
-        mSymbolsShiftedKeyboard = new LatinKeyboard(this, R.xml.symbols_shift);
+        if (BaseConfig.readNameDevice(getApplicationContext()).equals("mobile")) {
+            mQwertyKeyboard = new LatinKeyboard(this, R.xml.qwerty);
+            mSymbolsKeyboard = new LatinKeyboard(this, R.xml.symbols);
+            mSymbolsShiftedKeyboard = new LatinKeyboard(this, R.xml.symbols_shift);
+            mQwertyEmoji = new LatinKeyboard(this, R.xml.one_emoji);
+            mQwertySelectTwoDot = new LatinKeyboard(this, R.xml.select_two_dot);
+            mQwertyTwo = new LatinKeyboard(this, R.xml.two_qwerty);
+            mQwertyTwoSelectOneDot = new LatinKeyboard(this, R.xml.two_select_one_dot);
+            mQwertyThree = new LatinKeyboard(this, R.xml.three_qwerty);
+            mQwertyThreeSelectOneDot = new LatinKeyboard(this, R.xml.three_select_one_dot);
+            mQwertyFour = new LatinKeyboard(this, R.xml.four_qwerty);
+            mQwertyFourSelectOneDot = new LatinKeyboard(this, R.xml.four_qwerty_select_one_dot);
+            mQwertyNumber = new LatinKeyboard(this, R.xml.qwerty_number);
+            mQwertyNumberTwo = new LatinKeyboard(this, R.xml.qwerty_number_two);
+            mQwertyNumberThree = new LatinKeyboard(this, R.xml.qwerty_number_three);
+        }else {
+            mQwertyKeyboard = new LatinKeyboard(this, R.xml.qwerty_ipad);
+            mSymbolsKeyboard = new LatinKeyboard(this, R.xml.symbols);
+            mSymbolsShiftedKeyboard = new LatinKeyboard(this, R.xml.symbols_shift);
+            mQwertyEmoji = new LatinKeyboard(this, R.xml.one_emoji_ipad);
+            mQwertySelectTwoDot = new LatinKeyboard(this, R.xml.select_two_dot_ipad);
+            mQwertyTwo = new LatinKeyboard(this, R.xml.two_qwerty_ipad);
+            mQwertyTwoSelectOneDot = new LatinKeyboard(this, R.xml.two_select_one_dot_ipad);
+            mQwertyThree = new LatinKeyboard(this, R.xml.three_qwerty_ipad);
+            mQwertyThreeSelectOneDot = new LatinKeyboard(this, R.xml.three_select_one_dot_ipad);
+            mQwertyFour = new LatinKeyboard(this, R.xml.four_qwerty_ipad);
+            mQwertyFourSelectOneDot = new LatinKeyboard(this, R.xml.four_qwerty_select_one_dot_ipad);
+            mQwertyNumber = new LatinKeyboard(this, R.xml.qwerty_number_ipad);
+            mQwertyNumberTwo = new LatinKeyboard(this, R.xml.qwerty_number_two_ipad);
+            mQwertyNumberThree = new LatinKeyboard(this, R.xml.qwerty_number_three_ipad);
+        }
 
-        mQwertyEmoji = new LatinKeyboard(this, R.xml.one_emoji);
-        mQwertySelectTwoDot = new LatinKeyboard(this, R.xml.select_two_dot);
-        mQwertyTwo = new LatinKeyboard(this, R.xml.two_qwerty);
-        mQwertyTwoSelectOneDot = new LatinKeyboard(this, R.xml.two_select_one_dot);
-        mQwertyThree = new LatinKeyboard(this, R.xml.three_qwerty);
-        mQwertyThreeSelectOneDot = new LatinKeyboard(this, R.xml.three_select_one_dot);
-        mQwertyFour = new LatinKeyboard(this, R.xml.four_qwerty);
-        mQwertyFourSelectOneDot = new LatinKeyboard(this, R.xml.four_qwerty_select_one_dot);
-        mQwertyNumber = new LatinKeyboard(this, R.xml.qwerty_number);
-        mQwertyNumberTwo = new LatinKeyboard(this, R.xml.qwerty_number_two);
-        mQwertyNumberThree = new LatinKeyboard(this, R.xml.qwerty_number_three);
     }
 
     /**
@@ -312,7 +333,7 @@ public class SoftKeyboard extends InputMethodService
             default:
                 // For all unknown input types, default to the alphabetic
                 // keyboard with no special features.
-                mCurKeyboard = mQwertyKeyboard;
+//                mCurKeyboard = mQwertyKeyboard;
                 updateShiftKeyState(attribute);
         }
 
@@ -340,9 +361,9 @@ public class SoftKeyboard extends InputMethodService
         // a particular editor, to avoid popping the underlying application
         // up and down if the user is entering text into the bottom of
         // its window.
-        setCandidatesViewShown(false);
+//        setCandidatesViewShown(false);
 
-        mCurKeyboard = mQwertyKeyboard;
+//        mCurKeyboard = mQwertyKeyboard;
         if (mInputView != null) {
             mInputView.closing();
         }
@@ -566,15 +587,15 @@ public class SoftKeyboard extends InputMethodService
      * editor state.
      */
     private void updateShiftKeyState(EditorInfo attr) {
-        if (attr != null
-                && mInputView != null && mQwertyKeyboard == mInputView.getKeyboard()) {
-            int caps = 0;
-            EditorInfo ei = getCurrentInputEditorInfo();
-            if (ei != null && ei.inputType != InputType.TYPE_NULL) {
-                caps = getCurrentInputConnection().getCursorCapsMode(attr.inputType);
-            }
-            mInputView.setShifted(mCapsLock || caps != 0);
-        }
+//        if (attr != null
+//                && mInputView != null && mQwertyKeyboard == mInputView.getKeyboard()) {
+//            int caps = 0;
+//            EditorInfo ei = getCurrentInputEditorInfo();
+//            if (ei != null && ei.inputType != InputType.TYPE_NULL) {
+//                caps = getCurrentInputConnection().getCursorCapsMode(attr.inputType);
+//            }
+//            mInputView.setShifted(mCapsLock || caps != 0);
+//        }
     }
 
     /**
@@ -1046,26 +1067,26 @@ public class SoftKeyboard extends InputMethodService
 //        updateShiftKeyState(getCurrentInputEditorInfo());
     }
 
-    private void handleShift() {
-        if (mInputView == null) {
-            return;
-        }
-
-        Keyboard currentKeyboard = mInputView.getKeyboard();
-        if (mQwertyKeyboard == currentKeyboard) {
-            // Alphabet keyboard
-            checkToggleCapsLock();
-            mInputView.setShifted(mCapsLock || !mInputView.isShifted());
-        } else if (currentKeyboard == mSymbolsKeyboard) {
-            mSymbolsKeyboard.setShifted(true);
-            mInputView.setKeyboard(mSymbolsShiftedKeyboard);
-            mSymbolsShiftedKeyboard.setShifted(true);
-        } else if (currentKeyboard == mSymbolsShiftedKeyboard) {
-            mSymbolsShiftedKeyboard.setShifted(false);
-            mInputView.setKeyboard(mSymbolsKeyboard);
-            mSymbolsKeyboard.setShifted(false);
-        }
-    }
+//    private void handleShift() {
+//        if (mInputView == null) {
+//            return;
+//        }
+//
+//        Keyboard currentKeyboard = mInputView.getKeyboard();
+//        if (mQwertyKeyboard == currentKeyboard) {
+//            // Alphabet keyboard
+//            checkToggleCapsLock();
+//            mInputView.setShifted(mCapsLock || !mInputView.isShifted());
+//        } else if (currentKeyboard == mSymbolsKeyboard) {
+//            mSymbolsKeyboard.setShifted(true);
+//            mInputView.setKeyboard(mSymbolsShiftedKeyboard);
+//            mSymbolsShiftedKeyboard.setShifted(true);
+//        } else if (currentKeyboard == mSymbolsShiftedKeyboard) {
+//            mSymbolsShiftedKeyboard.setShifted(false);
+//            mInputView.setKeyboard(mSymbolsKeyboard);
+//            mSymbolsKeyboard.setShifted(false);
+//        }
+//    }
 
     private void handleCharacter(int primaryCode, int[] keyCodes) {
         if (isInputViewShown()) {
@@ -1142,11 +1163,9 @@ public class SoftKeyboard extends InputMethodService
 
     public void swipeDown() {
         handleClose();
-        Log.d("TAG", "swipeDown: ");
     }
 
     public void swipeUp() {
-        Log.d("TAG", "swipeUp: ");
     }
 
     public void onPress(int primaryCode) {
@@ -1161,6 +1180,7 @@ public class SoftKeyboard extends InputMethodService
                     Utils.showPopupClickDefault(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
                     keyPress = key;
+//                    BaseConfig.setObjectKey(primaryCode,getApplicationContext());
                     break;
                 }
             } else if (checkType == 1000) {
@@ -1292,6 +1312,7 @@ public class SoftKeyboard extends InputMethodService
 //        count++;
         getCurrentInputConnection().commitText(text, 1);
         mInputView.dismissPopup();
+        mInputView.setAlpha(1);
     }
 
     @Override
@@ -1310,6 +1331,8 @@ public class SoftKeyboard extends InputMethodService
                 handler.postDelayed(() -> {
                     if (mPopupKeyboard.isShowing()) {
                         mPopupKeyboard.dismiss();
+                        mInputView.setAlpha(1);
+
                     }
                 }, 100);
 //            }
@@ -1322,6 +1345,7 @@ public class SoftKeyboard extends InputMethodService
             mPopupKeyboard.dismiss();
         }
         getCurrentInputConnection().commitText(text, 1);
+        mInputView.setAlpha(1);
     }
 
 
@@ -1330,5 +1354,9 @@ public class SoftKeyboard extends InputMethodService
         if (mPopupKeyboard.isShowing()) {
             mPopupKeyboard.dismiss();
         }
+        mInputView.setAlpha((float) 0.4);
     }
+//   public interface Pass{
+//        void set();
+//    }
 }

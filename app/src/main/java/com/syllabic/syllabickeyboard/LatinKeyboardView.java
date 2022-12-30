@@ -48,6 +48,7 @@ import android.widget.Toast;
 
 import androidx.annotation.LongDef;
 
+import com.google.gson.Gson;
 import com.syllabic.syllabickeyboard.config.BaseConfig;
 import com.syllabic.syllabickeyboard.utils.Utils;
 
@@ -63,6 +64,7 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
     Context context;
     private PopupWindow mPopupKeyboard;
     private Key keys;
+    private int keyChangeBackGround;
     private PassDataLongPress passDataLongPress;
     private PassEventKeyboard passEventKeyboard;
     private CheckDataLongPress checkDataLongPress;
@@ -77,6 +79,9 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
                 Context.LAYOUT_INFLATER_SERVICE);
         mPopupKeyboard = new PopupWindow(context);
         mPopupKeyboard.setContentView(inflater.inflate(R.layout.layout_custom, null));
+
+//        softKeyboard = new SoftKeyboard();
+//        softKeyboard.setData(this);
     }
 
     public LatinKeyboardView(Context context, AttributeSet attrs, int defStyle) {
@@ -164,7 +169,7 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
                 || key.text.equals("z") || key.text.equals("•") || key.text.equals("$") || key.text.equals("¢")) {
             if (keys.label != null && !keys.label.toString().equals("▼") &&
                     !keys.label.toString().equals("▲") && !keys.label.toString().equals("1")
-                    && !keys.label.toString().equals("•")&& !keys.label.toString().equals("••")) {
+                    && !keys.label.toString().equals("•") && !keys.label.toString().equals("••")) {
                 checkLongPressOneCharactor = true;
             }
             return true;
@@ -176,26 +181,13 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
 
     public boolean customPopup(Key popupKey) {
         checkLongPressNotActionMove = true;
-        if (BaseConfig.readNameDevice(context).equals("mobile")) {
-            if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
-                Utils.showPopupLongClick(mPopupKeyboard, context, popupKey,
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne),
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo));
-                mPopupKeyboard.setClippingEnabled(true);
-                mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, (popupKey.x), popupKey.y);
-                mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setOnClickListener(this);
-                mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setOnClickListener(this);
-            } else {
-                Utils.showPopupLongClick(mPopupKeyboard, context, popupKey,
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne),
-                        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo));
-                int textLeft = (int) context.getResources().getDimensionPixelSize(R.dimen.height_popup_long_press);
-                mPopupKeyboard.setClippingEnabled(true);
-                mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, (popupKey.x), popupKey.y);
-                mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setOnClickListener(this);
-                mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setOnClickListener(this);
-            }
-        }
+        Utils.showPopupLongClick(mPopupKeyboard, context, popupKey,
+                mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne),
+                mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo));
+        mPopupKeyboard.setClippingEnabled(true);
+        mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, (popupKey.x), popupKey.y);
+        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setOnClickListener(this);
+        mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setOnClickListener(this);
         return true;
     }
 
@@ -252,10 +244,12 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
         } else if (me.getAction() == MotionEvent.ACTION_UP) {
             Log.d("sonth", "two" + checkAction);
             if (checkLongPressOneCharactor) {
-                if (keys.label != null && !keys.label.toString().equals("▼") &&
-                        !keys.label.toString().equals("▲") && !keys.label.toString().equals("1")
-                        && !keys.label.toString().equals("•")&& !keys.label.toString().equals("••")) {
-                    passDataLongPressOneCharator.passDataLongPressOneCharator(keys.label.toString());
+                if (keys != null) {
+                    if (keys.label != null && !keys.label.toString().equals("▼") &&
+                            !keys.label.toString().equals("▲") && !keys.label.toString().equals("1")
+                            && !keys.label.toString().equals("•") && !keys.label.toString().equals("••")) {
+                        passDataLongPressOneCharator.passDataLongPressOneCharator(keys.label.toString());
+                    }
                 }
             } else {
                 if (checkAction) {
@@ -304,28 +298,88 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
             checkType = keys.get(0).codes[0];
             if (checkType == 113) {
                 Utils.setBackGroundDefault(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 1000) {
                 Utils.setBackGroundEmoji(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 1050) {
                 Utils.setBackGroundSelectTwoDot(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 2000) {
                 Utils.setBackGroundTwoQwerty(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 2050) {
                 Utils.setBackGroundTwoSelectOneDot(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 3000) {
                 Utils.setBackGroundThreeQwerty(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 3050) {
                 Utils.setBackGroundThreeSelectOneDot(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 4000) {
                 Utils.setBackGroundFourQwerty(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 4050) {
                 Utils.setBackGroundFourSelectOneDot(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 5000) {
                 Utils.setBackGroundQwertyNumber(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 5020) {
                 Utils.setBackGroundQwertyNumberTwo(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             } else if (checkType == 5030) {
                 Utils.setBackGroundQwertyNumberThree(key, canvas, paint, context);
+                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+                    if (key.pressed){
+                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+                    }
+                }
             }
         }
     }
@@ -345,6 +399,11 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
         }
     }
 
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        Log.d("TAG", "dispatchKeyEvent: ");
+        return super.dispatchKeyEvent(event);
+    }
 
     interface PassDataLongPress {
         void passDataLongPress(String text);

@@ -6,6 +6,7 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
+    <color name="background_button_space">#FFFFFF</color>
     <color name="background_app">#FFFFFF</color>
     <color name="background_keyboard">#E6E6E6</color>
     <color name="background_text_view_select">#b8c4ff</color>

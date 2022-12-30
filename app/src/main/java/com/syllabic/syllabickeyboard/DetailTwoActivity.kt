@@ -42,9 +42,10 @@ class DetailTwoActivity : AppCompatActivity() {
 
         when (checkLanguage) {
             "", "two" -> {
-                val face = ResourcesCompat.getFont(this, R.font.roboto_regular);
+                val face = ResourcesCompat.getFont(this, R.font.roboto_regular)
+                val face2 = ResourcesCompat.getFont(this, R.font.roboto_bold)
                 tvBack.typeface = face
-                textView5.typeface = face
+                textView5.typeface = face2
                 textView6.typeface = face
                 textView7.typeface = face
                 textView8.typeface = face
@@ -68,8 +69,9 @@ class DetailTwoActivity : AppCompatActivity() {
             }
             else -> {
                 val face = ResourcesCompat.getFont(this, R.font.roboto_regular);
+                val face2 = ResourcesCompat.getFont(this, R.font.roboto_bold)
                 tvBack.typeface = face
-                textView5.typeface = face
+                textView5.typeface = face2
                 textView6.typeface = face
                 textView7.typeface = face
                 textView8.typeface = face

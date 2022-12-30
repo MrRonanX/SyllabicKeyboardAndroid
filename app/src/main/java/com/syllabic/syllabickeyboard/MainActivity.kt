@@ -9,6 +9,7 @@ import android.provider.UserDictionary
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.syllabic.syllabickeyboard.config.BaseConfig
@@ -49,6 +50,7 @@ class MainActivity : AppCompatActivity() {
             tvHomeThree.gravity = Gravity.CENTER
             tvHomeThree.gravity = Gravity.CENTER
         }
+
     }
 
     private fun setOnClick() {

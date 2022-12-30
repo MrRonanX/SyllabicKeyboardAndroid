@@ -103,34 +103,6 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </LinearLayout>
             </LinearLayout>
-<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:id="@+id/layoutSuggest"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent">-->
-
-<!--                <androidx.constraintlayout.widget.Guideline-->
-<!--                    android:id="@+id/guideline7"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical"-->
-<!--                    app:layout_constraintGuide_percent="0.33" />-->
-
-<!--                <androidx.constraintlayout.widget.Guideline-->
-<!--                    android:id="@+id/guideline8"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:orientation="vertical"-->
-<!--                    app:layout_constraintGuide_percent="0.66" />-->
-
-
-
-
-
-
-
-
-
-<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
         </LinearLayout>
         <com.syllabic.syllabickeyboard.LatinKeyboardView
             android:id="@+id/keyboard"

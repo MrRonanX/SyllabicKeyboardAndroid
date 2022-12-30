@@ -35,7 +35,6 @@
         android:layout_height="wrap_content"
         android:text="Credit"
         android:fontFamily="@font/llisarniq_demi"
-
         android:textColor="@color/text_color_app"
         android:textSize="18sp"
         android:textStyle="bold"

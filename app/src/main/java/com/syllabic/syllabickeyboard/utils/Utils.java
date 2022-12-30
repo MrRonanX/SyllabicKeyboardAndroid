@@ -465,6 +465,14 @@ public class Utils {
         dr.draw(canvas);
     }
 
+    public static void setColorButtonSelectedKeyboard(Keyboard.Key key, Canvas canvas, Context context) {
+        Drawable dr = (Drawable) context.getResources().getDrawable(R.drawable.custom_back_ground_selected);
+        dr.setBounds(key.x, key.y, key.x + key.width, key.y + key.height);
+        dr.draw(canvas);
+    }
+
+
+
     private static void setColorTextWhite(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
         if (BaseConfig.readNameDevice(context).equals("tablet")) {
             int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard_tablet);
@@ -522,37 +530,79 @@ public class Utils {
     }
 
     private static void setColorTextWhiteIcon(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
-//        int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
-        Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
-        paint.setTypeface(face);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(65);
-        paint.setColor(Color.WHITE);
-        if (key.label != null) {
-            canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 25), paint);
+        if (BaseConfig.readNameDevice(context).equals("mobile")) {
+            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
+                Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
+                paint.setTypeface(face);
+                paint.setTextAlign(Paint.Align.CENTER);
+                paint.setTextSize(68);
+                paint.setColor(Color.WHITE);
+                if (key.label != null) {
+                    canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 25), paint);
+                }
+        }else {
+            int textSizeIconKeyBoard = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard_ipad);
+            Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
+            paint.setTypeface(face);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(textSizeIconKeyBoard);
+            paint.setColor(Color.WHITE);
+            if (key.label != null) {
+                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 25), paint);
+            }
         }
+
     }
 
     private static void setColorTextWhiteIconTwo(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
-        Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
-        paint.setTypeface(face);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(65);
-        paint.setColor(Color.WHITE);
-        if (key.label != null) {
-            canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 20), paint);
+        int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
+        if (BaseConfig.readNameDevice(context).equals("mobile")) {
+            Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
+            paint.setTypeface(face);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(68);
+            paint.setColor(Color.WHITE);
+            if (key.label != null) {
+                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 20), paint);
+            }
+        }else {
+            int textSizeIconKeyBoard = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard_ipad);
+            Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
+            paint.setTypeface(face);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(textSizeIconKeyBoard);
+            paint.setColor(Color.WHITE);
+            if (key.label != null) {
+                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 20), paint);
+            }
         }
+
     }
 
     private static void setColorTextWhiteIconTwoDot(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
-        Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
-        paint.setTypeface(face);
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(65);
-        paint.setColor(Color.WHITE);
-        if (key.label != null) {
-            canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) * 1.3), paint);
+        if (BaseConfig.readNameDevice(context).equals("mobile")) {
+            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
+
+            Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
+            paint.setTypeface(face);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(65);
+            paint.setColor(Color.WHITE);
+            if (key.label != null) {
+                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) * 1.3), paint);
+            }
+        }else {
+            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard_ipad);
+            Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
+            paint.setTypeface(face);
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTextSize(textSize);
+            paint.setColor(Color.WHITE);
+            if (key.label != null) {
+                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) * 1.3), paint);
+            }
         }
+
     }
 
     private static void setColorTextBlack(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
@@ -596,10 +646,10 @@ public class Utils {
                 key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
                 key.icon.draw(canvas);
             } else {
-                int textLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_left_vertical);
-                int textTop = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_top_vertical);
-                int textRight = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_right_vertical);
-                int textBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_bottom_vertical);
+                int textLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_left_horizontal);
+                int textTop = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_top_horizontal);
+                int textRight = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_right_horizontal);
+                int textBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_bottom_horizontal);
                 float left = (float) (key.x + textLeft);
                 float top = (float) (key.y + textTop);
                 float right = (float) (key.x + textRight);
@@ -609,10 +659,10 @@ public class Utils {
             }
         } else {
             if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
-                int textLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_left_vertical);
-                int textTop = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_top_vertical);
-                int textRight = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_right_vertical);
-                int textBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_bottom_vertical);
+                int textLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_left_vertical);
+                int textTop = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_top_vertical);
+                int textRight = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_right_vertical);
+                int textBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_bottom_vertical);
                 float left = (float) (key.x + textLeft);
                 float top = (float) (key.y + textTop);
                 float right = (float) (key.x + textRight);
@@ -620,10 +670,10 @@ public class Utils {
                 key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
                 key.icon.draw(canvas);
             } else {
-                int textLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_left_vertical);
-                int textTop = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_top_vertical);
-                int textRight = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_right_vertical);
-                int textBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_bottom_vertical);
+                int textLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_left_horizontal);
+                int textTop = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_top_horizontal);
+                int textRight = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_right_horizontal);
+                int textBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_delete_ipad_bottom_horizontal);
                 float left = (float) (key.x + textLeft);
                 float top = (float) (key.y + textTop);
                 float right = (float) (key.x + textRight);
@@ -662,10 +712,10 @@ public class Utils {
             }
         } else {
             if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
-                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_left_vertical);
-                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_top_vertical);
-                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_right_vertical);
-                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_bottom_vertical);
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_bottom_vertical);
                 float left = (float) (key.x + iconLeft);
                 float top = (float) (key.y + iconTop);
                 float right = (float) (key.x + key.width) - iconRight;
@@ -673,10 +723,10 @@ public class Utils {
                 key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
                 key.icon.draw(canvas);
             } else {
-                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_left_vertical);
-                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_top_vertical);
-                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_right_vertical);
-                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_bottom_vertical);
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_left_horizontal);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_top_horizontal);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_right_horizontal);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_bottom_horizontal);
                 float left = (float) (key.x + iconLeft);
                 float top = (float) (key.y + iconTop);
                 float right = (float) (key.x + key.width) - iconRight;
@@ -716,10 +766,10 @@ public class Utils {
             }
         } else {
             if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
-                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_left_horizontal);
-                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_top_horizontal);
-                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_right_horizontal);
-                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_final_bottom_horizontal);
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_final_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_final_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_final_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_right_final_bottom_vertical);
                 float left = (float) (key.x + iconLeft);
                 float top = (float) (key.y + iconTop);
                 float right = (float) (key.x + key.width) - iconRight;
@@ -769,10 +819,10 @@ public class Utils {
             }
         } else {
             if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
-                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_left_horizontal);
-                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_top_horizontal);
-                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_right_horizontal);
-                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_bottom_horizontal);
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_bottom_vertical);
                 float left = (float) (key.x + iconLeft);
                 float top = (float) (key.y + iconTop);
                 float right = (float) (key.x + key.width) - iconRight;
@@ -821,10 +871,10 @@ public class Utils {
             }
         } else {
             if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
-                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_left_horizontal);
-                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_top_horizontal);
-                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_right_horizontal);
-                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_final_bottom_horizontal);
+                int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_final_left_vertical);
+                int iconTop = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_final_top_vertical);
+                int iconRight = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_final_right_vertical);
+                int iconBottom = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_ipad_left_final_bottom_vertical);
                 float left = (float) (key.x + iconLeft);
                 float top = (float) (key.y + iconTop);
                 float right = (float) (key.x + key.width) - iconRight;
@@ -1543,7 +1593,6 @@ public class Utils {
                 }
             }
         }
-
     }
 
     public static void showPopupClickEmoji(View mInputView, PopupWindow popupWindow, Context context, Key key, TextView tvClick) {
@@ -2069,22 +2118,22 @@ public class Utils {
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
                     popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
-                } else {
-                    if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
-                            || key.codes[0] == 116 || key.codes[0] == 121 || key.codes[0] == 117 || key.codes[0] == 111
-                            || key.codes[0] == 105 || key.codes[0] == 115 || key.codes[0] == 100 || key.codes[0] == 102
-                            || key.codes[0] == 103 || key.codes[0] == 104 || key.codes[0] == 106 || key.codes[0] == 107 ||
-                            key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
-                            key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
-                        tvClick.setText(key.text);
-                        tvClick.setTextColor(Color.WHITE);
-                        setBackGroundPopupClickWindowYellow(popupWindow, context);
-                        int width = context.getResources().getDimensionPixelSize(R.dimen.popup_click_width);
-                        int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
-                        popupWindow.setWidth(width);
-                        popupWindow.setHeight(width);
-                        popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
-                    }
+                }
+            }else {
+                if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
+                        || key.codes[0] == 116 || key.codes[0] == 121 || key.codes[0] == 117 || key.codes[0] == 111
+                        || key.codes[0] == 105 || key.codes[0] == 115 || key.codes[0] == 100 || key.codes[0] == 102
+                        || key.codes[0] == 103 || key.codes[0] == 104 || key.codes[0] == 106 || key.codes[0] == 107 ||
+                        key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
+                        key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
+                    tvClick.setText(key.text);
+                    tvClick.setTextColor(Color.WHITE);
+                    setBackGroundPopupClickWindowYellow(popupWindow, context);
+                    int width = context.getResources().getDimensionPixelSize(R.dimen.popup_click_width);
+                    int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
+                    popupWindow.setWidth(width);
+                    popupWindow.setHeight(width);
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
                 }
             }
         }
