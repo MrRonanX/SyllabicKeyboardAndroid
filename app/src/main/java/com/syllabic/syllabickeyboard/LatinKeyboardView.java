@@ -184,8 +184,8 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
         Utils.showPopupLongClick(mPopupKeyboard, context, popupKey,
                 mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne),
                 mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo));
-        mPopupKeyboard.setClippingEnabled(true);
-        mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, (popupKey.x), popupKey.y);
+        mPopupKeyboard.setClippingEnabled(false);
+        mPopupKeyboard.showAtLocation(this, Gravity.NO_GRAVITY, (popupKey.x), popupKey.y-100);
         mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setOnClickListener(this);
         mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setOnClickListener(this);
         return true;
@@ -219,23 +219,23 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
                     if ((keys.x + iconRight) > me.getX()) {
                         if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_blue).getConstantState())) {
                             mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_selected_text);
-                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.color.background_blue);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_popup_blue);
                         } else if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_orange).getConstantState())) {
                             mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_selected_text);
-                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.color.background_orange);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_popup_orange);
                         } else {
                             mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_selected_text);
-                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.color.background_green);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_popup_green);
                         }
                     } else {
                         if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_blue).getConstantState())) {
-                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.color.background_blue);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_popup_blue);
                             mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_selected_text);
                         } else if (mPopupKeyboard.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.background_popup_orange).getConstantState())) {
-                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.color.background_orange);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_popup_orange);
                             mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_selected_text);
                         } else {
-                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.color.background_green);
+                            mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressOne).setBackgroundResource(R.drawable.background_popup_green);
                             mPopupKeyboard.getContentView().findViewById(R.id.tvLongPressTwo).setBackgroundResource(R.drawable.background_selected_text);
                         }
                     }
@@ -298,87 +298,70 @@ public class LatinKeyboardView extends KeyboardView implements View.OnClickListe
             checkType = keys.get(0).codes[0];
             if (checkType == 113) {
                 Utils.setBackGroundDefault(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
+//                if (BaseConfig.readNameDevice(context).equals("tablet")) {
+//                    if (key.pressed){
+//                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
+//                    }
+//                }else {
+//
+//                }
             } else if (checkType == 1000) {
                 Utils.setBackGroundEmoji(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 1050) {
                 Utils.setBackGroundSelectTwoDot(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 2000) {
                 Utils.setBackGroundTwoQwerty(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 2050) {
                 Utils.setBackGroundTwoSelectOneDot(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 3000) {
                 Utils.setBackGroundThreeQwerty(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 3050) {
                 Utils.setBackGroundThreeSelectOneDot(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 4000) {
                 Utils.setBackGroundFourQwerty(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 4050) {
                 Utils.setBackGroundFourSelectOneDot(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 5000) {
                 Utils.setBackGroundQwertyNumber(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 5020) {
                 Utils.setBackGroundQwertyNumberTwo(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             } else if (checkType == 5030) {
                 Utils.setBackGroundQwertyNumberThree(key, canvas, paint, context);
-                if (BaseConfig.readNameDevice(context).equals("tablet")) {
-                    if (key.pressed){
-                        Utils.setColorButtonSelectedKeyboard(key, canvas, context);
-                    }
+                if (key.pressed){
+                    Utils.setColorButtonSelectedKeyboard(key, canvas, context);
                 }
             }
         }

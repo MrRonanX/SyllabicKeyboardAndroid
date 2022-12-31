@@ -1,15 +1,16 @@
 package com.syllabic.syllabickeyboard
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Typeface
 import android.os.Bundle
 import android.provider.UserDictionary
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
-import android.widget.Toast
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import com.syllabic.syllabickeyboard.config.BaseConfig
@@ -28,7 +29,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setOnClick()
-        UserDictionary.Words.addWord(this, "MadeUpWord", 10,
+        UserDictionary.Words.addWord(
+            this, "MadeUpWord", 10,
             UserDictionary.Words.LOCALE_TYPE_CURRENT
         )
         val metrics = DisplayMetrics()
@@ -41,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             BaseConfig.saveNameDevice("mobile", this);
         }
-        if (BaseConfig.readNameDevice(this).equals("tablet")){
+        if (BaseConfig.readNameDevice(this).equals("tablet")) {
             layoutEnableSuggest.gravity = Gravity.CENTER
             tvHomeThree.gravity = Gravity.CENTER
             tvHomeFour.gravity = Gravity.CENTER
@@ -75,7 +77,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(myIntent)
         }
         switchUser.isChecked = BaseConfig.readLastButtonPressed(this)
-
+        switchUser.setOnClickListener {
+            showAlterDialog()
+        }
         switchUser.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 BaseConfig.saveLastButtonPressed(true, this)
@@ -199,4 +203,56 @@ class MainActivity : AppCompatActivity() {
         layoutThree.setBackgroundResource(R.drawable.bg_click_main_orange)
         checkLanguage = "three"
     }
+
+    private fun showAlterDialog() {
+        if (checkLanguage == "" || checkLanguage == "two") {
+            AlertDialog.Builder(this)
+                .setTitle("We need your consent")
+                .setMessage("When \"Personalized suggestions\" enabled algorithms track what vocabulary you use and on what frequency. Algorithm provides suggestions based on how often the word was used by you. The algorithm is executed on the device and all the information is stored on locally on the device. You can disable suggestions or delete all collected data from this application") // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton("Enable"
+                ) { dialog, which ->
+                    switchUser.isChecked = true
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Cancel") { dialog, which ->
+                    switchUser.isChecked = false
+                    dialog.dismiss()
+                }
+                .show()
+        } else if (checkLanguage == "one") {
+            AlertDialog.Builder(this)
+                .setTitle("ᐊᖏᕐᓯᒪᐅᑎᓐᓂᐅᕕᑦ ᑭᖕᖒᒪᑦᓯᔪᒍ")
+                .setMessage("\"ᐃᓕᓐᓂᑐᐊ ᐱᒍᑦᔨᔪᒃ\" ᐊᐅᓚᑎᑐᐊᒍᕕᐅᒃ, ᐊᓪᓚᒐᔪᓲᑎᑦ ᖃᕆᑕᐅᔮᕈᓐᓄᑦ ᓄᐊᑕᐅᔪᑦ ᐊᓪᓚᓕᕈᕕᑦ ᐅᖃᐅᓰᑦ " +
+                        "ᐊᓪᓚᓲᑎᑦ ᓇᕐᓂᓗᒋᑦ ᓄᐃᑎᕇᕈᓐᓇᖃᑦᑕᕋᔭᕋᕕᒋᑦ. ᐅᖃᐅᓰᑦ ᓄᐊᑕᐅᒪᔪᑦ ᖃᕆᑕᐅᔮᕈᑉᐱᑦ ᐃᓗᐊᓃᑐᐃᓐᓇᓚᖓᔪᑦ " +
+                        "ᓄᖑᑎᕈᓐᓇᓱᒋᓪᓗ. ᐃᓕᓐᓂᑐᐊ ᐱᒍᑦᔨᔪᒃ ᓄᕐᖃᑎᒍᓐᓇᑌᑦ")
+                .setPositiveButton("ᐱᕈᓐᓇᓯᑎᓗᒍ",
+                    DialogInterface.OnClickListener { dialog, which ->
+                        switchUser.isChecked = true
+                        dialog.dismiss()
+                        // Continue with delete operation
+                    }) // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton("ᖁᔭᓇ") { dialog, which ->
+                    switchUser.isChecked = false
+                    dialog.dismiss()
+                }
+                .show()
+        } else {
+            AlertDialog.Builder(this)
+                .setTitle("Nous avons besoin de votre consentement")
+                .setMessage("Lorsque les \"Suggestions personnalisées\" sont activées, les algorithmes suivent le vocabulaire que vous utilisez et à quelle fréquence. L'algorithme fournit des suggestions en fonction de la fréquence à laquelle vous avez utilisé le mot. L'algorithme est exécuté sur l'appareil et toutes les informations sont stockées localement sur l'appareil. Vous pouvez désactiver les suggestions ou supprimer toutes les données collectées de cette application") // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton("Activer",
+                    DialogInterface.OnClickListener { dialog, which ->
+                        switchUser.isChecked = true
+                        dialog.dismiss()
+                    }) // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton("Annuler") { dialog, which ->
+                    switchUser.isChecked = false
+                    dialog.dismiss()
+                }
+                .show()
+        }
+    }
+
 }

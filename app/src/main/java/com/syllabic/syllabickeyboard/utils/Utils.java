@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -531,14 +532,14 @@ public class Utils {
 
     private static void setColorTextWhiteIcon(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
         if (BaseConfig.readNameDevice(context).equals("mobile")) {
-            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
-                Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
+            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard);
+            Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
                 paint.setTypeface(face);
                 paint.setTextAlign(Paint.Align.CENTER);
-                paint.setTextSize(68);
+                paint.setTextSize(textSize);
                 paint.setColor(Color.WHITE);
                 if (key.label != null) {
-                    canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 25), paint);
+                    canvas.drawText(key.label.toString(), (key.x + (key.width )/2), (float) ((key.y + (key.height / 2)) *1.3), paint);
                 }
         }else {
             int textSizeIconKeyBoard = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard_ipad);
@@ -548,22 +549,24 @@ public class Utils {
             paint.setTextSize(textSizeIconKeyBoard);
             paint.setColor(Color.WHITE);
             if (key.label != null) {
-                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 25), paint);
+                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 20), paint);
             }
         }
 
     }
 
     private static void setColorTextWhiteIconTwo(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
-        int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
         if (BaseConfig.readNameDevice(context).equals("mobile")) {
+            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard);
+//            double relation = Math.sqrt(canvas.getWidth() * canvas.getHeight());
+//            relation = relation / 250;
             Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
             paint.setTypeface(face);
             paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(68);
+            paint.setTextSize(textSize);
             paint.setColor(Color.WHITE);
             if (key.label != null) {
-                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 20), paint);
+                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 25), paint);
             }
         }else {
             int textSizeIconKeyBoard = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard_ipad);
@@ -581,12 +584,13 @@ public class Utils {
 
     private static void setColorTextWhiteIconTwoDot(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
         if (BaseConfig.readNameDevice(context).equals("mobile")) {
-            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard);
-
+            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard);
+//            double relation = Math.sqrt(canvas.getWidth() * canvas.getHeight());
+//            relation = relation / 250;
             Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
             paint.setTypeface(face);
             paint.setTextAlign(Paint.Align.CENTER);
-            paint.setTextSize(65);
+            paint.setTextSize(textSize);
             paint.setColor(Color.WHITE);
             if (key.label != null) {
                 canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) * 1.3), paint);
@@ -613,7 +617,7 @@ public class Utils {
             paint.setTypeface(face);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(textSize);
-            paint.setColor(Color.BLACK);
+            paint.setColor(context.getResources().getColor(R.color.text_color_special));
             if (key.label != null) {
                 canvas.drawText(key.label.toString(), key.x + (key.width / 2), (float) ((key.y + (key.height / 2)) + textHeight), paint);
             }
@@ -624,7 +628,7 @@ public class Utils {
             paint.setTypeface(face);
             paint.setTextAlign(Paint.Align.CENTER);
             paint.setTextSize(textSize);
-            paint.setColor(Color.BLACK);
+            paint.setColor(context.getResources().getColor(R.color.text_color_special));
             if (key.label != null) {
                 canvas.drawText(key.label.toString(), key.x + (key.width / 2), (float) ((key.y + (key.height / 2)) + textHeight), paint);
             }
@@ -643,6 +647,7 @@ public class Utils {
                 int top = (key.y + textTop);
                 int right = (key.x + textRight);
                 int bottom = (key.y + textBottom);
+                key.icon.setColorFilter(context.getResources().getColor(R.color.text_color_special), PorterDuff.Mode.SRC_ATOP);
                 key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
                 key.icon.draw(canvas);
             } else {
@@ -654,6 +659,7 @@ public class Utils {
                 float top = (float) (key.y + textTop);
                 float right = (float) (key.x + textRight);
                 float bottom = (float) (key.y + textBottom);
+                key.icon.setColorFilter(context.getResources().getColor(R.color.text_color_special), PorterDuff.Mode.SRC_ATOP);
                 key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
                 key.icon.draw(canvas);
             }
@@ -667,6 +673,8 @@ public class Utils {
                 float top = (float) (key.y + textTop);
                 float right = (float) (key.x + textRight);
                 float bottom = (float) (key.y + textBottom);
+                key.icon.setColorFilter(context.getResources().getColor(R.color.text_color_special), PorterDuff.Mode.SRC_ATOP);
+
                 key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
                 key.icon.draw(canvas);
             } else {
@@ -678,6 +686,8 @@ public class Utils {
                 float top = (float) (key.y + textTop);
                 float right = (float) (key.x + textRight);
                 float bottom = (float) (key.y + textBottom);
+                key.icon.setColorFilter(context.getResources().getColor(R.color.text_color_special), PorterDuff.Mode.SRC_ATOP);
+
                 key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
                 key.icon.draw(canvas);
             }
@@ -929,9 +939,9 @@ public class Utils {
         if (key.text.equals("ᐃ") || key.text.equals("ᐄ")) {
             if (key.text.equals("ᐃ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᐃ");
@@ -940,20 +950,20 @@ public class Utils {
         } else if (key.text.equals("ᐱ") || key.text.equals("ᐲ")) {
             if (key.text.equals("ᐱ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᐱ");
             tvTwo.setText("ᐲ");
             setBackGroundPopupWindowBlue(popupWindow, context);
-        } else if (key.text.equals("ᑎ") || key.text.equals("ᑏ")) {
+        }else if (key.text.equals("ᑎ") || key.text.equals("ᑏ")) {
             if (key.text.equals("ᑎ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᑎ");
@@ -962,9 +972,9 @@ public class Utils {
         } else if (key.text.equals("ᑭ") || key.text.equals("ᑮ")) {
             if (key.text.equals("ᑭ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᑭ");
@@ -973,9 +983,9 @@ public class Utils {
         } else if (key.text.equals("ᒋ") || key.text.equals("ᒌ")) {
             if (key.text.equals("ᒋ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᒋ");
@@ -984,9 +994,9 @@ public class Utils {
         } else if (key.text.equals("ᒥ") || key.text.equals("ᒦ")) {
             if (key.text.equals("ᒥ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᒥ");
@@ -995,9 +1005,9 @@ public class Utils {
         } else if (key.text.equals("ᓂ") || key.text.equals("ᓃ")) {
             if (key.text.equals("ᓂ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᓂ");
@@ -1006,9 +1016,9 @@ public class Utils {
         } else if (key.text.equals("ᓯ") || key.text.equals("ᓰ")) {
             if (key.text.equals("ᓯ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᓯ");
@@ -1017,9 +1027,9 @@ public class Utils {
         } else if (key.text.equals("ᓕ") || key.text.equals("ᓖ")) {
             if (key.text.equals("ᓕ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᓕ");
@@ -1028,9 +1038,9 @@ public class Utils {
         } else if (key.text.equals("ᔨ") || key.text.equals("ᔩ")) {
             if (key.text.equals("ᔨ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᔨ");
@@ -1039,9 +1049,9 @@ public class Utils {
         } else if (key.text.equals("ᕕ") || key.text.equals("ᕖ")) {
             if (key.text.equals("ᕕ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᕕ");
@@ -1050,9 +1060,9 @@ public class Utils {
         } else if (key.text.equals("ᕆ") || key.text.equals("ᕇ")) {
             if (key.text.equals("ᕆ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᕆ");
@@ -1061,9 +1071,9 @@ public class Utils {
         } else if (key.text.equals("ᕿ") || key.text.equals("ᖀ")) {
             if (key.text.equals("ᕿ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᕿ");
@@ -1072,9 +1082,9 @@ public class Utils {
         } else if (key.text.equals("ᖏ")) {
             if (key.text.equals("ᖏ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_blue);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_blue);
             } else {
-                tvOne.setBackgroundResource(R.color.background_blue);
+                tvOne.setBackgroundResource(R.drawable.background_popup_blue);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᖏ");
@@ -1084,9 +1094,9 @@ public class Utils {
         } else if (key.text.equals("ᐅ") || key.text.equals("ᐆ")) {
             if (key.text.equals("ᐅ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᐅ");
@@ -1095,9 +1105,9 @@ public class Utils {
         } else if (key.text.equals("ᐳ") || key.text.equals("ᐴ")) {
             if (key.text.equals("ᐳ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᐳ");
@@ -1106,9 +1116,9 @@ public class Utils {
         } else if (key.text.equals("ᑐ") || key.text.equals("ᑑ")) {
             if (key.text.equals("ᑐ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᑐ");
@@ -1117,9 +1127,9 @@ public class Utils {
         } else if (key.text.equals("ᑯ") || key.text.equals("ᑰ")) {
             if (key.text.equals("ᑯ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᑯ");
@@ -1128,9 +1138,9 @@ public class Utils {
         } else if (key.text.equals("ᒍ") || key.text.equals("ᒎ")) {
             if (key.text.equals("ᒍ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᒍ");
@@ -1139,9 +1149,9 @@ public class Utils {
         } else if (key.text.equals("ᒧ") || key.text.equals("ᒨ")) {
             if (key.text.equals("ᒧ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᒧ");
@@ -1150,9 +1160,9 @@ public class Utils {
         } else if (key.text.equals("ᓄ") || key.text.equals("ᓅ")) {
             if (key.text.equals("ᓄ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᓄ");
@@ -1161,9 +1171,9 @@ public class Utils {
         } else if (key.text.equals("ᓱ") || key.text.equals("ᓲ")) {
             if (key.text.equals("ᓱ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᓱ");
@@ -1172,9 +1182,9 @@ public class Utils {
         } else if (key.text.equals("ᓗ") || key.text.equals("ᓘ")) {
             if (key.text.equals("ᓗ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᓗ");
@@ -1183,9 +1193,9 @@ public class Utils {
         } else if (key.text.equals("ᔪ") || key.text.equals("ᔫ")) {
             if (key.text.equals("ᔪ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᔪ");
@@ -1194,9 +1204,9 @@ public class Utils {
         } else if (key.text.equals("ᕗ") || key.text.equals("ᕘ")) {
             if (key.text.equals("ᕗ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᕗ");
@@ -1205,9 +1215,9 @@ public class Utils {
         } else if (key.text.equals("ᕈ") || key.text.equals("ᕉ")) {
             if (key.text.equals("ᕈ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᕈ");
@@ -1216,9 +1226,9 @@ public class Utils {
         } else if (key.text.equals("ᖁ") || key.text.equals("ᖂ")) {
             if (key.text.equals("ᖁ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᖁ");
@@ -1227,9 +1237,9 @@ public class Utils {
         } else if (key.text.equals("ᖑ") || key.text.equals("ᖒ")) {
             if (key.text.equals("ᖑ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_orange);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_orange);
             } else {
-                tvOne.setBackgroundResource(R.color.background_orange);
+                tvOne.setBackgroundResource(R.drawable.background_popup_orange);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᖑ");
@@ -1240,9 +1250,9 @@ public class Utils {
         else if (key.text.equals("ᐊ") || key.text.equals("ᐋ")) {
             if (key.text.equals("ᐊ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᐊ");
@@ -1252,9 +1262,9 @@ public class Utils {
         } else if (key.text.equals("ᑕ") || key.text.equals("ᑖ")) {
             if (key.text.equals("ᑕ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᑕ");
@@ -1263,9 +1273,9 @@ public class Utils {
         } else if (key.text.equals("ᐸ") || key.text.equals("ᐹ")) {
             if (key.text.equals("ᐸ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᐸ");
@@ -1274,9 +1284,9 @@ public class Utils {
         } else if (key.text.equals("ᑲ") || key.text.equals("ᑳ")) {
             if (key.text.equals("ᑲ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᑲ");
@@ -1285,9 +1295,9 @@ public class Utils {
         } else if (key.text.equals("ᒐ") || key.text.equals("ᒑ")) {
             if (key.text.equals("ᒐ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᒐ");
@@ -1296,9 +1306,9 @@ public class Utils {
         } else if (key.text.equals("ᒪ") || key.text.equals("ᒫ")) {
             if (key.text.equals("ᒪ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᒪ");
@@ -1307,9 +1317,9 @@ public class Utils {
         } else if (key.text.equals("ᓇ") || key.text.equals("ᓈ")) {
             if (key.text.equals("ᓇ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᓇ");
@@ -1318,9 +1328,9 @@ public class Utils {
         } else if (key.text.equals("ᓴ") || key.text.equals("ᓵ")) {
             if (key.text.equals("ᓴ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᓴ");
@@ -1329,9 +1339,9 @@ public class Utils {
         } else if (key.text.equals("ᓚ") || key.text.equals("ᓛ")) {
             if (key.text.equals("ᓚ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᓚ");
@@ -1340,9 +1350,9 @@ public class Utils {
         } else if (key.text.equals("ᔭ") || key.text.equals("ᔮ")) {
             if (key.text.equals("ᔭ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᔭ");
@@ -1351,9 +1361,9 @@ public class Utils {
         } else if (key.text.equals("ᕙ") || key.text.equals("ᕚ")) {
             if (key.text.equals("ᕙ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᕙ");
@@ -1362,9 +1372,9 @@ public class Utils {
         } else if (key.text.equals("ᕋ") || key.text.equals("ᕌ")) {
             if (key.text.equals("ᕋ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᕋ");
@@ -1373,9 +1383,9 @@ public class Utils {
         } else if (key.text.equals("ᖃ") || key.text.equals("ᖄ")) {
             if (key.text.equals("ᖃ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᖃ");
@@ -1384,9 +1394,9 @@ public class Utils {
         } else if (key.text.equals("ᖓ") || key.text.equals("ᖔ")) {
             if (key.text.equals("ᖓ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᖓ");
@@ -1395,9 +1405,9 @@ public class Utils {
         } else if (key.text.equals("ᖠ") || key.text.equals("ᖡ")) {
             if (key.text.equals("ᖠ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᖠ");
@@ -1406,9 +1416,9 @@ public class Utils {
         } else if (key.text.equals("ᖢ") || key.text.equals("ᖣ")) {
             if (key.text.equals("ᖢ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᖢ");
@@ -1417,9 +1427,9 @@ public class Utils {
         } else if (key.text.equals("ᖤ") || key.text.equals("ᖥ")) {
             if (key.text.equals("ᖤ")) {
                 tvOne.setBackgroundResource(R.drawable.background_selected_text);
-                tvTwo.setBackgroundResource(R.color.background_green);
+                tvTwo.setBackgroundResource(R.drawable.background_popup_green);
             } else {
-                tvOne.setBackgroundResource(R.color.background_green);
+                tvOne.setBackgroundResource(R.drawable.background_popup_green);
                 tvTwo.setBackgroundResource(R.drawable.background_selected_text);
             }
             tvOne.setText("ᖤ");
@@ -1445,17 +1455,6 @@ public class Utils {
 
     }
 
-    public static void visibleTextViewThree(TextView tvOne, TextView tvTwo, TextView tvThree) {
-        tvOne.setVisibility(View.GONE);
-        tvTwo.setVisibility(View.GONE);
-        tvThree.setVisibility(View.VISIBLE);
-    }
-
-    public static void goneTextViewThree(TextView tvOne, TextView tvTwo, TextView tvThree) {
-        tvOne.setVisibility(View.VISIBLE);
-        tvTwo.setVisibility(View.VISIBLE);
-        tvThree.setVisibility(View.GONE);
-    }
 
     public static void setBackGroundPopupWindowBlue(PopupWindow popupWindow, Context context) {
         if (popupWindow.isShowing()) {

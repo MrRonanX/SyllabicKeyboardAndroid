@@ -10,5 +10,6 @@
     <color name="text_color_app">#FFFFFF</color>
     <color name="text_click_set_language">#000000</color>
     <color name="background_button_space">#6A6A6A</color>
+    <color name="text_color_special">#FFFFFF</color>
 
 </resources>

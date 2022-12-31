@@ -125,8 +125,9 @@ public class SoftKeyboard extends InputMethodService
 
     private String mWordSeparators;
     private String textEditText = "", textClick = "";
-    private View myKeyboardView, viewSuggestOne, viewSuggestTwo;
-    private LinearLayout layoutSuggest, layoutSuggestOne, layoutSuggestTwo, layoutSuggestThree;
+    private View myKeyboardView, viewSuggestOne, viewSuggestTwo,viewBlur;
+    private LinearLayout layoutSuggest;
+    private LinearLayout layoutSuggestOne, layoutSuggestTwo, layoutSuggestThree;
     private TextView textSuggestOne, textSuggestTwo, textSuggestThree;
     private int count = 0;
     private Key keyPress;
@@ -214,6 +215,7 @@ public class SoftKeyboard extends InputMethodService
         textSuggestOne = myKeyboardView.findViewById(R.id.textSuggestOne);
         textSuggestTwo = myKeyboardView.findViewById(R.id.textSuggestTwo);
         textSuggestThree = myKeyboardView.findViewById(R.id.textSuggestThree);
+        viewBlur= myKeyboardView.findViewById(R.id.viewBlur);
         mInputView.setOnKeyboardActionListener(this);
         mInputView.setKeyboard(mQwertyKeyboard);
         mInputView.setPreviewEnabled(false);
@@ -1312,7 +1314,7 @@ public class SoftKeyboard extends InputMethodService
 //        count++;
         getCurrentInputConnection().commitText(text, 1);
         mInputView.dismissPopup();
-        mInputView.setAlpha(1);
+        viewBlur.setVisibility(View.GONE);
     }
 
     @Override
@@ -1331,7 +1333,7 @@ public class SoftKeyboard extends InputMethodService
                 handler.postDelayed(() -> {
                     if (mPopupKeyboard.isShowing()) {
                         mPopupKeyboard.dismiss();
-                        mInputView.setAlpha(1);
+                        viewBlur.setVisibility(View.GONE);
 
                     }
                 }, 100);
@@ -1345,7 +1347,7 @@ public class SoftKeyboard extends InputMethodService
             mPopupKeyboard.dismiss();
         }
         getCurrentInputConnection().commitText(text, 1);
-        mInputView.setAlpha(1);
+        viewBlur.setVisibility(View.GONE);
     }
 
 
@@ -1354,7 +1356,7 @@ public class SoftKeyboard extends InputMethodService
         if (mPopupKeyboard.isShowing()) {
             mPopupKeyboard.dismiss();
         }
-        mInputView.setAlpha((float) 0.4);
+        viewBlur.setVisibility(View.VISIBLE);
     }
 //   public interface Pass{
 //        void set();
