@@ -10,6 +10,7 @@ import android.provider.UserDictionary
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.Gravity
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
@@ -44,6 +45,8 @@ class MainActivity : AppCompatActivity() {
             BaseConfig.saveNameDevice("mobile", this);
         }
         if (BaseConfig.readNameDevice(this).equals("tablet")) {
+            layoutEnableSuggest.visibility = View.VISIBLE
+            layoutEnableSuggestMobile.visibility = View.GONE
             layoutEnableSuggest.gravity = Gravity.CENTER
             tvHomeThree.gravity = Gravity.CENTER
             tvHomeFour.gravity = Gravity.CENTER
@@ -76,11 +79,32 @@ class MainActivity : AppCompatActivity() {
             myIntent.putExtra("keycheck", checkLanguage)
             startActivity(myIntent)
         }
-        switchUser.isChecked = BaseConfig.readLastButtonPressed(this)
-        switchUser.setOnClickListener {
+        switchUserIpad.isChecked = BaseConfig.readLastButtonPressed(this)
+        switchUserMobile.isChecked = BaseConfig.readLastButtonPressed(this)
+        switchUserIpad.setOnClickListener {
             showAlterDialog()
         }
-        switchUser.setOnCheckedChangeListener { _, isChecked ->
+        switchUserMobile.setOnClickListener {
+            showAlterDialog()
+        }
+        switchUserIpad.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                BaseConfig.saveLastButtonPressed(true, this)
+                var arrayList = ArrayList<String>()
+                if (BaseConfig.getListSuggestion(this) != null) {
+                    arrayList = BaseConfig.getListSuggestion(this);
+                } else {
+                    arrayList.addAll(Utils.list)
+                }
+                BaseConfig.saveListSuggestion(arrayList, this)
+            } else {
+                val arrayList = ArrayList<String>()
+                BaseConfig.saveLastButtonPressed(false, this)
+                BaseConfig.saveListSuggestion(arrayList, this)
+                BaseConfig.saveListInLocal(arrayList, this)
+            }
+        }
+        switchUserMobile.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 BaseConfig.saveLastButtonPressed(true, this)
                 var arrayList = ArrayList<String>()
@@ -124,17 +148,19 @@ class MainActivity : AppCompatActivity() {
         tvHomeEight.typeface = face
         tvHomeNight.typeface = face
         tvHomeTen.typeface = face
+        tvHomeTenMobile.typeface = face
         tvHomeElevent.typeface = face
         tvHomeTitle.text = "ᐃᓄᐃᑦ ᓇᕿᑕᕋᖓ"
         tvHomeTitleTwo.text = "ᒪᓕᒐᖅ ᓄᐃᑦᓯᕈᑎᒃ"
         tvHomeThree.text = "• ᐊᒻᒪᓗᒍ                           "
         tvHomeFour.text = "• ᒪᐅᖕᖓᓗᑎᑦ                      "
         tvHomeFive.text = "> General"
-        tvHomeSix.text = "   > Keyboard"
-        tvHomeSeven.text = "     > Keyboards"
+        tvHomeSix.text = "  > Keyboard"
+        tvHomeSeven.text = "   > Keyboards"
         tvHomeEight.text = "• ᓇᕐᓂᓗᒍ Add new keyboard"
         tvHomeNight.text = "• ᓇᕐᓂᓗᒍ Inuit keyboard     "
         tvHomeTen.text = "ᐃᓕᓐᓂᑐᐊ ᐱᒍᑦᔨᔪᒃ ᐊᐅᓚᑎᓗᒍ"
+        tvHomeTenMobile.text = "ᐃᓕᓐᓂᑐᐊ ᐱᒍᑦᔨᔪᒃ ᐊᐅᓚᑎᓗᒍ"
         tvHomeElevent.text = "ᖃᓂᐅᔮᕐᐯᑎᑑᕐᑐᑦ ᓄᐃᑎᓗᒋᑦ"
         layoutOne.setBackgroundResource(R.drawable.bg_click_main_orange)
         layoutTwo.setBackgroundResource(R.drawable.bg_click_main_black)
@@ -155,17 +181,19 @@ class MainActivity : AppCompatActivity() {
         tvHomeEight.typeface = face
         tvHomeNight.typeface = face
         tvHomeTen.typeface = face
+        tvHomeTenMobile.typeface = face
         tvHomeElevent.typeface = face
         tvHomeTitle.text = "Inuktitut Keyboard"
         tvHomeTitleTwo.text = "Installation instruction"
         tvHomeThree.text = "• Open settings              "
         tvHomeFour.text = "• Go to                        "
-        tvHomeFive.text = "> General"
-        tvHomeSix.text = "  > Keyboard"
-        tvHomeSeven.text = "   > Keyboards"
+        tvHomeFive.text = "> General     "
+        tvHomeSix.text = "> Keyboard  "
+        tvHomeSeven.text = "> Keyboards"
         tvHomeEight.text = "• Click Add new keyboard"
         tvHomeNight.text = "• Select Inuit keyboard    "
         tvHomeTen.text = "Enable personalized suggestions"
+        tvHomeTenMobile.text = "Enable personalized suggestions"
         tvHomeElevent.text = "View syllabic characters"
         layoutOne.setBackgroundResource(R.drawable.bg_click_main_black)
         layoutTwo.setBackgroundResource(R.drawable.bg_click_main_orange)
@@ -186,17 +214,19 @@ class MainActivity : AppCompatActivity() {
         tvHomeEight.typeface = face
         tvHomeNight.typeface = face
         tvHomeTen.typeface = face
+        tvHomeTenMobile.typeface = face
         tvHomeElevent.typeface = face
         tvHomeTitle.text = "Clavier en Inuktitut"
         tvHomeTitleTwo.text = "Instructions d'installation"
         tvHomeThree.text = "• Ouvrir les paramètres        "
         tvHomeFour.text = "• Sous                           "
         tvHomeFive.text = " > Général"
-        tvHomeSix.text = "> Clavier "
+        tvHomeSix.text = " > Clavier "
         tvHomeSeven.text = "  > Claviers"
         tvHomeEight.text = "• Ajouter un nouveau clavier"
         tvHomeNight.text = "• Choisissez Inuit keyboard  "
         tvHomeTen.text = "Activer les suggestions personnalisées"
+        tvHomeTenMobile.text = "Activer les suggestions personnalisées"
         tvHomeElevent.text = "Afficher les caractères syllabiques"
         layoutOne.setBackgroundResource(R.drawable.bg_click_main_black)
         layoutTwo.setBackgroundResource(R.drawable.bg_click_main_black)
@@ -212,11 +242,13 @@ class MainActivity : AppCompatActivity() {
                 // The dialog is automatically dismissed when a dialog button is clicked.
                 .setPositiveButton("Enable"
                 ) { dialog, which ->
-                    switchUser.isChecked = true
+                    switchUserIpad.isChecked = true
+                    switchUserMobile.isChecked = true
                     dialog.dismiss()
                 }
                 .setNegativeButton("Cancel") { dialog, which ->
-                    switchUser.isChecked = false
+                    switchUserIpad.isChecked = false
+                    switchUserMobile.isChecked = false
                     dialog.dismiss()
                 }
                 .show()
@@ -228,12 +260,14 @@ class MainActivity : AppCompatActivity() {
                         "ᓄᖑᑎᕈᓐᓇᓱᒋᓪᓗ. ᐃᓕᓐᓂᑐᐊ ᐱᒍᑦᔨᔪᒃ ᓄᕐᖃᑎᒍᓐᓇᑌᑦ")
                 .setPositiveButton("ᐱᕈᓐᓇᓯᑎᓗᒍ",
                     DialogInterface.OnClickListener { dialog, which ->
-                        switchUser.isChecked = true
+                        switchUserIpad.isChecked = true
+                        switchUserMobile.isChecked = true
                         dialog.dismiss()
                         // Continue with delete operation
                     }) // A null listener allows the button to dismiss the dialog and take no further action.
                 .setNegativeButton("ᖁᔭᓇ") { dialog, which ->
-                    switchUser.isChecked = false
+                    switchUserIpad.isChecked = false
+                    switchUserMobile.isChecked = false
                     dialog.dismiss()
                 }
                 .show()
@@ -244,11 +278,13 @@ class MainActivity : AppCompatActivity() {
                 // The dialog is automatically dismissed when a dialog button is clicked.
                 .setPositiveButton("Activer",
                     DialogInterface.OnClickListener { dialog, which ->
-                        switchUser.isChecked = true
+                        switchUserIpad.isChecked = true
+                        switchUserMobile.isChecked = true
                         dialog.dismiss()
                     }) // A null listener allows the button to dismiss the dialog and take no further action.
                 .setNegativeButton("Annuler") { dialog, which ->
-                    switchUser.isChecked = false
+                    switchUserIpad.isChecked = false
+                    switchUserMobile.isChecked = false
                     dialog.dismiss()
                 }
                 .show()

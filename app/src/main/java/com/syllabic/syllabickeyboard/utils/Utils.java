@@ -532,7 +532,7 @@ public class Utils {
 
     private static void setColorTextWhiteIcon(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
         if (BaseConfig.readNameDevice(context).equals("mobile")) {
-            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard);
+            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard_down_up);
             Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
                 paint.setTypeface(face);
                 paint.setTextAlign(Paint.Align.CENTER);
@@ -557,7 +557,7 @@ public class Utils {
 
     private static void setColorTextWhiteIconTwo(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
         if (BaseConfig.readNameDevice(context).equals("mobile")) {
-            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard);
+            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard_down_up);
 //            double relation = Math.sqrt(canvas.getWidth() * canvas.getHeight());
 //            relation = relation / 250;
             Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
@@ -566,7 +566,7 @@ public class Utils {
             paint.setTextSize(textSize);
             paint.setColor(Color.WHITE);
             if (key.label != null) {
-                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 25), paint);
+                canvas.drawText(key.label.toString(), (key.x + (key.width / 2)), (float) ((key.y + (key.height / 2)) + 20), paint);
             }
         }else {
             int textSizeIconKeyBoard = context.getResources().getDimensionPixelSize(R.dimen.text_size_icon_keyboard_ipad);
@@ -584,7 +584,7 @@ public class Utils {
 
     private static void setColorTextWhiteIconTwoDot(Keyboard.Key key, Canvas canvas, Paint paint, Context context) {
         if (BaseConfig.readNameDevice(context).equals("mobile")) {
-            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard);
+            int textSize = context.getResources().getDimensionPixelSize(R.dimen.text_size_keyboard_down_up);
 //            double relation = Math.sqrt(canvas.getWidth() * canvas.getHeight());
 //            relation = relation / 250;
             Typeface face = ResourcesCompat.getFont(context, R.font.llisarniq_demi);
@@ -1554,7 +1554,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
                     tvClick.setText(key.text);
@@ -1564,7 +1564,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             } else {
                 if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
@@ -1578,7 +1578,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
                     tvClick.setText(key.text);
@@ -1588,7 +1588,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             }
         }
@@ -1607,7 +1607,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             } else {
                 if (key.codes[0] != 1000 && key.codes[0] != 97 && key.codes[0] != -1
@@ -1620,7 +1620,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             }
         }
@@ -1642,7 +1642,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
@@ -1653,7 +1653,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             } else {
@@ -1669,7 +1669,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
@@ -1680,7 +1680,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             }
@@ -1702,7 +1702,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
@@ -1713,7 +1713,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             } else {
@@ -1728,7 +1728,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
@@ -1739,7 +1739,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             }
@@ -1761,7 +1761,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
                     tvClick.setText(key.text);
@@ -1773,7 +1773,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             } else {
                 if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
@@ -1787,7 +1787,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
                     tvClick.setText(key.text);
@@ -1799,7 +1799,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             }
         }
@@ -1820,7 +1820,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
                     tvClick.setText(key.text);
@@ -1830,7 +1830,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             } else {
@@ -1845,7 +1845,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
                     tvClick.setText(key.text);
@@ -1855,7 +1855,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             }
@@ -1877,7 +1877,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
@@ -1888,7 +1888,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             } else {
@@ -1903,7 +1903,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
@@ -1914,7 +1914,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             }
@@ -1938,7 +1938,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99) {
                     tvClick.setText(key.text);
@@ -1948,7 +1948,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             } else {
                 if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
@@ -1964,7 +1964,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99) {
                     tvClick.setText(key.text);
@@ -1974,7 +1974,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             }
         }
@@ -1997,7 +1997,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99) {
                     tvClick.setText(key.text);
@@ -2007,7 +2007,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             } else {
                 if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
@@ -2023,7 +2023,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99) {
                     tvClick.setText(key.text);
@@ -2033,7 +2033,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             }
         }
@@ -2055,7 +2055,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
@@ -2066,7 +2066,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             } else {
@@ -2081,7 +2081,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 } else if (key.codes[0] == 122 || key.codes[0] == 120 || key.codes[0] == 99 ||
                         key.codes[0] == 118 || key.codes[0] == 98 || key.codes[0] == 110) {
@@ -2092,7 +2092,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
 
                 }
             }
@@ -2116,7 +2116,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             }else {
                 if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
@@ -2132,7 +2132,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             }
         }
@@ -2155,7 +2155,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) - x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             } else {
                 if (key.codes[0] == 119 || key.codes[0] == 101 || key.codes[0] == 114
@@ -2171,7 +2171,7 @@ public class Utils {
                     int x = context.getResources().getDimensionPixelSize(R.dimen.popup_x_horizontal);
                     popupWindow.setWidth(width);
                     popupWindow.setHeight(width);
-                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.18));
+                    popupWindow.showAtLocation(mInputView, Gravity.NO_GRAVITY, (int) ((key.x) + x), (int) (key.y + (key.height / 2) * 0.1));
                 }
             }
         }

@@ -18,6 +18,7 @@
 <!--        </shape>-->
 <!--    </item>-->
 <!--</layer-list>-->
+
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/background_blue"/>
     <corners android:radius="120dp" />

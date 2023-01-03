@@ -8,6 +8,7 @@
     <dimen name="popup_click_height">70dp</dimen>
     <dimen name="popup_click_width">70dp</dimen>
     <dimen name="text_size_keyboard">20dp</dimen>
+    <dimen name="text_size_keyboard_down_up">26dp</dimen>
     <dimen name="text_size_keyboard_tablet">30dp</dimen>
     <dimen name="text_height_keyboard">12dp</dimen>
     <dimen name="text_height_keyboard_latin">8dp</dimen>
@@ -42,9 +43,9 @@
     <dimen name="icon_drop_bottom_vertical">8dp</dimen>
 
     // drop right mobile horizontal
-    <dimen name="icon_drop_mobile_right_left_vertical">36dp</dimen>
+    <dimen name="icon_drop_mobile_right_left_vertical">32dp</dimen>
     <dimen name="icon_drop_mobile_right_top_vertical">16dp</dimen>
-    <dimen name="icon_drop_mobile_right_right_vertical">32dp</dimen>
+    <dimen name="icon_drop_mobile_right_right_vertical">28dp</dimen>
     <dimen name="icon_drop_mobile_right_bottom_vertical">8dp</dimen>
 
     // drop right ipad vertical
@@ -66,9 +67,9 @@
     <dimen name="icon_drop_mobile_right_final_bottom_vertical">9dp</dimen>
 
     // drop right final mobile horizontal
-    <dimen name="icon_drop_mobile_right_final_left_horizontal">36dp</dimen>
+    <dimen name="icon_drop_mobile_right_final_left_horizontal">32dp</dimen>
     <dimen name="icon_drop_mobile_right_final_top_horizontal">17dp</dimen>
-    <dimen name="icon_drop_mobile_right_final_right_horizontal">32dp</dimen>
+    <dimen name="icon_drop_mobile_right_final_right_horizontal">28dp</dimen>
     <dimen name="icon_drop_mobile_right_final_bottom_horizontal">9dp</dimen>
 
     // drop right final ipad vertical
@@ -90,9 +91,9 @@
     <dimen name="icon_drop_mobile_left_bottom_vertical">9dp</dimen>
 
     // drop left  mobile horizontal
-    <dimen name="icon_drop_mobile_left_left_horizontal">32dp</dimen>
+    <dimen name="icon_drop_mobile_left_left_horizontal">28dp</dimen>
     <dimen name="icon_drop_mobile_left_top_horizontal">16dp</dimen>
-    <dimen name="icon_drop_mobile_left_right_horizontal">34dp</dimen>
+    <dimen name="icon_drop_mobile_left_right_horizontal">32dp</dimen>
     <dimen name="icon_drop_mobile_left_bottom_horizontal">8dp</dimen>
 
     // drop left  ipad vertical
@@ -114,9 +115,9 @@
     <dimen name="icon_drop_mobile_left_final_bottom_vertical">9dp</dimen>
 
     // drop left final mobile horizontal
-    <dimen name="icon_drop_mobile_left_final_left_horizontal">32dp</dimen>
+    <dimen name="icon_drop_mobile_left_final_left_horizontal">28dp</dimen>
     <dimen name="icon_drop_mobile_left_final_top_horizontal">16dp</dimen>
-    <dimen name="icon_drop_mobile_left_final_right_horizontal">34dp</dimen>
+    <dimen name="icon_drop_mobile_left_final_right_horizontal">32dp</dimen>
     <dimen name="icon_drop_mobile_left_final_bottom_horizontal">8dp</dimen>
 
     // drop left final ipad vertical
@@ -133,12 +134,14 @@
 
     <dimen name="action_move">80dp</dimen>
     <dimen name="action_move_left">45dp</dimen>
+    <dimen name="action_move_dissmiss_popup">30dp</dimen>
+    <dimen name="action_move_dissmiss_popup_right">130dp</dimen>
     <dimen name="height_popup_long_press">80dp</dimen>
     <dimen name="text_size_keyboard_orange">40dp</dimen>
     <dimen name="text_size_icon_keyboard">8dp</dimen>
     <dimen name="text_size_icon_keyboard_ipad">45dp</dimen>
     <dimen name="popup_x">13dp</dimen>
-    <dimen name="popup_x_horizontal">10dp</dimen>
+    <dimen name="popup_x_horizontal">8dp</dimen>
     <dimen name="popup_y">15dp</dimen>
 
 </resources>

@@ -133,7 +133,7 @@ public class SoftKeyboard extends InputMethodService
     private Key keyPress;
     private PopupWindow mPopupKeyboard;
     private Handler handler;
-//    private PassData passData;
+    Keyboard currentKeyboard;
 
     /**
      * Main initialization of the input method component.  Be sure to call
@@ -162,6 +162,23 @@ public class SoftKeyboard extends InputMethodService
             if (displayWidth == mLastDisplayWidth) return;
             mLastDisplayWidth = displayWidth;
         }
+//        if (mQwertyTwo != null) {
+//            // Configuration changes can happen after the keyboard gets recreated,
+//            // so we need to be able to re-build the keyboards if the available
+//            // space has changed.
+//            int displayWidth = getMaxWidth();
+//            if (displayWidth == mLastDisplayWidth) return;
+//            mLastDisplayWidth = displayWidth;
+//        }
+//        if (currentKeyboard != null) {
+//            // Configuration changes can happen after the keyboard gets recreated,
+//            // so we need to be able to re-build the keyboards if the available
+//            // space has changed.
+//            int displayWidth = getMaxWidth();
+//            if (displayWidth == mLastDisplayWidth) return;
+//            mLastDisplayWidth = displayWidth;
+//        }
+
         if (BaseConfig.readNameDevice(getApplicationContext()).equals("mobile")) {
             mQwertyKeyboard = new LatinKeyboard(this, R.xml.qwerty);
             mSymbolsKeyboard = new LatinKeyboard(this, R.xml.symbols);
@@ -217,7 +234,49 @@ public class SoftKeyboard extends InputMethodService
         textSuggestThree = myKeyboardView.findViewById(R.id.textSuggestThree);
         viewBlur= myKeyboardView.findViewById(R.id.viewBlur);
         mInputView.setOnKeyboardActionListener(this);
-        mInputView.setKeyboard(mQwertyKeyboard);
+        if (currentKeyboard == null){
+            mInputView.setKeyboard(mQwertyKeyboard);
+            currentKeyboard = mQwertyKeyboard;
+        }else {
+            if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyKeyboard.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyKeyboard);
+                currentKeyboard = mQwertyKeyboard;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyEmoji.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyEmoji);
+                currentKeyboard = mQwertyEmoji;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertySelectTwoDot.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertySelectTwoDot);
+                currentKeyboard = mQwertySelectTwoDot;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyTwo.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyTwo);
+                currentKeyboard = mQwertyTwo;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyTwoSelectOneDot.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyTwoSelectOneDot);
+                currentKeyboard = mQwertyTwoSelectOneDot;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyThree.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyThree);
+                currentKeyboard = mQwertyThree;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyThreeSelectOneDot.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyThreeSelectOneDot );
+                currentKeyboard = mQwertyThreeSelectOneDot;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyFour.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyFour);
+                currentKeyboard = mQwertyFour;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyFourSelectOneDot.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyFourSelectOneDot);
+                currentKeyboard = mQwertyFourSelectOneDot;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyNumber.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyNumber);
+                currentKeyboard = mQwertyNumber;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyNumberTwo.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyNumberTwo);
+                currentKeyboard = mQwertyNumberTwo;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyNumberThree.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyNumberThree);
+                currentKeyboard = mQwertyNumberThree;
+            }
+        }
+//        mInputView.setKeyboard(mQwertyKeyboard);
         mInputView.setPreviewEnabled(false);
         LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
@@ -227,6 +286,7 @@ public class SoftKeyboard extends InputMethodService
         mInputView.setPassEventKeyboard(this::passEventKeyboard);
         mInputView.setCheckDataLongPress(this);
         mInputView.setPassDataLongPressOneCharator(this);
+
         return myKeyboardView;
 
     }
@@ -295,7 +355,50 @@ public class SoftKeyboard extends InputMethodService
                 // normal alphabetic keyboard, and assume that we should
                 // be doing predictive text (showing candidates as the
                 // user types).
-                mCurKeyboard = mQwertyKeyboard;
+//                mCurKeyboard =  mQwertyKeyboard;
+                if (currentKeyboard == null){
+//                    mInputView.setKeyboard(mQwertyKeyboard);
+                    mCurKeyboard = mQwertyKeyboard;
+                }else {
+                    if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyKeyboard.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyKeyboard);
+                        mCurKeyboard = mQwertyKeyboard;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyEmoji.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyEmoji);
+                        mCurKeyboard = mQwertyEmoji;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertySelectTwoDot.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertySelectTwoDot);
+                        mCurKeyboard = mQwertySelectTwoDot;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyTwo.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyTwo);
+                        mCurKeyboard = mQwertyTwo;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyTwoSelectOneDot.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyTwoSelectOneDot);
+                        mCurKeyboard = mQwertyTwoSelectOneDot;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyThree.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyThree);
+                        mCurKeyboard = mQwertyThree;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyThreeSelectOneDot.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyThreeSelectOneDot );
+                        mCurKeyboard = mQwertyThreeSelectOneDot;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyFour.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyFour);
+                        mCurKeyboard = mQwertyFour;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyFourSelectOneDot.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyFourSelectOneDot);
+                        mCurKeyboard = mQwertyFourSelectOneDot;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyNumber.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyNumber);
+                        mCurKeyboard = mQwertyNumber;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyNumberTwo.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyNumberTwo);
+                        mCurKeyboard = mQwertyNumberTwo;
+                    }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyNumberThree.getKeys().get(0).codes[0]){
+//                        mInputView.setKeyboard(mQwertyNumberThree);
+                        mCurKeyboard = mQwertyNumberThree;
+                    }
+                }
+
                 mPredictionOn = true;
 
                 // We now look for a few special variations of text that will
@@ -374,10 +477,49 @@ public class SoftKeyboard extends InputMethodService
     @Override
     public void onStartInputView(EditorInfo attribute, boolean restarting) {
         super.onStartInputView(attribute, restarting);
-        // Apply the selected keyboard to the input view.
-        mInputView.setKeyboard(mCurKeyboard);
+        if (currentKeyboard == null){
+            mInputView.setKeyboard(mQwertyKeyboard);
+            currentKeyboard = mQwertyKeyboard;
+        }else {
+            if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyKeyboard.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyKeyboard);
+                currentKeyboard = mQwertyKeyboard;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyEmoji.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyEmoji);
+                currentKeyboard = mQwertyEmoji;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertySelectTwoDot.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertySelectTwoDot);
+                currentKeyboard = mQwertySelectTwoDot;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyTwo.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyTwo);
+                currentKeyboard = mQwertyTwo;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyTwoSelectOneDot.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyTwoSelectOneDot);
+                currentKeyboard = mQwertyTwoSelectOneDot;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyThree.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyThree);
+                currentKeyboard = mQwertyThree;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyThreeSelectOneDot.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyThreeSelectOneDot );
+                currentKeyboard = mQwertyThreeSelectOneDot;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyFour.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyFour);
+                currentKeyboard = mQwertyFour;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyFourSelectOneDot.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyFourSelectOneDot);
+                currentKeyboard = mQwertyFourSelectOneDot;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyNumber.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyNumber);
+                currentKeyboard = mQwertyNumber;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyNumberTwo.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyNumberTwo);
+                currentKeyboard = mQwertyNumberTwo;
+            }else if (currentKeyboard.getKeys().get(0).codes[0] == mQwertyNumberThree.getKeys().get(0).codes[0]){
+                mInputView.setKeyboard(mQwertyNumberThree);
+                currentKeyboard = mQwertyNumberThree;
+            }
+        }
         mInputView.closing();
-
         final InputMethodSubtype subtype = mInputMethodManager.getCurrentInputMethodSubtype();
         mInputView.setSubtypeOnSpaceKey(subtype);
         textEditText = "";
@@ -683,41 +825,21 @@ public class SoftKeyboard extends InputMethodService
         } else if (primaryCode == Keyboard.KEYCODE_DELETE) {
             handleBackspace();
         } else if (primaryCode == Keyboard.KEYCODE_SHIFT) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyThree;
-//            }
-            mInputView.setKeyboard(current);
-//            handleShift();
+            currentKeyboard = mQwertyThree;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == Keyboard.KEYCODE_CANCEL) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyFour;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyFour;
+            mInputView.setKeyboard(currentKeyboard);
 //            handleClose();
 //            return;
         } else if (primaryCode == LatinKeyboardView.KEYCODE_OPTIONS) {
             // Show a menu or somethin'
         } else if (primaryCode == Keyboard.KEYCODE_MODE_CHANGE && mInputView != null) {
-            Keyboard current = mInputView.getKeyboard();
-            current = mQwertyNumber;
-            mInputView.setKeyboard(current);
-//            if (current == mSymbolsKeyboard || current == mSymbolsShiftedKeyboard) {
-//                current = mQwertyKeyboard;
-//            } else {
-//                current = mSymbolsKeyboard;
-//            }
-//            mInputView.setKeyboard(current);
-//            if (current == mSymbolsKeyboard) {
-//                current.setShifted(false);
-//            }
+            currentKeyboard = mQwertyNumber;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == 97) {
-//            getCurrentInputConnection().commitText(String.valueOf((char) keyCode), 1);
-//            getCurrentInputConnection().setComposingText("t", 1);
-            Keyboard current = mInputView.getKeyboard();
-            current = mQwertyTwo;
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyTwo;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == 106) {
             getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT));
             getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_LEFT));
@@ -728,141 +850,88 @@ public class SoftKeyboard extends InputMethodService
                 primaryCode == 5000 || primaryCode == 4000 || primaryCode == 1000 ||
                 primaryCode == 5020 || primaryCode == 5030 || primaryCode == 2050 ||
                 primaryCode == 1050 || primaryCode == 3050 || primaryCode == 4050) {
-            Keyboard current = mInputView.getKeyboard();
-            current = mQwertyKeyboard;
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyKeyboard;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -10) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyEmoji;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyEmoji;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -11) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertySelectTwoDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertySelectTwoDot;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -15) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyKeyboard;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyKeyboard;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -16) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertySelectTwoDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertySelectTwoDot;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -20) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyTwoSelectOneDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyTwoSelectOneDot;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -21) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertySelectTwoDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertySelectTwoDot;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -25) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyTwo;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyTwo;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -26) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertySelectTwoDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertySelectTwoDot;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -30) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyThreeSelectOneDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyThreeSelectOneDot;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -31) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertySelectTwoDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertySelectTwoDot;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -35) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyThree;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyThree;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -36) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertySelectTwoDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertySelectTwoDot;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -40) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyFourSelectOneDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyFourSelectOneDot;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -41) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertySelectTwoDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertySelectTwoDot;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -45) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyFour;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyFour;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -46) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertySelectTwoDot;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertySelectTwoDot;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -50) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyNumberTwo;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyNumberTwo;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -51) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyNumberThree;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyNumberThree;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -52) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyNumber;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyNumber;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -53) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyNumberThree;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyNumberThree;
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -54) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyNumberTwo;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyNumberTwo;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == -55) {
-            Keyboard current = mInputView.getKeyboard();
-//            if (current == mQwertyKeyboard ) {
-            current = mQwertyNumber;
-//            }
-            mInputView.setKeyboard(current);
+            currentKeyboard = mQwertyNumber;
+
+            mInputView.setKeyboard(currentKeyboard);
         } else {
             handleCharacter(primaryCode, keyCodes);
         }
@@ -1000,6 +1069,8 @@ public class SoftKeyboard extends InputMethodService
         textSuggestOne.setText("");
         textSuggestThree.setText("");
         textSuggestTwo.setText("");
+        textEditText = textEditText.substring(0,textEditText.length() -1);
+
         if (BaseConfig.readLastButtonPressed(getApplicationContext())) {
             for (int l = 0; l < BaseConfig.getListSuggestion(getApplicationContext()).size(); l++) {
                 if (textSuggestOne.getText().toString().equals("")) {
@@ -1280,18 +1351,21 @@ public class SoftKeyboard extends InputMethodService
                 getCurrentInputConnection().commitText(textSuggestOne.getText().toString() + " ", 1);
                 textEditText = "";
                 count = 0;
+                layoutSuggest.setVisibility(View.GONE);
                 break;
             case R.id.layoutSuggestTwo:
                 getCurrentInputConnection().deleteSurroundingText(count, 0);
                 getCurrentInputConnection().commitText(textSuggestTwo.getText().toString() + " ", 1);
                 textEditText = "";
                 count = 0;
+                layoutSuggest.setVisibility(View.GONE);
                 break;
             case R.id.layoutSuggestThree:
                 getCurrentInputConnection().deleteSurroundingText(count, 0);
                 getCurrentInputConnection().commitText(textSuggestThree.getText().toString() + " ", 1);
                 textEditText = "";
                 count = 0;
+                layoutSuggest.setVisibility(View.GONE);
                 break;
         }
     }
@@ -1309,12 +1383,15 @@ public class SoftKeyboard extends InputMethodService
     }
 
     @Override
-    public void passDataLongPress(String text) {
+    public void passDataLongPress(String text,boolean type) {
 //        textEditText = textEditText + text;
 //        count++;
-        getCurrentInputConnection().commitText(text, 1);
+        if (!type){
+            getCurrentInputConnection().commitText(text, 1);
+        }
         mInputView.dismissPopup();
         viewBlur.setVisibility(View.GONE);
+        mInputView.setKeyboard(currentKeyboard);
     }
 
     @Override
@@ -1334,7 +1411,7 @@ public class SoftKeyboard extends InputMethodService
                     if (mPopupKeyboard.isShowing()) {
                         mPopupKeyboard.dismiss();
                         viewBlur.setVisibility(View.GONE);
-
+                        mInputView.setKeyboard(currentKeyboard);
                     }
                 }, 100);
 //            }
@@ -1348,6 +1425,7 @@ public class SoftKeyboard extends InputMethodService
         }
         getCurrentInputConnection().commitText(text, 1);
         viewBlur.setVisibility(View.GONE);
+        mInputView.setKeyboard(currentKeyboard);
     }
 
 
@@ -1358,7 +1436,5 @@ public class SoftKeyboard extends InputMethodService
         }
         viewBlur.setVisibility(View.VISIBLE);
     }
-//   public interface Pass{
-//        void set();
-//    }
+
 }

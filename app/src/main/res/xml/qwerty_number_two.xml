@@ -42,8 +42,8 @@
         <Key android:codes="100" android:keyLabel="≈" android:keyOutputText = "≈"/>
         <Key android:codes="102" android:keyLabel="≤" android:keyOutputText = "≤"/>
         <Key android:codes="103" android:keyLabel="≥" android:keyOutputText = "≥"/>
-        <Key android:codes="104" android:keyLabel="&lt;" />
-        <Key android:codes="106" android:keyLabel="&gt;" />
+        <Key android:codes="104" android:keyLabel="&lt;" android:keyOutputText = "&lt;"/>
+        <Key android:codes="106" android:keyLabel="&gt;" android:keyOutputText = "&gt;"/>
         <Key android:codes="107" android:keyLabel="°" android:keyOutputText = "°"/>
         <Key android:codes="-53" android:keyLabel="••" android:keyEdgeFlags="right"/>
     </Row>
