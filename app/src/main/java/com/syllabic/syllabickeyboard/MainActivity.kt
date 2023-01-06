@@ -55,8 +55,8 @@ class MainActivity : AppCompatActivity() {
             tvHomeThree.gravity = Gravity.CENTER
             tvHomeThree.gravity = Gravity.CENTER
         }
-
     }
+
 
     private fun setOnClick() {
         layoutOne.setOnClickListener {
@@ -79,13 +79,18 @@ class MainActivity : AppCompatActivity() {
             myIntent.putExtra("keycheck", checkLanguage)
             startActivity(myIntent)
         }
+
         switchUserIpad.isChecked = BaseConfig.readLastButtonPressed(this)
         switchUserMobile.isChecked = BaseConfig.readLastButtonPressed(this)
         switchUserIpad.setOnClickListener {
-            showAlterDialog()
+            if (BaseConfig.readLastButtonPressed(this)){
+                showAlterDialog()
+            }
         }
         switchUserMobile.setOnClickListener {
-            showAlterDialog()
+            if (BaseConfig.readLastButtonPressed(this)){
+                showAlterDialog()
+            }
         }
         switchUserIpad.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

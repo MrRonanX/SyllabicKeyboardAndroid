@@ -81,7 +81,7 @@ import java.util.List;
 public class SoftKeyboard extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener, View.OnClickListener,
         LatinKeyboardView.PassDataLongPress, PassEventKeyboard, LatinKeyboardView.CheckDataLongPress,
-        LatinKeyboardView.PassDataLongPressOneCharator {
+        LatinKeyboardView.PassDataLongPressOneCharator,LatinKeyboardView.DismissPopupLongPress {
     /**
      * This boolean indicates the optional example code for performing
      * processing of hard keys in addition to regular text generation
@@ -130,7 +130,8 @@ public class SoftKeyboard extends InputMethodService
     private LinearLayout layoutSuggestOne, layoutSuggestTwo, layoutSuggestThree;
     private TextView textSuggestOne, textSuggestTwo, textSuggestThree;
     private int count = 0;
-    private Key keyPress;
+    private boolean check = false;
+
     private PopupWindow mPopupKeyboard;
     private Handler handler;
     Keyboard currentKeyboard;
@@ -286,7 +287,7 @@ public class SoftKeyboard extends InputMethodService
         mInputView.setPassEventKeyboard(this::passEventKeyboard);
         mInputView.setCheckDataLongPress(this);
         mInputView.setPassDataLongPressOneCharator(this);
-
+        mInputView.setDismissPopupLongPress(this::dismissPopupLongPress);
         return myKeyboardView;
 
     }
@@ -841,11 +842,15 @@ public class SoftKeyboard extends InputMethodService
             currentKeyboard = mQwertyTwo;
             mInputView.setKeyboard(currentKeyboard);
         } else if (primaryCode == 106) {
-            getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT));
-            getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_LEFT));
+//            if (textEditText.length() !=0 || !textEditText.equals("")){
+                getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_LEFT));
+                getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_LEFT));
+//            }
         } else if (primaryCode == 107) {
-            getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT));
-            getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT));
+//            if (textEditText.length() !=0 || !textEditText.equals("")){
+                getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DPAD_RIGHT));
+                getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DPAD_RIGHT));
+//            }
         } else if (primaryCode == 113 || primaryCode == 2000 || primaryCode == 3000 ||
                 primaryCode == 5000 || primaryCode == 4000 || primaryCode == 1000 ||
                 primaryCode == 5020 || primaryCode == 5030 || primaryCode == 2050 ||
@@ -1069,74 +1074,76 @@ public class SoftKeyboard extends InputMethodService
         textSuggestOne.setText("");
         textSuggestThree.setText("");
         textSuggestTwo.setText("");
-        textEditText = textEditText.substring(0,textEditText.length() -1);
+        if (textEditText.length() != 0){
+            textEditText = textEditText.substring(0,textEditText.length() -1);
+        }
 
-        if (BaseConfig.readLastButtonPressed(getApplicationContext())) {
-            for (int l = 0; l < BaseConfig.getListSuggestion(getApplicationContext()).size(); l++) {
-                if (textSuggestOne.getText().toString().equals("")) {
-                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
-                        textSuggestOne.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
-                        layoutSuggest.setVisibility(View.VISIBLE);
-                        layoutSuggestThree.setVisibility(View.VISIBLE);
-                        layoutSuggestTwo.setVisibility(View.VISIBLE);
-                        viewSuggestTwo.setVisibility(View.VISIBLE);
-                        viewSuggestOne.setVisibility(View.VISIBLE);
-                    }
-                } else if (textSuggestTwo.getText().toString().equals("")) {
-                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
-                        textSuggestTwo.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
-                        layoutSuggestThree.setVisibility(View.VISIBLE);
-                        layoutSuggestTwo.setVisibility(View.VISIBLE);
-                        viewSuggestTwo.setVisibility(View.VISIBLE);
-                        viewSuggestOne.setVisibility(View.VISIBLE);
-                    }
-                } else if (textSuggestThree.getText().toString().equals("")) {
-                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
-                        textSuggestThree.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
-                        layoutSuggestThree.setVisibility(View.VISIBLE);
-                        viewSuggestTwo.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        } else {
-            for (int l = 0; l < Utils.list.length; l++) {
-                if (textSuggestOne.getText().toString().equals("")) {
-                    if (Utils.list[l].contains(textEditText)) {
-                        textSuggestOne.setText(Utils.list[l]);
-                        layoutSuggest.setVisibility(View.VISIBLE);
-                        layoutSuggestThree.setVisibility(View.VISIBLE);
-                        layoutSuggestTwo.setVisibility(View.VISIBLE);
-                        viewSuggestTwo.setVisibility(View.VISIBLE);
-                        viewSuggestOne.setVisibility(View.VISIBLE);
-                    }
-                } else if (textSuggestTwo.getText().toString().equals("")) {
-                    if (Utils.list[l].contains(textEditText)) {
-                        textSuggestTwo.setText(Utils.list[l]);
-                        layoutSuggestThree.setVisibility(View.VISIBLE);
-                        layoutSuggestTwo.setVisibility(View.VISIBLE);
-                        viewSuggestTwo.setVisibility(View.VISIBLE);
-                        viewSuggestOne.setVisibility(View.VISIBLE);
-                    }
-                } else if (textSuggestThree.getText().toString().equals("")) {
-                    if (Utils.list[l].contains(textEditText)) {
-                        textSuggestThree.setText(Utils.list[l]);
-                        layoutSuggestThree.setVisibility(View.VISIBLE);
-                        viewSuggestTwo.setVisibility(View.VISIBLE);
-                    }
-                }
-            }
-        }
-        if (textSuggestOne.getText().toString().equals("") || count == 0) {
-            layoutSuggest.setVisibility(View.GONE);
-        } else if (textSuggestTwo.getText().toString().equals("")) {
-            layoutSuggestThree.setVisibility(View.GONE);
-            layoutSuggestTwo.setVisibility(View.GONE);
-            viewSuggestTwo.setVisibility(View.GONE);
-            viewSuggestOne.setVisibility(View.GONE);
-        } else if (textSuggestThree.getText().toString().equals("")) {
-            layoutSuggestThree.setVisibility(View.GONE);
-            viewSuggestTwo.setVisibility(View.GONE);
-        }
+//        if (BaseConfig.readLastButtonPressed(getApplicationContext())) {
+//            for (int l = 0; l < BaseConfig.getListSuggestion(getApplicationContext()).size(); l++) {
+//                if (textSuggestOne.getText().toString().equals("")) {
+//                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
+//                        textSuggestOne.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
+//                        layoutSuggest.setVisibility(View.VISIBLE);
+//                        layoutSuggestThree.setVisibility(View.VISIBLE);
+//                        layoutSuggestTwo.setVisibility(View.VISIBLE);
+//                        viewSuggestTwo.setVisibility(View.VISIBLE);
+//                        viewSuggestOne.setVisibility(View.VISIBLE);
+//                    }
+//                } else if (textSuggestTwo.getText().toString().equals("")) {
+//                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
+//                        textSuggestTwo.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
+//                        layoutSuggestThree.setVisibility(View.VISIBLE);
+//                        layoutSuggestTwo.setVisibility(View.VISIBLE);
+//                        viewSuggestTwo.setVisibility(View.VISIBLE);
+//                        viewSuggestOne.setVisibility(View.VISIBLE);
+//                    }
+//                } else if (textSuggestThree.getText().toString().equals("")) {
+//                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
+//                        textSuggestThree.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
+//                        layoutSuggestThree.setVisibility(View.VISIBLE);
+//                        viewSuggestTwo.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//            }
+//        } else {
+//            for (int l = 0; l < Utils.list.length; l++) {
+//                if (textSuggestOne.getText().toString().equals("")) {
+//                    if (Utils.list[l].contains(textEditText)) {
+//                        textSuggestOne.setText(Utils.list[l]);
+//                        layoutSuggest.setVisibility(View.VISIBLE);
+//                        layoutSuggestThree.setVisibility(View.VISIBLE);
+//                        layoutSuggestTwo.setVisibility(View.VISIBLE);
+//                        viewSuggestTwo.setVisibility(View.VISIBLE);
+//                        viewSuggestOne.setVisibility(View.VISIBLE);
+//                    }
+//                } else if (textSuggestTwo.getText().toString().equals("")) {
+//                    if (Utils.list[l].contains(textEditText)) {
+//                        textSuggestTwo.setText(Utils.list[l]);
+//                        layoutSuggestThree.setVisibility(View.VISIBLE);
+//                        layoutSuggestTwo.setVisibility(View.VISIBLE);
+//                        viewSuggestTwo.setVisibility(View.VISIBLE);
+//                        viewSuggestOne.setVisibility(View.VISIBLE);
+//                    }
+//                } else if (textSuggestThree.getText().toString().equals("")) {
+//                    if (Utils.list[l].contains(textEditText)) {
+//                        textSuggestThree.setText(Utils.list[l]);
+//                        layoutSuggestThree.setVisibility(View.VISIBLE);
+//                        viewSuggestTwo.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//            }
+//        }
+//        if (textSuggestOne.getText().toString().equals("") || count == 0) {
+//            layoutSuggest.setVisibility(View.GONE);
+//        } else if (textSuggestTwo.getText().toString().equals("")) {
+//            layoutSuggestThree.setVisibility(View.GONE);
+//            layoutSuggestTwo.setVisibility(View.GONE);
+//            viewSuggestTwo.setVisibility(View.GONE);
+//            viewSuggestOne.setVisibility(View.GONE);
+//        } else if (textSuggestThree.getText().toString().equals("")) {
+//            layoutSuggestThree.setVisibility(View.GONE);
+//            viewSuggestTwo.setVisibility(View.GONE);
+//        }
 //        updateShiftKeyState(getCurrentInputEditorInfo());
     }
 
@@ -1252,86 +1259,72 @@ public class SoftKeyboard extends InputMethodService
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickDefault(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
-//                    BaseConfig.setObjectKey(primaryCode,getApplicationContext());
                     break;
                 }
             } else if (checkType == 1000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickEmoji(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             } else if (checkType == 1050) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickTwoDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             } else if (checkType == 2000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickTwoQwerty(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             } else if (checkType == 2050) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickTwoSelectOneDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             } else if (checkType == 3000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickThreeQwerty(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             } else if (checkType == 3050) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickThreeSelectOneDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             } else if (checkType == 4000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickFourQwerty(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             } else if (checkType == 4050) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickFourSelectOneDot(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             } else if (checkType == 5000) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickQwertyNumber(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
-
                     break;
                 }
             } else if (checkType == 5020) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickQwertyNumberTwo(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             } else if (checkType == 5030) {
                 if (key.codes[0] == primaryCode) {
                     Utils.showPopupClickQwertyNumberThree(mInputView, mPopupKeyboard, getApplicationContext(), key,
                             mPopupKeyboard.getContentView().findViewById(R.id.tvClick));
-                    keyPress = key;
                     break;
                 }
             }
@@ -1392,6 +1385,7 @@ public class SoftKeyboard extends InputMethodService
         mInputView.dismissPopup();
         viewBlur.setVisibility(View.GONE);
         mInputView.setKeyboard(currentKeyboard);
+        check = false;
     }
 
     @Override
@@ -1415,17 +1409,20 @@ public class SoftKeyboard extends InputMethodService
                     }
                 }, 100);
 //            }
+            check = false;
         }
     }
 
     @Override
     public void passDataLongPressOneCharator(String text) {
-        if (mPopupKeyboard.isShowing()) {
-            mPopupKeyboard.dismiss();
+        if (!check){
+            if (mPopupKeyboard.isShowing()) {
+                mPopupKeyboard.dismiss();
+            }
+            getCurrentInputConnection().commitText(text, 1);
+            viewBlur.setVisibility(View.GONE);
+            mInputView.setKeyboard(currentKeyboard);
         }
-        getCurrentInputConnection().commitText(text, 1);
-        viewBlur.setVisibility(View.GONE);
-        mInputView.setKeyboard(currentKeyboard);
     }
 
 
@@ -1437,4 +1434,15 @@ public class SoftKeyboard extends InputMethodService
         viewBlur.setVisibility(View.VISIBLE);
     }
 
+    @Override
+    public void dismissPopupLongPress() {
+        if (!check){
+            mInputView.setKeyboard(currentKeyboard);
+            viewBlur.setVisibility(View.GONE);
+            check = true;
+            if (mPopupKeyboard.isShowing()) {
+                mPopupKeyboard.dismiss();
+            }
+        }
+    }
 }
