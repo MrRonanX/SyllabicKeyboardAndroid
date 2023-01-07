@@ -73,6 +73,7 @@ public class LatinKeyboardView extends KeyboardView {
     boolean checkAction = false, checkLongPressOneCharactor = false,
             checkLongPressNotActionMove = false,checkDismissPopupLongPress = false;
     private DismissPopupLongPress dismissPopupLongPress;
+    private DismissGrayWithButtonDotAndTwoDot dismissGrayWithButtonDotAndTwoDot;
 
     @SuppressLint("MissingInflatedId")
     public LatinKeyboardView(Context context, AttributeSet attrs) {
@@ -107,6 +108,10 @@ public class LatinKeyboardView extends KeyboardView {
 
     public void setDismissPopupLongPress( DismissPopupLongPress dismissPopupLongPress) {
         this.dismissPopupLongPress = dismissPopupLongPress;
+    }
+
+    public void setDismissGrayWithButtonDotAndTwoDot( DismissGrayWithButtonDotAndTwoDot dismissGrayWithButtonDotAndTwoDot) {
+        this.dismissGrayWithButtonDotAndTwoDot = dismissGrayWithButtonDotAndTwoDot;
     }
 
     @Override
@@ -175,6 +180,7 @@ public class LatinKeyboardView extends KeyboardView {
                     !keys.label.toString().equals("▲") && !keys.label.toString().equals("1")
                     && !keys.label.toString().equals("•") && !keys.label.toString().equals("••")) {
                 checkLongPressOneCharactor = true;
+                dismissGrayWithButtonDotAndTwoDot.dismissGrayWithButtonDotAndTwoDot();
             }
             return true;
         } else {
@@ -324,6 +330,15 @@ public class LatinKeyboardView extends KeyboardView {
                             }
                         }
                         checkLongPressNotActionMove = false;
+                    }else {
+                        if (keys != null){
+                            if (keys.label != null) {
+                                if (keys.label.toString().equals("▼") ||
+                                        keys.label.toString().equals("▲") || keys.label.toString().equals("1")
+                                        || keys.label.toString().equals("•") || keys.label.toString().equals("••"))
+                                    dismissGrayWithButtonDotAndTwoDot.dismissGrayWithButtonDotAndTwoDot();
+                            }
+                        }
                     }
                 }
             }
@@ -560,5 +575,9 @@ public class LatinKeyboardView extends KeyboardView {
 
     interface DismissPopupLongPress {
         void dismissPopupLongPress();
+    }
+
+    interface DismissGrayWithButtonDotAndTwoDot {
+        void dismissGrayWithButtonDotAndTwoDot();
     }
 }

@@ -81,7 +81,8 @@ import java.util.List;
 public class SoftKeyboard extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener, View.OnClickListener,
         LatinKeyboardView.PassDataLongPress, PassEventKeyboard, LatinKeyboardView.CheckDataLongPress,
-        LatinKeyboardView.PassDataLongPressOneCharator,LatinKeyboardView.DismissPopupLongPress {
+        LatinKeyboardView.PassDataLongPressOneCharator,LatinKeyboardView.DismissPopupLongPress,
+        LatinKeyboardView.DismissGrayWithButtonDotAndTwoDot{
     /**
      * This boolean indicates the optional example code for performing
      * processing of hard keys in addition to regular text generation
@@ -283,11 +284,12 @@ public class SoftKeyboard extends InputMethodService
                 Context.LAYOUT_INFLATER_SERVICE);
         mPopupKeyboard = new PopupWindow(getApplicationContext());
         mPopupKeyboard.setContentView(inflater.inflate(R.layout.popup_click, null));
-        mInputView.passDataLongPress(this::passDataLongPress);
-        mInputView.setPassEventKeyboard(this::passEventKeyboard);
+        mInputView.passDataLongPress(this);
+        mInputView.setPassEventKeyboard(this);
         mInputView.setCheckDataLongPress(this);
         mInputView.setPassDataLongPressOneCharator(this);
-        mInputView.setDismissPopupLongPress(this::dismissPopupLongPress);
+        mInputView.setDismissPopupLongPress(this);
+        mInputView.setDismissGrayWithButtonDotAndTwoDot(this);
         return myKeyboardView;
 
     }
@@ -1071,6 +1073,7 @@ public class SoftKeyboard extends InputMethodService
         if (count > 0) {
             count--;
         }
+
         textSuggestOne.setText("");
         textSuggestThree.setText("");
         textSuggestTwo.setText("");
@@ -1078,72 +1081,72 @@ public class SoftKeyboard extends InputMethodService
             textEditText = textEditText.substring(0,textEditText.length() -1);
         }
 
-//        if (BaseConfig.readLastButtonPressed(getApplicationContext())) {
-//            for (int l = 0; l < BaseConfig.getListSuggestion(getApplicationContext()).size(); l++) {
-//                if (textSuggestOne.getText().toString().equals("")) {
-//                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
-//                        textSuggestOne.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
-//                        layoutSuggest.setVisibility(View.VISIBLE);
-//                        layoutSuggestThree.setVisibility(View.VISIBLE);
-//                        layoutSuggestTwo.setVisibility(View.VISIBLE);
-//                        viewSuggestTwo.setVisibility(View.VISIBLE);
-//                        viewSuggestOne.setVisibility(View.VISIBLE);
-//                    }
-//                } else if (textSuggestTwo.getText().toString().equals("")) {
-//                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
-//                        textSuggestTwo.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
-//                        layoutSuggestThree.setVisibility(View.VISIBLE);
-//                        layoutSuggestTwo.setVisibility(View.VISIBLE);
-//                        viewSuggestTwo.setVisibility(View.VISIBLE);
-//                        viewSuggestOne.setVisibility(View.VISIBLE);
-//                    }
-//                } else if (textSuggestThree.getText().toString().equals("")) {
-//                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
-//                        textSuggestThree.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
-//                        layoutSuggestThree.setVisibility(View.VISIBLE);
-//                        viewSuggestTwo.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//            }
-//        } else {
-//            for (int l = 0; l < Utils.list.length; l++) {
-//                if (textSuggestOne.getText().toString().equals("")) {
-//                    if (Utils.list[l].contains(textEditText)) {
-//                        textSuggestOne.setText(Utils.list[l]);
-//                        layoutSuggest.setVisibility(View.VISIBLE);
-//                        layoutSuggestThree.setVisibility(View.VISIBLE);
-//                        layoutSuggestTwo.setVisibility(View.VISIBLE);
-//                        viewSuggestTwo.setVisibility(View.VISIBLE);
-//                        viewSuggestOne.setVisibility(View.VISIBLE);
-//                    }
-//                } else if (textSuggestTwo.getText().toString().equals("")) {
-//                    if (Utils.list[l].contains(textEditText)) {
-//                        textSuggestTwo.setText(Utils.list[l]);
-//                        layoutSuggestThree.setVisibility(View.VISIBLE);
-//                        layoutSuggestTwo.setVisibility(View.VISIBLE);
-//                        viewSuggestTwo.setVisibility(View.VISIBLE);
-//                        viewSuggestOne.setVisibility(View.VISIBLE);
-//                    }
-//                } else if (textSuggestThree.getText().toString().equals("")) {
-//                    if (Utils.list[l].contains(textEditText)) {
-//                        textSuggestThree.setText(Utils.list[l]);
-//                        layoutSuggestThree.setVisibility(View.VISIBLE);
-//                        viewSuggestTwo.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//            }
-//        }
-//        if (textSuggestOne.getText().toString().equals("") || count == 0) {
-//            layoutSuggest.setVisibility(View.GONE);
-//        } else if (textSuggestTwo.getText().toString().equals("")) {
-//            layoutSuggestThree.setVisibility(View.GONE);
-//            layoutSuggestTwo.setVisibility(View.GONE);
-//            viewSuggestTwo.setVisibility(View.GONE);
-//            viewSuggestOne.setVisibility(View.GONE);
-//        } else if (textSuggestThree.getText().toString().equals("")) {
-//            layoutSuggestThree.setVisibility(View.GONE);
-//            viewSuggestTwo.setVisibility(View.GONE);
-//        }
+        if (BaseConfig.readLastButtonPressed(getApplicationContext())) {
+            for (int l = 0; l < BaseConfig.getListSuggestion(getApplicationContext()).size(); l++) {
+                if (textSuggestOne.getText().toString().equals("")) {
+                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
+                        textSuggestOne.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
+                        layoutSuggest.setVisibility(View.VISIBLE);
+                        layoutSuggestThree.setVisibility(View.VISIBLE);
+                        layoutSuggestTwo.setVisibility(View.VISIBLE);
+                        viewSuggestTwo.setVisibility(View.VISIBLE);
+                        viewSuggestOne.setVisibility(View.VISIBLE);
+                    }
+                } else if (textSuggestTwo.getText().toString().equals("")) {
+                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
+                        textSuggestTwo.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
+                        layoutSuggestThree.setVisibility(View.VISIBLE);
+                        layoutSuggestTwo.setVisibility(View.VISIBLE);
+                        viewSuggestTwo.setVisibility(View.VISIBLE);
+                        viewSuggestOne.setVisibility(View.VISIBLE);
+                    }
+                } else if (textSuggestThree.getText().toString().equals("")) {
+                    if (BaseConfig.getListSuggestion(getApplicationContext()).get(l).contains(textEditText)) {
+                        textSuggestThree.setText(BaseConfig.getListSuggestion(getApplicationContext()).get(l));
+                        layoutSuggestThree.setVisibility(View.VISIBLE);
+                        viewSuggestTwo.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        } else {
+            for (int l = 0; l < Utils.list.length; l++) {
+                if (textSuggestOne.getText().toString().equals("")) {
+                    if (Utils.list[l].contains(textEditText)) {
+                        textSuggestOne.setText(Utils.list[l]);
+                        layoutSuggest.setVisibility(View.VISIBLE);
+                        layoutSuggestThree.setVisibility(View.VISIBLE);
+                        layoutSuggestTwo.setVisibility(View.VISIBLE);
+                        viewSuggestTwo.setVisibility(View.VISIBLE);
+                        viewSuggestOne.setVisibility(View.VISIBLE);
+                    }
+                } else if (textSuggestTwo.getText().toString().equals("")) {
+                    if (Utils.list[l].contains(textEditText)) {
+                        textSuggestTwo.setText(Utils.list[l]);
+                        layoutSuggestThree.setVisibility(View.VISIBLE);
+                        layoutSuggestTwo.setVisibility(View.VISIBLE);
+                        viewSuggestTwo.setVisibility(View.VISIBLE);
+                        viewSuggestOne.setVisibility(View.VISIBLE);
+                    }
+                } else if (textSuggestThree.getText().toString().equals("")) {
+                    if (Utils.list[l].contains(textEditText)) {
+                        textSuggestThree.setText(Utils.list[l]);
+                        layoutSuggestThree.setVisibility(View.VISIBLE);
+                        viewSuggestTwo.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        }
+        if (textSuggestOne.getText().toString().equals("") || count == 0) {
+            layoutSuggest.setVisibility(View.GONE);
+        } else if (textSuggestTwo.getText().toString().equals("")) {
+            layoutSuggestThree.setVisibility(View.GONE);
+            layoutSuggestTwo.setVisibility(View.GONE);
+            viewSuggestTwo.setVisibility(View.GONE);
+            viewSuggestOne.setVisibility(View.GONE);
+        } else if (textSuggestThree.getText().toString().equals("")) {
+            layoutSuggestThree.setVisibility(View.GONE);
+            viewSuggestTwo.setVisibility(View.GONE);
+        }
 //        updateShiftKeyState(getCurrentInputEditorInfo());
     }
 
@@ -1444,5 +1447,11 @@ public class SoftKeyboard extends InputMethodService
                 mPopupKeyboard.dismiss();
             }
         }
+    }
+
+    @Override
+    public void dismissGrayWithButtonDotAndTwoDot() {
+        mInputView.setKeyboard(currentKeyboard);
+        viewBlur.setVisibility(View.GONE);
     }
 }

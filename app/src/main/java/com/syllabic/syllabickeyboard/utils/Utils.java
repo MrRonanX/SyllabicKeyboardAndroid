@@ -696,6 +696,7 @@ public class Utils {
     }
 
     private static void drawIconDropRight(Keyboard.Key key, Canvas canvas, Context context) {
+
         if (BaseConfig.readNameDevice(context).equals("mobile")) {
             if (BaseConfig.readHorizontalOrVertical(context).equals("PORTRAIT")) {
                 int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_left_vertical);
@@ -707,6 +708,7 @@ public class Utils {
                 float right = (float) (key.x + key.width) - iconRight;
                 float bottom = (float) (key.y + (key.height / 2) + iconBottom);
                 key.icon.setBounds((int) left, (int) top, (int) right, (int) bottom);
+//                key.icon.setBounds(0, 0, , (int) bottom);
                 key.icon.draw(canvas);
             } else {
                 int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_right_left_vertical);
@@ -814,6 +816,7 @@ public class Utils {
                 float right = (float) (key.x + key.width) - iconRight;
                 float bottom = (float) (key.y + (key.height / 2) + iconBottom);
                 dr.setBounds((int) left, (int) top, (int) right, (int) bottom);
+//                dr.setBounds(0, 0, dr.getIntrinsicWidth(),dr.getIntrinsicWidth());
                 dr.draw(canvas);
             } else {
                 int iconLeft = context.getResources().getDimensionPixelSize(R.dimen.icon_drop_mobile_left_left_horizontal);
